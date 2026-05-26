@@ -1,0 +1,65 @@
+{
+  "skill": "postmortem",
+  "description": "Routing evals for deciding when bugfix work needs a reusable postmortem and for enforcing postmortem content quality.",
+  "cases": [
+    {
+      "id": 1,
+      "prompt": "I fixed a regression where the checkout total was computed incorrectly. Write the postmortem with root cause, fix, verification, and prevention.",
+      "expected_output": "Should load this skill and produce a structured postmortem covering symptom, impact, root cause, fix, verification, and prevention.",
+      "files": [],
+      "expectations": [
+        "Treats the task as defect correction",
+        "Captures expected vs actual behavior",
+        "Includes reusable prevention notes"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "A broken test revealed a real caching defect. Capture the incident so future engineers understand what failed.",
+      "expected_output": "Should load this skill because the broken test exposed a real defect and the task asks for reusable root-cause knowledge.",
+      "files": [],
+      "expectations": [
+        "Distinguishes real defects from test-only issues",
+        "Produces a reusable root-cause record"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I refactored the settings module without changing behavior. Do I need a postmortem?",
+      "expected_output": "Should not load this skill as a mandatory postmortem generator because the work is behavior-preserving refactor only.",
+      "files": [],
+      "expectations": [
+        "Recognizes non-defect refactors as out of scope"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Place this postmortem in the correct repo folder, name it, and update indexes.",
+      "expected_output": "Should prefer fractal-repo for placement, naming, and indexing, while postmortem remains responsible for content standards if needed.",
+      "files": [],
+      "expectations": [
+        "Does not take primary ownership of repository placement"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I added a new sharing feature and also cleaned up two old warnings. Write a postmortem.",
+      "expected_output": "Should question whether the work is truly defect-led and consult decision rules rather than assuming every mixed task needs a postmortem.",
+      "files": [],
+      "expectations": [
+        "Uses decision rules for borderline cases",
+        "Avoids over-triggering on mixed feature work"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "The service went down in staging because of a bad env fallback. We fixed it and want a reusable incident record.",
+      "expected_output": "Should load this skill and produce an incident-style postmortem with impact, root cause, fix, verification, and prevention.",
+      "files": [],
+      "expectations": [
+        "Handles incidents and reliability failures",
+        "Includes prevention and verification"
+      ]
+    }
+  ]
+}

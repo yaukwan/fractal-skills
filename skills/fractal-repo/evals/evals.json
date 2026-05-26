@@ -1,0 +1,75 @@
+{
+  "skill": "fractal-repo",
+  "description": "Routing evals for repository-level AI documentation topology, indexing, frontmatter, placement, naming, and lifecycle transitions.",
+  "cases": [
+    {
+      "id": 1,
+      "prompt": "Restructure the repo-level docs index and lifecycle links so decisions, engineering notes, postmortems, specs, and archive entries are easy to navigate.",
+      "expected_output": "Should load this skill and focus on repository-level topology, placement, naming, frontmatter, and index links.",
+      "files": [],
+      "expectations": [
+        "Does not infer local AGENTS.md content from code",
+        "Keeps placement and lifecycle concerns separate from schema semantics",
+        "Focuses on topology and navigability"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We deleted a feature. Preserve the historical trail without keeping it in AGENTS.md current-state sections.",
+      "expected_output": "Should load this skill and use archive/tombstone conventions rather than erasing history or bloating AGENTS.md.",
+      "files": [],
+      "expectations": [
+        "Uses docs/archive or tombstone approach",
+        "Keeps AGENTS.md current-state only"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The meaning of INPUT and OUTPUT in our file headers is unclear. Define the right schema.",
+      "expected_output": "Should not load this skill; prefer fractal-context because this is about canonical header semantics.",
+      "files": [],
+      "expectations": [
+        "Does not take ownership of Level 1/2/3 schema semantics"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "This bugfix needs a postmortem. Put it in the right place, name it correctly, and update any indexes.",
+      "expected_output": "Should load this skill for placement/naming/indexing and coordinate with postmortem for content quality.",
+      "files": [],
+      "expectations": [
+        "Owns placement, naming, and indexing",
+        "Defers postmortem writing quality standards to postmortem"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I'm not sure whether this note belongs in decisions, engineering, research, or archive.",
+      "expected_output": "Should load this skill and apply lifecycle judgment instead of guessing.",
+      "files": [],
+      "expectations": [
+        "Uses lifecycle categories deliberately",
+        "Avoids arbitrary classification"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Write the root-cause analysis and prevention steps for this regression.",
+      "expected_output": "Should not load this skill; prefer postmortem because the request is about postmortem content rather than repository placement.",
+      "files": [],
+      "expectations": [
+        "Does not absorb postmortem content-writing responsibilities"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "The audit says src/auth/AGENTS.md is stale. Read the code and rewrite that folder manifest.",
+      "expected_output": "Should not load this skill; prefer fractal-agents-fill. This is local contract refresh from code, not repo-level placement or lifecycle work.",
+      "files": [],
+      "expectations": [
+        "Does not steal local AGENTS.md fill work",
+        "Recognizes fill vs placement boundary"
+      ]
+    }
+  ]
+}

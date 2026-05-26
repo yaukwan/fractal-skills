@@ -1,0 +1,73 @@
+{
+  "skill": "fractal-agents-fill",
+  "description": "Routing evals for directory-level contract fill and AGENTS.md repair from code, nearby docs, and current task evidence.",
+  "cases": [
+    {
+      "id": 1,
+      "prompt": "Write the AGENTS.md for src/services/payment/ — describe what this directory owns and what shouldn't change.",
+      "expected_output": "Should load this skill, read the directory first, and write the AGENTS.md directly if the contract is already clear enough.",
+      "expectations": [
+        "Reads directory code before asking questions",
+        "Writes directly when the contract is clear enough",
+        "Writes Level 2 AGENTS.md with Scope / Constraints / Members"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The audit says src/auth/AGENTS.md is stale and src/api/ is missing one. Fill them both.",
+      "expected_output": "Should load this skill and repair each directory sequentially, writing updates when the inferred contract is clear.",
+      "expectations": [
+        "Processes directories one at a time",
+        "Checks fractal-scope.md for L2 scope gating",
+        "Does not require a question loop when code already answers the contract"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I just created a new module at src/notifications/. Set up its AGENTS.md with scope and constraints.",
+      "expected_output": "Should load this skill, infer a directory contract from the code, and ask only if key ownership or constraint facts remain ambiguous.",
+      "expectations": [
+        "Challenges fuzzy language like 'handler' without context",
+        "Writes Members at folder/domain granularity, not per-file",
+        "Does not add Dependencies or Review Triggers sections"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The directory contract is obvious from the code. Just refresh the AGENTS.md and don't ask me questions unless you hit a real blocker.",
+      "expected_output": "Should load this skill and prefer direct writing over an interactive questionnaire when the contract is already clear.",
+      "expectations": [
+        "Defaults to read-and-write rather than read-and-ask",
+        "Uses questions only for blocking ambiguities"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Run a full fractal doc audit — check decisions freshness, AGENTS.md coverage, and lane placement.",
+      "expected_output": "Should prefer fractal-audit, not this skill. This is a system-wide health scan, not directory-level AGENTS.md filling.",
+      "expectations": [
+        "Should not route to fractal-agents-fill",
+        "Recognizes audit vs fill boundary"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Is it okay to put this design decision in docs/decisions/? Does it qualify as system-wide truth?",
+      "expected_output": "Should prefer decision-capture, not this skill. This is about decision handling, not AGENTS.md content.",
+      "expectations": [
+        "Should not route to fractal-agents-fill",
+        "Recognizes decision handling vs AGENTS fill boundary"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "The code says this folder owns provider orchestration, but the developer keeps calling it just an adapter bucket. Clarify the boundary, then update AGENTS.md.",
+      "expected_output": "Should load this skill, cross-check wording against code/docs, and ask a focused direction-confirmation question only if the owner boundary still risks misleading the manifest.",
+      "expectations": [
+        "Detects terminology drift before writing",
+        "Uses minimal semantic-confirmation questioning",
+        "Updates AGENTS.md once the local direction is reliable"
+      ]
+    }
+  ]
+}
