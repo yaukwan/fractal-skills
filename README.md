@@ -1,6 +1,8 @@
 # Fractal Skills
 
-[![skills.sh](https://skills.sh/b/sbtobb/fractal-skills)](https://skills.sh/sbtobb/fractal-skills)
+[English](./README.md) | [简体中文](./README.zh.md)
+
+[![skills.sh](https://skills.sh/b/yaukwan/fractal-skills)](https://skills.sh/yaukwan/fractal-skills)
 
 AI-native documentation orchestration skills for coding agent projects — a three-layer context protocol (L1 root / L2 folder / L3 file) with full lifecycle management from setup through postmortem.
 
@@ -8,7 +10,7 @@ AI-native documentation orchestration skills for coding agent projects — a thr
 
 ```bash
 # Install all 8 skills via vercel-labs/skills CLI
-npx skills add sbtobb/fractal-skills
+npx skills add yaukwan/fractal-skills
 
 # Optional: generate OpenCode AGENTS.md + agent config
 node scripts/install.js

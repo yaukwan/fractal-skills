@@ -1,6 +1,8 @@
 # Fractal Skills
 
-[![skills.sh](https://skills.sh/b/sbtobb/fractal-skills)](https://skills.sh/sbtobb/fractal-skills)
+[English](./README.md) | [简体中文](./README.zh.md)
+
+[![skills.sh](https://skills.sh/b/yaukwan/fractal-skills)](https://skills.sh/yaukwan/fractal-skills)
 
 面向 coding agent 项目的 AI-native 文档编排技能组——提供三层上下文协议（L1 根级 / L2 目录级 / L3 文件级）及从建仓到复盘的完整生命周期管理。
 
@@ -8,7 +10,7 @@
 
 ```bash
 # 通过 vercel-labs/skills CLI 一键安装全部 8 个 skills
-npx skills add sbtobb/fractal-skills
+npx skills add yaukwan/fractal-skills
 
 # 可选：生成 OpenCode 的 AGENTS.md 配置及 agent 文件
 node scripts/install.js
