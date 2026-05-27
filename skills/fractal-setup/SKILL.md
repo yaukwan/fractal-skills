@@ -1,6 +1,11 @@
 ---
-name: fractal-setup
-description: Load when initializing a project's fractal documentation structure for the first time. Create the docs/ directory layout and fractal-scope.md configuration. Do not load for ongoing doc maintenance, auditing, or filling AGENTS.md — use fractal-audit or fractal-agents-fill instead.
+name: "fractal-setup"
+description: "Load when initializing fractal documentation in a project for the first time, especially when the `docs/` scaffold and `fractal-scope.md` do not exist yet. Do not load for ongoing maintenance, audits, or `AGENTS.md` filling"
+license: "Apache-2.0"
+metadata:
+  author: "yaukwan"
+  version: "1.0"
+  github: "https://github.com/yaukwan/fractal-skills"
 ---
 
 # Fractal Setup

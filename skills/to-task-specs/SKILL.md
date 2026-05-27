@@ -1,6 +1,11 @@
 ---
-name: to-task-specs
-description: Load when a task has been clarified and relevant decisions are current, and you need a task specification document from a PRD, resolved context, decision summary, or current conversation context. Do not load for repo placement decisions, Level 1/2/3 schema work, or postmortem writing.
+name: "to-task-specs"
+description: "Load when the task is already clarified, the relevant decisions are current, and the user wants a written task-spec document from a PRD, decision summary, or resolved conversation context. Do not load for repo placement decisions, Level 1/2/3 schema work, or postmortem writing"
+license: "Apache-2.0"
+metadata:
+  author: "yaukwan"
+  version: "1.0"
+  github: "https://github.com/yaukwan/fractal-skills"
 ---
 
 # To Task Specs

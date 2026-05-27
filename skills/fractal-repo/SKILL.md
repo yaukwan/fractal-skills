@@ -1,6 +1,11 @@
 ---
-name: fractal-repo
-description: Load when repository-level fractal docs need placement, naming, frontmatter, indexes, or lifecycle transitions across decisions, engineering, research, postmortem, archive, and specs. Do not load to fill local AGENTS.md from code, for Level 1/2/3 schema semantics, or for postmortem quality standards.
+name: "fractal-repo"
+description: "Load when repository-level fractal docs need placement, naming, frontmatter, indexing, or archive/lifecycle handling. Do not load to fill local `AGENTS.md` from code, define Level 1/2/3 schema semantics, or set postmortem quality rules"
+license: "Apache-2.0"
+metadata:
+  author: "yaukwan"
+  version: "1.0"
+  github: "https://github.com/yaukwan/fractal-skills"
 ---
 
 # Fractal Repo

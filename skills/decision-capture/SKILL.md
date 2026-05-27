@@ -1,6 +1,11 @@
 ---
-name: decision-capture
-description: Load when a task or code change may require decision-level handling: check whether existing decisions already cover the current truth, decide the needed action, and when required create, update, supersede, or merge the decision doc so current design truth is documented. Do not load for repo-wide lane placement, Level 1/2/3 schema semantics, or postmortem writing.
+name: "decision-capture"
+description: "Load when the current task may need decision-doc handling, especially to check whether existing decisions still match current design truth or to update, supersede, or merge them. Do not load for repo-wide lane placement, Level 1/2/3 schema semantics, or postmortem writing"
+license: "Apache-2.0"
+metadata:
+  author: "yaukwan"
+  version: "1.0"
+  github: "https://github.com/yaukwan/fractal-skills"
 ---
 
 # Decision Capture
