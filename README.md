@@ -8,15 +8,19 @@ AI-native documentation orchestration skills for coding agent projects — a thr
 
 ## Quickstart
 
-```bash
-# Install all 8 skills via vercel-labs/skills CLI
-npx skills add yaukwan/fractal-skills
+### Install skills
 
-# Optional: generate OpenCode AGENTS.md + agent config
-node scripts/install.js
+```bash
+npx skills add yaukwan/fractal-skills
 ```
 
-`npx skills add` makes all Fractal Skills available to your coding agent. The optional `node scripts/install.js` generates a personalized `~/.config/opencode/AGENTS.md` and installs the `fractal` and `gstack` orchestrator agent definitions.
+### Optional OpenCode setup
+
+```bash
+npx github:yaukwan/fractal-skills install
+```
+
+`npx skills add` makes all Fractal Skills available to your coding agent. The optional `npx github:yaukwan/fractal-skills install` command generates a personalized `~/.config/opencode/AGENTS.md` and installs the `fractal` orchestrator agent definition.
 
 ## Why Fractal Skills
 
@@ -86,4 +90,4 @@ The `opencode-agents/` directory contains reference agent definitions for OpenCo
 - **`fractal`** — Primary orchestrator that drives the `FILL → DECIDE → SPEC → BUILD → POSTMORTEM` flow.
 - **`gstack`** — Integration agent for gstack toolchain compatibility.
 
-These are installed automatically by `node scripts/install.js` alongside `AGENTS.md` generation. They can also be manually copied into `~/.config/opencode/agents/` for adaptation into your own OpenCode configuration.
+`npx github:yaukwan/fractal-skills install` installs `fractal.md` alongside `AGENTS.md` generation. `gstack.md` remains a reference file that can be manually copied into `~/.config/opencode/agents/` if you want that integration.

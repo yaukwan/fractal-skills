@@ -1,30 +1,25 @@
 #!/usr/bin/env node
 
-/**
- * Fractal Skills installer for OpenCode.
- *
- * Reads AGENTS.template.md, asks for your name and languages,
- * writes ~/.config/opencode/AGENTS.md.
- *
- * Also copies agent definitions from opencode-agents/
- * to ~/.config/opencode/agents/.
- *
- * Usage: node install.js
- *         or: chmod +x install.js && ./install.js
- *
- * No dependencies. Pure Node.js built-ins.
- */
-
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
 const os = require("os");
 
 const TEMPLATE_PATH = path.join(__dirname, "..", "AGENTS.template.md");
-const AGENT_SRC_DIR = path.join(__dirname, "..", "opencode-agents");
+const FRACTAL_AGENT_PATH = path.join(__dirname, "..", "opencode-agents", "fractal.md");
 const TARGET_DIR = path.join(os.homedir(), ".config", "opencode");
 const TARGET_PATH = path.join(TARGET_DIR, "AGENTS.md");
 const AGENTS_TARGET_DIR = path.join(TARGET_DIR, "agents");
+const FRACTAL_TARGET_PATH = path.join(AGENTS_TARGET_DIR, "fractal.md");
+const HELP_TEXT = `Fractal Skills OpenCode installer
+
+Usage:
+  fractal-skills install
+  node scripts/install.js install
+
+This command generates ~/.config/opencode/AGENTS.md
+and installs ~/.config/opencode/agents/fractal.md.
+`;
 
 function ask(rl, question) {
   return new Promise((resolve) => {
@@ -39,6 +34,53 @@ function createOneShotReadline() {
   });
 }
 
+async function readNonInteractiveAnswers() {
+  if (process.stdin.isTTY) {
+    return [];
+  }
+
+  const chunks = [];
+
+  for await (const chunk of process.stdin) {
+    chunks.push(chunk);
+  }
+
+  return Buffer.concat(chunks)
+    .toString("utf-8")
+    .split(/\r?\n/)
+    .map((value) => value.trim());
+}
+
+function createPrompt(queuedAnswers) {
+  if (!process.stdin.isTTY) {
+    let index = 0;
+
+    return {
+      ask(question) {
+        process.stdout.write(question);
+        const answer = queuedAnswers[index] ?? "";
+        index += 1;
+        return Promise.resolve(answer);
+      },
+      close() {},
+    };
+  }
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return {
+    ask(question) {
+      return ask(rl, question);
+    },
+    close() {
+      rl.close();
+    },
+  };
+}
+
 async function confirmOverwrite(filePath) {
   const rl = createOneShotReadline();
   const answer = await ask(
@@ -49,7 +91,6 @@ async function confirmOverwrite(filePath) {
   return answer.toLowerCase() === "y";
 }
 
-/** Install a single agent file, returning true if written. */
 async function installAgentFile(srcPath, dstPath) {
   if (fs.existsSync(dstPath)) {
     const shouldOverwrite = await confirmOverwrite(dstPath);
@@ -64,64 +105,69 @@ async function installAgentFile(srcPath, dstPath) {
 }
 
 async function installAgents() {
-  if (!fs.existsSync(AGENT_SRC_DIR)) {
-    console.log("\nNo opencode-agents/ directory found. Skipping agent installation.");
-    return;
-  }
-
-  const files = fs.readdirSync(AGENT_SRC_DIR).filter(f => f.endsWith(".md"));
-  if (files.length === 0) {
-    console.log("\nNo agent definitions found in opencode-agents/. Skipping.");
-    return;
-  }
-
-  console.log("\nInstalling OpenCode agent definitions...");
+  console.log("\nInstalling OpenCode fractal agent...");
   fs.mkdirSync(AGENTS_TARGET_DIR, { recursive: true });
 
-  let installed = 0;
-  let skipped = 0;
-
-  for (const file of files) {
-    const srcPath = path.join(AGENT_SRC_DIR, file);
-    const dstPath = path.join(AGENTS_TARGET_DIR, file);
-    const written = await installAgentFile(srcPath, dstPath);
-    if (written) installed++;
-    else skipped++;
-  }
-
-  console.log(`\nAgents: ${installed} installed, ${skipped} skipped.`);
+  const written = await installAgentFile(FRACTAL_AGENT_PATH, FRACTAL_TARGET_PATH);
+  console.log(`\nFractal agent: ${written ? "installed" : "skipped"}.`);
 }
 
-async function main() {
-  // Check template exists
+function validateRuntimeFiles() {
   if (!fs.existsSync(TEMPLATE_PATH)) {
     console.error("ERROR: AGENTS.template.md not found.");
-    console.error("Ensure AGENTS.template.md exists in the parent directory of scripts/.");
+    console.error("Ensure AGENTS.template.md exists in the package root.");
     process.exit(1);
   }
 
-  const template = fs.readFileSync(TEMPLATE_PATH, "utf-8");
+  if (!fs.existsSync(FRACTAL_AGENT_PATH)) {
+    console.error("ERROR: opencode-agents/fractal.md not found.");
+    console.error("Ensure the fractal agent definition is included with this package.");
+    process.exit(1);
+  }
+}
 
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
+function resolveCommand(argv) {
+  const [command] = argv;
+
+  if (!command) {
+    return "install";
+  }
+
+  if (command === "install") {
+    return command;
+  }
+
+  if (command === "help" || command === "--help" || command === "-h") {
+    console.log(HELP_TEXT);
+    process.exit(0);
+  }
+
+  console.error(`ERROR: Unknown command '${command}'.`);
+  console.error(HELP_TEXT);
+  process.exit(1);
+}
+
+async function main() {
+  resolveCommand(process.argv.slice(2));
+  validateRuntimeFiles();
+
+  const template = fs.readFileSync(TEMPLATE_PATH, "utf-8");
+  const prompt = createPrompt(await readNonInteractiveAnswers());
 
   console.log("╔══════════════════════════════════════════════╗");
   console.log("║      Fractal Skills — OpenCode Installer     ║");
   console.log("╚══════════════════════════════════════════════╝");
   console.log("");
   console.log("This script generates ~/.config/opencode/AGENTS.md");
-  console.log("and installs OpenCode agent definitions.");
+  console.log("and installs the OpenCode fractal agent definition.");
   console.log("");
 
-  const userName = await ask(rl, "Your name: ");
-  const languages = await ask(
-    rl,
+  const userName = await prompt.ask("Your name: ");
+  const languages = await prompt.ask(
     "Languages you work with (e.g. Rust, TypeScript, Python): "
   );
 
-  rl.close();
+  prompt.close();
 
   if (!userName || !languages) {
     console.error("\nERROR: Both name and languages are required.");
@@ -140,7 +186,7 @@ async function main() {
   if (fs.existsSync(TARGET_PATH)) {
     const shouldOverwrite = await confirmOverwrite(TARGET_PATH);
     if (!shouldOverwrite) {
-      console.log("\nAGENTS.md skipped. Proceeding with agent installation...");
+      console.log("\nAGENTS.md skipped. Proceeding with fractal agent installation...");
     } else {
       fs.writeFileSync(TARGET_PATH, result, "utf-8");
       console.log(`\n✓ Written: ${TARGET_PATH}`);
@@ -150,7 +196,6 @@ async function main() {
     console.log(`\n✓ Written: ${TARGET_PATH}`);
   }
 
-  // Install agent definitions
   await installAgents();
 
   console.log("\n  Restart your coding agent session for changes to take effect.");
