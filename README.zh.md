@@ -8,15 +8,19 @@
 
 ## 快速开始
 
-```bash
-# 通过 vercel-labs/skills CLI 一键安装全部 8 个 skills
-npx skills add yaukwan/fractal-skills
+### 安装 skills
 
-# 可选：生成 OpenCode 的 AGENTS.md 配置及 agent 文件
-node scripts/install.js
+```bash
+npx skills add yaukwan/fractal-skills
 ```
 
-`npx skills add` 将所有 Fractal Skills 安装到你的 coding agent 中。可选的 `node scripts/install.js` 会生成个性化的 `~/.config/opencode/AGENTS.md`，同时安装 `fractal` 和 `gstack` 两个编排 agent 定义文件。
+### 可选：配置 OpenCode
+
+```bash
+npx github:yaukwan/fractal-skills install
+```
+
+`npx skills add` 将所有 Fractal Skills 安装到你的 coding agent 中。可选的 `npx github:yaukwan/fractal-skills install` 会生成个性化的 `~/.config/opencode/AGENTS.md`，同时安装 `fractal` 编排 agent 定义文件。
 
 ## 为什么需要 Fractal Skills
 
@@ -86,4 +90,4 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - **`fractal`** — 主导 `FILL → DECIDE → SPEC → BUILD → POSTMORTEM` 流程的主编排 agent。
 - **`gstack`** — 面向 gstack 工具链的集成 agent。
 
-这些 agent 文件会在运行 `node scripts/install.js` 时随 `AGENTS.md` 一起自动安装。也可以手动复制到 `~/.config/opencode/agents/` 目录下，适配到你自己的 OpenCode 配置中。
+`npx github:yaukwan/fractal-skills install` 会在生成 `AGENTS.md` 时同时安装 `fractal.md`。`gstack.md` 保留为参考文件；如果你需要 gstack 集成，可手动复制到 `~/.config/opencode/agents/`。

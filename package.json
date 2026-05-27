@@ -1,0 +1,13 @@
+{
+  "name": "fractal-skills",
+  "version": "0.1.0",
+  "private": true,
+  "bin": {
+    "fractal-skills": "scripts/install.js"
+  },
+  "files": [
+    "scripts/install.js",
+    "AGENTS.template.md",
+    "opencode-agents/fractal.md"
+  ]
+}
