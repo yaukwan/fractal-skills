@@ -1,6 +1,11 @@
 ---
-name: postmortem
-description: "Load when bugfix, regression, incident, or reliability work should leave behind a reusable root-cause record, especially when expected behavior is restored after debugging. Do not load for pure feature work, cosmetic polish, formatting, or behavior-preserving refactors."
+name: "postmortem"
+description: "Load when bugfix, regression, incident, or reliability work should leave behind a reusable root-cause record, especially after expected behavior has been restored. Do not load for pure feature work, cosmetic polish, formatting, or behavior-preserving refactors"
+license: "Apache-2.0"
+metadata:
+  author: "yaukwan"
+  version: "1.0"
+  github: "https://github.com/yaukwan/fractal-skills"
 ---
 
 # Postmortem

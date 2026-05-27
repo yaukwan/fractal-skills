@@ -1,6 +1,11 @@
 ---
-name: fractal-context
-description: Load when Level 1/2/3 fractal schema authority is needed: normalize file header fields, validate folder manifest semantics, or run ripple checks after code changes. Only write within scoped fractal repos. Do not load to fill local AGENTS.md from code, or for repo placement or lifecycle work.
+name: "fractal-context"
+description: "Load when Level 1/2/3 fractal header or folder-manifest semantics are unclear, especially after schema drift, code moves, or inconsistent context headers. Do not load to fill local `AGENTS.md` from code, or for repo placement or lifecycle work"
+license: "Apache-2.0"
+metadata:
+  author: "yaukwan"
+  version: "1.0"
+  github: "https://github.com/yaukwan/fractal-skills"
 ---
 
 # Fractal Context Protocol v2

@@ -1,6 +1,11 @@
 ---
-name: fractal-agents-fill
-description: Load when a directory's local AGENTS.md contract must be filled or refreshed from code and nearby docs, especially when missing, stale, incomplete, or unclear. Write directly when clear. Ask only for blocking scope or boundary ambiguities. Do not load for repo-wide audits, decision authority, or repo-level placement work.
+name: "fractal-agents-fill"
+description: "Load when a directory's local `AGENTS.md` must be created or refreshed from code and nearby docs, especially when it is missing, stale, incomplete, or unclear. Do not load for repo-wide audits, decision handling, or repo-level placement work"
+license: "Apache-2.0"
+metadata:
+  author: "yaukwan"
+  version: "1.0"
+  github: "https://github.com/yaukwan/fractal-skills"
 ---
 
 # Fractal Agents Fill

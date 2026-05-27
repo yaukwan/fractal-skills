@@ -1,6 +1,11 @@
 ---
-name: fractal-audit
-description: Load when you want a report-only fractal documentation health audit: scan for stale decisions, missing/stale/incomplete `AGENTS.md`, and likely lane-placement issues, then return a ranked report with repair kinds. Do not load to fix findings directly.
+name: "fractal-audit"
+description: "Load when you want a report-only audit of fractal docs, especially to check for stale decisions, missing or stale `AGENTS.md`, or misplaced docs. Do not load to fix findings directly"
+license: "Apache-2.0"
+metadata:
+  author: "yaukwan"
+  version: "1.0"
+  github: "https://github.com/yaukwan/fractal-skills"
 ---
 
 # Fractal Audit
