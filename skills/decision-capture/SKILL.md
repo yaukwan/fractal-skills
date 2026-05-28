@@ -4,7 +4,7 @@ description: "Load when the current task may need decision-doc handling, especia
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "1.0"
+  version: "1.1"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -25,10 +25,18 @@ This skill is for **decision handling**, not a generic documentation policy expl
 
 1. Identify the affected code and doc scope.
 2. Find overlapping decision docs by topic, directory, module, or contract boundary.
-3. Ask whether the task touches a **cross-cutting, long-lived, current design truth**.
+3. **Determine** whether the task touches a **cross-cutting, long-lived, current design truth**.
+   Use the admission rule and authority signals to judge, not mere analysis thoroughness.
 4. Choose the action from the matrix.
-5. If the action mutates docs, complete the doc change now and make the resulting authority state unambiguous.
-6. Return the resulting current truth.
+5. **Before any CREATE / UPDATE / SUPERSEDE / MERGE action:**
+   - Present the user with a concise summary of:
+     - The decision being proposed
+     - Why it qualifies as durable system truth (not local task reasoning)
+     - Which existing decisions it relates to or replaces
+   - **Wait for explicit user confirmation before writing.**
+   - If the user rejects or redirects, respect that and do not proceed.
+6. Once confirmed, complete the doc change and make the resulting authority state unambiguous.
+7. Return the resulting current truth.
 
 ## Completion criteria
 
@@ -175,6 +183,8 @@ Avoid append-only decision growth.
 - “We chose A over B” is not enough by itself; the result must become durable system truth.
 - If the content mainly helps future debugging or implementation, it likely belongs in `engineering/`.
 - If readers could mistake an outdated doc for active authority, fix that before calling the task's decision truth confirmed.
+- Do NOT escalate a local feature analysis into a decision doc just because the analysis was thorough. The admission bar is about **durability and system-wide impact**, not about analysis depth.
+- Before creating a decision, run the review checklist item by item. If any item fails, reconsider or confirm with the user.
 
 ## Escalation reads
 
