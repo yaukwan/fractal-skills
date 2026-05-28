@@ -4,7 +4,7 @@ description: "Load when a directory's local `AGENTS.md` must be created or refre
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "1.0"
+  version: "1.1"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -23,14 +23,27 @@ This step handles:
 - stopping to ask only when missing facts would distort the manifest
 - flagging `decision_drift_signal` in output when an existing decision may conflict with the inferred contract
 
+<what-to-do>
+Explore the target directory's code, nearest AGENTS.md, and overlapping decision docs.
+Then interview the user about each key L2 manifest section, asking one question at a
+time with a recommended answer. Wait for the user's response before asking the next question.
+
+After all sections are clarified (or the user says `done`), write the directory contract
+into the local AGENTS.md. Do NOT create additional files — all captured intent goes into
+the existing L2 AGENTS.md sections (Scope / Constraints / Members / Docs / Exceptions).
+
+The user may respond with `skip` to skip a single question, or `done` to stop asking and
+write immediately with whatever has been gathered so far.
+</what-to-do>
+
 ## Default workflow
 
-1. Explore the relevant directory code paths first.
-2. Read the nearest `AGENTS.md` and overlapping decision docs.
-3. Infer `Scope / Constraints / Members / Docs / Exceptions` from code and docs.
-4. If the directory contract is clear, write or update `AGENTS.md` now.
-5. If key facts remain ambiguous, ask one focused question at a time with a recommended answer.
-6. Return either a direct-write result or a `Fill Result` with the remaining blockers.
+1. Explore the directory's code paths, nearest `AGENTS.md`, and overlapping decision docs.
+2. Assess which L2 sections (`Scope`, `Constraints`, `Members`, `Docs`, `Exceptions`) need clarification.
+3. Ask the user one question at a time about each unresolved section, with a recommended answer.
+   - The user may respond with `skip` to skip a single question or `done` to write immediately.
+4. After all key sections are clarified, write or update the local `AGENTS.md`.
+5. Return a summary of what was written and any remaining open questions.
 
 ## Scope gate
 
@@ -41,9 +54,9 @@ Apply this skill only when `docs/decisions/fractal-scope.md` exists and the targ
 
 ## Completion criteria
 
-- `AGENTS.md` is created or updated when the directory contract is clear enough to write safely.
+- `AGENTS.md` is created or updated after the user has clarified the key L2 sections (or said `done`).
 - Or a `Fill Result` records the remaining blockers and the recommended write action.
-- Do not stop early just because questioning is possible.
+- Do not skip questioning just because the code alone seems clear — the user's intent may differ.
 
 ## What this skill owns
 
@@ -52,23 +65,15 @@ Apply this skill only when `docs/decisions/fractal-scope.md` exists and the targ
 - surface directory-level constraints that affect current work
 - flag when a related decision may be drifting against the inferred contract
 
-## When to write directly
+## When to skip questioning
 
-- code and nearby docs already show a stable scope boundary clearly
-- the existing `AGENTS.md` is missing, clearly stale, or has obviously incomplete sections
-- only need to conservatively converge existing facts into a directory contract, without inventing new constraints
+Skip a single question only when code and nearby docs already clearly settle the
+section without user input. When the user says `skip`, skip the current question.
+When the user says `done`, stop asking entirely and write immediately with whatever
+has been gathered.
 
-## When to stop and ask
-
-- directory ownership is unclear across adjacent paths
-- a constraint may change public behavior or durable boundary
-- user terminology conflicts with code/docs; writing directly would produce a misleading manifest
-
-## Direct-write rule
-
-Default: read first, write when you can.
-
-Asking is for filling critical fact gaps — not for offloading obvious synthesis work onto the user.
+The default is to ask. Code exploration reduces what you need to ask — it does not
+replace asking. The user's intent often differs from what code alone suggests.
 
 ## Interaction protocol
 
@@ -83,9 +88,12 @@ Pull answers from these sources first:
 
 If these sources already answer the question, do not re-ask the user.
 
-### 2. Ask only one blocking question at a time
+### 2. Ask one question at a time per section
 
-Push forward only the one ambiguity point that truly blocks writing.
+Walk through the L2 sections (`Scope`, `Constraints`, `Members`, `Docs`, `Exceptions`) one at
+a time. For each section that code + docs do not already clearly settle, ask one focused
+question with a recommended answer. Do not batch multiple questions together — wait for the
+user's response before asking the next one.
 
 If the current question already exposes enough directional drift, do a semantic recalibration first before continuing to write the manifest; do not keep asking detail questions under the wrong terminology.
 
@@ -127,9 +135,14 @@ When the user's statement, code reality, and existing docs disagree, call it out
 - only write the current directory contract; do not inject repo-wide rules into local `AGENTS.md`
 - do not invent constraints just to fill sections
 
-## Suggested question sequence
+## Required question sequence
 
-Converge in the order below; only ask what remains unresolved.
+Ask about each section below, one at a time, in this order. For each section that
+code and nearby docs already clearly settle, skip it. For everything else, ask one
+focused question with a recommended answer.
+
+The user may respond with `skip` to skip a single question, or `done` to stop all
+remaining questions and write immediately.
 
 ### Q1. Directory scope
 
@@ -174,7 +187,7 @@ Write into: `Direction confirmation`
 The user can control the flow at any time with these commands:
 
 - `skip` — skip the current question
-- `done` — stop asking, produce the current `Fill Result` directly
+- `done` — stop asking, write the AGENTS.md immediately with what has been gathered
 - `next` — skip remaining questions, continue with existing context
 
 ## Output contract
@@ -191,7 +204,8 @@ At minimum, return at the end:
 
 ## Fill Result format
 
-When it is not safe to write directly, at minimum produce:
+When the user says `done` before all sections are clarified, or when the directory contract
+remains partially unresolved, produce a Fill Result with what has been gathered so far:
 
 ```markdown
 ## Fill Result
@@ -234,7 +248,7 @@ For ready-made question phrasing templates, read `assets/semantic-confirmation-p
 ## Gotchas
 
 - **Do not make schema explanation the primary goal** — this skill's primary goal is to fill the directory contract, not to explain the AGENTS spec.
-- **Write directly when it's safe** — do not degrade the default mode into a questionnaire.
+- **The default is to ask, not to write silently** — this skill's primary value is capturing user intent that cannot be inferred from code. Do not skip questioning just because code exists — the user's intent often differs from what code alone suggests.
 - **decision drift signal ≠ decision conclusion** — after flagging drift, this skill does not modify the decision; it only carries the affected path and drift signal in its output.
-- **If code can answer, don't ask** — this skill's value is in filling genuine context gaps, not interrupting the user over the obvious.
+- **If code can answer the fact, don't ask** — avoid asking about file layout, naming conventions, or other observable facts that exploration can settle. But do ask about intent: ownership boundaries, constraints, and direction are rarely inferable from code alone.
 - **Handle one directory at a time** — batch fixes across multiple directories should converge one by one, to avoid blurring boundaries.
