@@ -4,10 +4,10 @@
   "cases": [
     {
       "id": 1,
-      "prompt": "Check if my docs/decisions/ are stale. Some of them haven't been touched in months.",
-      "expected_output": "Should load this skill and audit decision freshness using git log to compare doc dates vs code change dates, then report the ranked findings without fixing them here.",
+      "prompt": "Check if my decision skills are stale. Some of them haven't been touched in months.",
+      "expected_output": "Should load this skill and audit decision freshness using git log to compare skill dates vs code change dates, then report the ranked findings without fixing them here.",
       "expectations": [
-        "Reads each decision doc to extract referenced code areas",
+        "Reads each decision skill (.agents/skills/decision-*/SKILL.md) to extract affected_modules",
         "Uses git log to compare change timestamps",
         "Produces structured report with STALE / AGING / OK / UNTETHERED tags"
       ]
@@ -15,7 +15,7 @@
     {
       "id": 2,
       "prompt": "Are there directories that should have AGENTS.md but don't? And are existing ones up to date?",
-      "expected_output": "Should load this skill and check AGENTS.md coverage against fractal-scope.md L2 include patterns, then hand back findings with follow-up owners.",
+      "expected_output": "Should load this skill and check AGENTS.md coverage against skills/fractal-scope/config.yaml L2 include patterns, then hand back findings with follow-up owners.",
       "expectations": [
         "Checks each directory in L2 scope for AGENTS.md existence",
         "Compares AGENTS.md modification times vs latest code commits",

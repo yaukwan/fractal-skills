@@ -54,18 +54,18 @@ Eight single-responsibility skills cover the entire build-and-maintain lifecycle
 ### Core advantages
 
 - **Context stays in sync with code.** The protocol defines when and how to refresh each layer — stale authority won't silently drive wrong implementations.
-- **Decision authority is explicit.** `decision-capture` enforces that `docs/decisions/` holds current design truth, not an ADR graveyard.
+- **Decision authority is explicit.** `decision-capture` enforces that `.agents/skills/decision-*/SKILL.md` holds current design truth, not an ADR graveyard — and each decision is a discoverable project skill that agents load during implementation.
 - **Single responsibility, composable flow.** Each skill does one thing. Skills can be used independently or orchestrated through `FILL → DECIDE → SPEC → BUILD → POSTMORTEM`.
 - **AI-native from the ground up.** Headers, manifests, and contracts are designed for machine readability and low-token consumption — not for human wiki browsing.
 
 ## Skills
 
-- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — One-time manual bootstrap of the `docs/` directory layout and `fractal-scope.md` configuration. Run once per project to establish the fractal documentation structure.
+- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — One-time manual bootstrap of the `docs/` directory layout and project-level `skills/fractal-scope/config.yaml` output. Run once per project to establish the fractal documentation structure and downstream skill gating.
 - **[fractal-audit](./skills/fractal-audit/SKILL.md)** — Report-only fractal health scan. Ranks stale decisions, missing or stale `AGENTS.md` files, and lane-placement issues. Does not fix — produces a ranked repair report.
 - **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — Fill or refresh a directory's local `AGENTS.md` contract by reading code and nearby docs. Writes directly when the contract is clear; asks only for blocking scope or boundary ambiguities.
-- **[fractal-repo](./skills/fractal-repo/SKILL.md)** — Repository-level document topology: placement across `decisions / engineering / research / postmortem / specs / archive`, naming conventions, frontmatter, indexes, and lifecycle transitions.
+- **[fractal-repo](./skills/fractal-repo/SKILL.md)** — Repository-level document topology: placement across `engineering / research / postmortem / specs / archive`, naming conventions, frontmatter, indexes, and lifecycle transitions. Decision skills live at `skills/decision-*/`.
 - **[fractal-context](./skills/fractal-context/SKILL.md)** — Guardian of the Level 1/2/3 fractal schema. Normalizes file headers, validates folder manifest semantics, and runs ripple checks after code changes. Only writes within scoped fractal repos.
-- **[decision-capture](./skills/decision-capture/SKILL.md)** — Full decision lifecycle for the current task. Checks whether existing decisions still cover the truth, then creates, updates, supersedes, or merges decision docs so current design authority is unambiguous.
+- **[decision-capture](./skills/decision-capture/SKILL.md)** — Full decision lifecycle for the current task. Checks whether existing decision skills still cover the truth, then creates, updates, supersedes, or merges decision skills so current design authority is unambiguous. Decisions live at `.agents/skills/decision-*/SKILL.md`.
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — Generate executable task specifications from a PRD, resolved context, or conversation context. Groups tasks by functional domain, inherits decision constraints, and produces verifiable acceptance criteria.
 - **[postmortem](./skills/postmortem/SKILL.md)** — Structured root-cause records for bugs, regressions, and incidents. Records symptom, impact, root cause, fix applied, verification, and prevention steps. Required when the primary task nature is defect correction.
 
@@ -77,7 +77,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 
 - **SETUP** — `fractal-setup`: one-time manual bootstrap, outside the main flow.
 - **FILL** — `fractal-agents-fill`: fill missing local contract context and refresh `AGENTS.md` when needed.
-- **DECIDE** — `decision-capture`: check decision coverage and update decision docs until current truth is documented.
+- **DECIDE** — `decision-capture`: check decision coverage and update decision skills until current truth is documented.
 - **SPEC** — `to-task-specs`: turn resolved context into a build-ready task document.
 - **BUILD** — Execute the approved spec.
 - **POSTMORTEM** — `postmortem`: required when the primary task nature is defect correction.

@@ -14,7 +14,7 @@ metadata:
 
 Transform a **resolved task context or PRD** into a structured, verifiable, group-executable task specification document.
 
-Output destination is configurable via `docs/decisions/fractal-scope.md`.
+Output destination is configurable via `skills/fractal-scope/config.yaml`.
 
 This skill exists because the base model tends to either jump straight to implementation or produce vague task lists without proper grouping, file-level scoping, and acceptance criteria.
 
@@ -38,13 +38,13 @@ If decision truth is unclear, stop and resolve that first.
 
 ## Output Mode Configuration
 
-This skill's output behavior is controlled by `docs/decisions/fractal-scope.md` > `## Spec Output Preference`.
+This skill's output behavior is controlled by `skills/fractal-scope/config.yaml` > `spec_output.mode`.
 
-- If `fractal-scope.md` exists and `output_mode` is set:
+-   If `skills/fractal-scope/config.yaml` exists and `spec_output.mode` is set:
   - `always_file`: Write to `docs/specs/{YYYY_MM_dd}_{task_name}.md`.
   - `always_inline`: Output to conversation context only. Do NOT write to disk or create directories.
   - `ask` or key missing: Use the `question` tool to ask the user before writing.
-- If `fractal-scope.md` does not exist: default to `ask`.
+-   If `skills/fractal-scope/config.yaml` does not exist: default to `ask`.
 
 ## Decision rules
 
@@ -80,7 +80,7 @@ Choose the first valid source in this order:
 - Do NOT assume a fixed PRD path like `docs/specs/prd.txt`.
 - Do NOT assume a PRD is required — resolved context is a valid input.
 - Do NOT start writing implementation code after generating the spec. The spec is a stop-gate.
-- This skill produces `docs/specs/` documents (type: `specs`), not `docs/decisions/` or `docs/engineering/`.
+- This skill produces `docs/specs/` documents (type: `specs`), not decision skills or engineering docs.
 - `task_name` should be kebab-case.
 - All acceptance criteria must be verifiable — no "looks good" or "works correctly".
 
@@ -88,8 +88,8 @@ Choose the first valid source in this order:
 
 - Always: read `assets/task-spec-template.md` for the spec document skeleton.
 - Always: read `references/task-group-structuring-guidelines.md` for grouping and batching rules.
-- When available: read `docs/decisions/fractal-scope.md` for `## Spec Output Preference`.
-- When available: read the relevant current decision docs so the spec inherits their constraints.
+- When available: read `skills/fractal-scope/config.yaml` for `spec_output.mode`.
+- When available: read the relevant current decision skills so the spec inherits their constraints.
 
 ## Output expectations
 

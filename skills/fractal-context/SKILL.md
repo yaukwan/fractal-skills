@@ -14,7 +14,7 @@ Act as the guardian of the project's fractal semantic map. Keep file, folder, an
 
 ## Scope Gate
 
-**Before writing any L3 header, or normalizing an existing L2 manifest for schema semantics, check `docs/decisions/fractal-scope.md`.**
+**Before writing any L3 header, or normalizing an existing L2 manifest for schema semantics, check `skills/fractal-scope/config.yaml`.**
 
 - **Not found**: This is not a fractal-repo. Only provide schema consulting. Do NOT write file headers or folder manifests.
 - **Found**: Read the `## L3 File Header` and `## L2 Folder Manifest` sections. Write only when:

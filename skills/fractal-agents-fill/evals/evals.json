@@ -18,7 +18,7 @@
       "expected_output": "Should load this skill and repair each directory sequentially, writing updates when the inferred contract is clear.",
       "expectations": [
         "Processes directories one at a time",
-        "Checks fractal-scope.md for L2 scope gating",
+        "Checks skills/fractal-scope/config.yaml for L2 scope gating",
         "Does not require a question loop when code already answers the contract"
       ]
     },
@@ -52,7 +52,7 @@
     },
     {
       "id": 6,
-      "prompt": "Is it okay to put this design decision in docs/decisions/? Does it qualify as system-wide truth?",
+      "prompt": "Is it okay to create a decision skill for this design? Does it qualify as system-wide truth?",
       "expected_output": "Should prefer decision-capture, not this skill. This is about decision handling, not AGENTS.md content.",
       "expectations": [
         "Should not route to fractal-agents-fill",

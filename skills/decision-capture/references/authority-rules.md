@@ -1,8 +1,9 @@
 # Decision Admission Signals
 
-Use these signals as helper rules while deciding whether the current task deserves capture in `docs/decisions/`.
+Use these signals as helper rules while deciding whether the current task deserves
+a decision skill at `.agents/skills/decision-{slug}/SKILL.md`.
 
-`docs/decisions/` is reserved for **current system-level design truth**.
+Decision skills are reserved for **current system-level design truth**.
 
 ## Positive signals
 
@@ -28,20 +29,26 @@ A topic is not a good candidate when any of these dominate:
 ## Smell tests
 
 ### Smell: "This feels important"
-Importance alone is not enough.  
+
+Importance alone is not enough.
 Ask whether it is important as **system truth**, not merely important to the current task.
 
 ### Smell: "We discussed multiple options"
-Option comparison alone does not justify a decision doc.  
+
+Option comparison alone does not justify a decision skill.
 Only the adopted, durable truth belongs here.
 
 ### Smell: "This was a hard problem"
-Difficulty alone does not make it a decision.  
-Hard implementation work often belongs in `engineering/`, not `decisions/`.
+
+Difficulty alone does not make it a decision.
+Hard implementation work often belongs in `docs/engineering/`, not as a decision skill.
 
 ## Promotion rule
 
-Promote content into `docs/decisions/` only when it has crossed from:
+Promote content into a decision skill only when it has crossed from:
+
 - situational reasoning
+
 into:
+
 - durable authority

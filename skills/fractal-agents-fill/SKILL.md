@@ -47,7 +47,7 @@ write immediately with whatever has been gathered so far.
 
 ## Scope gate
 
-Apply this skill only when `docs/decisions/fractal-scope.md` exists and the target directory is inside enabled L2 scope.
+Apply this skill only when `skills/fractal-scope/config.yaml` exists and the target directory is inside enabled L2 scope.
 
 - If the repo is not a fractal-repo, stop and report that local AGENTS.md fill rules do not apply.
 - If the path is out of scope, do not write the manifest just because the directory exists.
@@ -83,7 +83,7 @@ Pull answers from these sources first:
 
 - relevant code paths
 - nearest `AGENTS.md`
-- overlapping docs under `docs/decisions/`
+- overlapping decision skills under `skills/decision-*/`
 - already settled context from the current conversation
 
 If these sources already answer the question, do not re-ask the user.

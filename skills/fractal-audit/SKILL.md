@@ -21,7 +21,7 @@ Run a report-only health scan across fractal docs and return prioritized repair 
 
 ## Default workflow
 
-1. Confirm `docs/decisions/fractal-scope.md` exists.
+1. Confirm `skills/fractal-scope/config.yaml` exists.
 2. Audit decision freshness and overlap risk.
 3. Audit `AGENTS.md` coverage against the configured L2 scope.
 4. Audit lane anomalies across `engineering / research / postmortem / archive`.
@@ -43,23 +43,23 @@ The report must include:
 
 ## Pre-check
 
-Confirm `docs/decisions/fractal-scope.md` exists. If not found, this project is not a fractal-repo — report and exit.
+Confirm `skills/fractal-scope/config.yaml` exists. If not found, this project is not a fractal-repo — report and exit.
 
 ## What it audits
 
 ### 1. Decision freshness
 
-For each decision doc under `docs/decisions/`:
+For each decision skill under `skills/decision-*/`:
 
-1. Read the doc, extract referenced code areas (module names, file paths, directories)
+1. Read the SKILL.md, extract referenced code areas from `metadata.affected_modules`
 2. Check recent changes in those areas with `git log --oneline <path>`
-3. If the latest code change is newer than the decision doc's last modification → mark `stale`
-4. If the decision doc has not been updated in over 90 days → mark `aging`
-5. If the decision references no locatable code area → mark `untethered` (cannot automatically determine staleness)
+3. If the latest code change is newer than the decision skill's last modification → mark `stale`
+4. If the decision skill has not been updated in over 90 days → mark `aging`
+5. If the decision has no `affected_modules` → mark `untethered`
 
 ### 2. AGENTS.md coverage
 
-For each directory within the L2 scope `include` range in `docs/decisions/fractal-scope.md`:
+For each directory within the L2 scope `include` range in `skills/fractal-scope/config.yaml`:
 
 1. Check whether `AGENTS.md` exists
 2. Not found → mark `missing`
@@ -79,9 +79,9 @@ For documents under `docs/engineering/`, `docs/research/`, `docs/postmortem/`, `
 # Fractal Audit Report — {{DATE}}
 
 ## Decision Freshness
-  STALE   docs/decisions/auth-flow.md — last code change 2026-04-10 > doc updated 2026-02-01
-  AGING   docs/decisions/api-versioning.md — 120 days since last update
-  OK      docs/decisions/database-split.md — code area unchanged, doc current
+  STALE   skills/decision-auth-flow/SKILL.md — last code change 2026-04-10 > decision updated 2026-02-01
+  AGING   skills/decision-api-versioning/SKILL.md — 120 days since last update
+  OK      skills/decision-database-split/SKILL.md — code area unchanged, decision current
 
 ## AGENTS.md Coverage
   MISSING   src/services/payment/ — no AGENTS.md

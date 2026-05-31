@@ -5,10 +5,10 @@
     {
       "id": 1,
       "prompt": "I want to set up fractal documentation for my new Rust project. Create the docs structure.",
-      "expected_output": "Should load this skill and create docs/ with the 5 subdirectories and a fractal-scope.md.",
+      "expected_output": "Should load this skill and create docs/ with the 5 subdirectories and skills/fractal-scope/config.yaml.",
       "expectations": [
-        "Creates docs/decisions/, docs/engineering/, docs/research/, docs/postmortem/, docs/archive/",
-        "Generates docs/decisions/fractal-scope.md from template",
+        "Creates docs/engineering/, docs/research/, docs/postmortem/, docs/specs/, docs/archive/",
+        "Generates skills/fractal-scope/config.yaml from template",
         "Does not create root AGENTS.md"
       ]
     },
