@@ -1,36 +1,45 @@
-# Boundary With Adjacent Skills
+# Boundary with Adjacent Skills
 
-## Use `decision-capture` when
+This file helps `decision-capture` decide when a topic should not become a decision skill,
+and which adjacent skill is the correct handler.
 
-- the current task may need decision coverage checked against existing docs
-- an existing decision may no longer reflect current truth
-- decision docs need to be created, updated, superseded, or merged to leave one current truth
-- local tradeoffs are at risk of being promoted into `docs/decisions/`
+## Lane routing
 
-## Use `fractal-repo` when
+When a document should not be a decision skill, route it here:
 
-- choosing document lane placement
-- deciding naming, indexing, lifecycle location, or archive placement
-- updating repo topology or AGENTS.md entry structure
+| Kind | Destination | Skill |
+|------|-------------|-------|
+| Implementation notes, benchmarks, debt | `docs/engineering/` | manual placement |
+| Explorations, alternatives, experiments | `docs/research/` | manual placement |
+| Bug-fix root-cause record | `docs/postmortem/` | `postmortem` |
+| PRD → executable task groups | `docs/specs/` | `to-task-specs` |
+| Archived past docs | `docs/archive/` | `fractal-repo` |
 
-## Use `fractal-context` when
+## Common boundary confusions
 
-- editing Level 1/2/3 semantics
-- defining file headers, IO/POS contracts, or folder manifest structure
-- synchronizing context protocol structure
+### "We should document this choice"
 
-## Use `postmortem` when
+Not every choice is a decision skill. Ask: will this constrain future implementations?
+If the answer is "it might be useful context," prefer `docs/engineering/`.
 
-- the work is about bug-fix learning, regression analysis, root cause, or prevention
-- the core question is failure analysis rather than design authority
+### "This is how our auth works"
 
-## Common confusion cases
+If it describes current behavior that can be learned from code, it is documentation,
+not a decision. Decision skills constrain — they don't just describe.
 
-### "We chose this implementation because X"
-Usually `engineering/`, unless it became a long-lived cross-cutting system rule.
+### "Let's record this bug root cause"
 
-### "We compared three designs and picked one"
-Usually `research` plus maybe `decisions/` for the final durable truth.
+This is a postmortem. The `postmortem` skill owns this workflow.
 
-### "This bug showed our boundary was wrong"
-Use `postmortem` for the failure learning, and `decision-capture` only if the bug led to a new system-level design truth that now governs the system.
+### "We're still exploring — let's write down what we found"
+
+This is research output. Put it in `docs/research/`. Decision skills need durable answers,
+not open questions.
+
+## Signal: local tradeoff at risk of promotion
+
+When a local tradeoff (e.g., "we chose Redis over Memcached for this one cache")
+is at risk of being promoted into a decision skill:
+
+- If the constraint only affects one module → `docs/engineering/`
+- If the constraint sets a project-wide cache policy → decision skill

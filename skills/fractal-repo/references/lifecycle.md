@@ -8,7 +8,7 @@
 | PRD needs task specification | Create spec doc in `docs/specs/` using `to-task-specs` |
 | Folder ownership changed | Update local `AGENTS.md` scope, members, docs links |
 | New top-level area or global constraint changed | Update repo entrypoint docs; root `AGENTS.md` only if the repo already manages one outside fractal-skill writes |
-| Design decision changed | Update `docs/decisions/` and sync engineering notes if needed |
+| Design decision changed | Update `.agents/skills/decision-{slug}/SKILL.md` via `decision-capture` and sync engineering notes if needed |
 | Long debugging / durable lesson | Create postmortem using `YYYYMMDD-bug-description-en.md` |
 | Feature removed | Move docs to archive + add tombstone |
 | Performance optimization | Update benchmarks / debt in engineering |

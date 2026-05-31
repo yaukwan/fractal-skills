@@ -16,7 +16,7 @@ Keep repo documentation AI-readable, low-token, and sustainably maintainable.
 
 ## Scope Gate
 
-**This skill applies only when `docs/decisions/fractal-scope.md` exists.**
+**This skill applies only when `skills/fractal-scope/config.yaml` exists.**
 
 If not found, this is not a fractal-repo — do not apply placement, naming, or lifecycle rules.
 
@@ -43,7 +43,7 @@ Prioritize getting the judgment right before touching docs:
 
 ## Workflow
 
-1. Confirm `docs/decisions/fractal-scope.md` exists
+1. Confirm `skills/fractal-scope/config.yaml` exists
 2. Read the target directory's local `AGENTS.md` (if present)
 3. Read `../fractal-context/references/protocol/*.md` when Level 1/2/3 semantics need clarification
 4. Identify the affected lanes: `decisions / engineering / research / postmortem / specs / archive`
@@ -54,7 +54,6 @@ Do NOT write or modify root `AGENTS.md` — coding agents manage their own initi
 
 ## Document Lane Assignments
 
-- `docs/decisions/`: decisions, constraints, approach choices
 - `docs/engineering/`: implementation notes, benchmarks, debt, workarounds
 - `docs/research/`: explorations, alternatives, experiments
 - `docs/postmortem/`: postmortems and failure knowledge
@@ -82,10 +81,11 @@ Trigger conditions, root cause methodology, and writing quality standards are ow
 - Upstream fork divergence → write divergence doc and update local index
 
 Not for:
-
 - Filling a directory's `AGENTS.md` content from code
 - Batch-fixing missing/stale/incomplete local `AGENTS.md` reported by audit
 - Explaining or modifying Level 1/2/3 schema field semantics
+
+Decisions are managed as project skills at `.agents/skills/decision-{slug}/SKILL.md` by `decision-capture`.
 
 ## Naming
 

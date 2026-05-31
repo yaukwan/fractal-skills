@@ -1,15 +1,15 @@
 {
   "skill": "decision-capture",
-  "description": "Routing evals for full-cycle decision handling: inspect current task impact, determine whether existing decisions already cover the truth, and when needed update decision docs so current design truth stays captured.",
+  "description": "Routing evals for full-cycle decision handling: inspect current task impact, determine whether existing decision skills already cover the truth, and when needed update decision skills so current design truth stays captured.",
   "cases": [
     {
       "id": 1,
-      "prompt": "The auth boundary changed. Check whether we already have a decision for it, and update the decision doc if the current truth drifted.",
+      "prompt": "The auth boundary changed. Check whether we already have a decision skill for it, and update the decision if the current truth drifted.",
       "expected_output": "Should load this skill, inspect existing decision coverage, and continue through the required doc update if drift is confirmed.",
       "files": [],
       "expectations": [
-        "Finds overlapping decision docs before choosing an action",
-        "Completes the required decision doc change instead of stopping at judgment"
+        "Finds overlapping decision skills before choosing an action",
+        "Completes the required decision skill change instead of stopping at judgment"
       ]
     },
     {
@@ -24,8 +24,8 @@
     },
     {
       "id": 3,
-      "prompt": "These two decision docs both define the API version boundary. Merge or supersede them and leave one current source of truth.",
-      "expected_output": "Should load this skill and resolve authority overlap so one current truth remains unambiguous in docs/decisions/.",
+      "prompt": "These two decision skills both define the API version boundary. Merge or supersede them and leave one current source of truth.",
+      "expected_output": "Should load this skill and resolve authority overlap so one current truth remains unambiguous in skills/decision-*/.",
       "files": [],
       "expectations": [
         "Detects authority collision",
@@ -34,8 +34,8 @@
     },
     {
       "id": 4,
-      "prompt": "The auth code changed; tell me if that broke any existing decision and fix the decision docs if needed.",
-      "expected_output": "Should load this skill and use freshness checks to decide whether to keep current or update/supersede/merge the affected decision docs.",
+      "prompt": "The auth code changed; tell me if that broke any existing decision and fix the decision skills if needed.",
+      "expected_output": "Should load this skill and use freshness checks to decide whether to keep current or update/supersede/merge the affected decision skills.",
       "files": [],
       "expectations": [
         "Treats stale authority as a serious issue",

@@ -10,7 +10,7 @@
 - Primary Domains:
 
 ## Topology
-- `docs/decisions/`: design decisions and constraints
+- `.agents/skills/decision-*/SKILL.md`: design decisions and constraints (managed by `decision-capture`)
 - `docs/engineering/`: implementation notes, benchmarks, tech debt
 - `docs/research/`: explorations and alternatives
 - `docs/postmortem/`: retrospectives and durable lessons
