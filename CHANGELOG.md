@@ -6,6 +6,17 @@ All notable changes to the fractal-skills collection are documented here.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-06-01
+
+### fractal-scope
+
+- Added the project-local `fractal-scope` skill package and its default scope-gate config for downstream fractal skills.
+
+### docs and skill contracts
+
+- Tightened the setup, audit, context, repo, decision-capture, postmortem, and task-spec skills to respect the scope gate and current-state doc rules.
+- Updated the English and Chinese README guidance to point at the new fractal-scope setup flow.
+
 ### decision-capture (1.0 → 1.1)
 
 - Write operations (CREATE / UPDATE / SUPERSEDE / MERGE) now require explicit
