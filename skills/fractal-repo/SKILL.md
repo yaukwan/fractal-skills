@@ -18,7 +18,7 @@ Keep repo documentation AI-readable, low-token, and sustainably maintainable.
 
 **This skill applies only when `.agents/skills/fractal-scope/config.yaml` exists.**
 
-If not found, this is not a fractal-repo — do not apply placement, naming, or lifecycle rules.
+If not found, this is not a fractal-repo — do not apply placement, naming, or lifecycle rules. When a task needs an L2/L3 path match, use `.agents/skills/fractal-scope/scripts/check-scope.js` rather than reimplementing include/exclude rules.
 
 ## Authority
 

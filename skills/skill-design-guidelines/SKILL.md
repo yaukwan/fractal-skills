@@ -1,6 +1,7 @@
 ---
 name: skill-design-guidelines
 description: Load when creating, reviewing, refining, or maintaining agent skills, especially for SKILL.md design, routing descriptions, progressive loading, skill evals, or skill folder structure. Do not load for generic coding, article summarization, or unrelated documentation tasks.
+license: Apache-2.0
 metadata:
   author: Alma
   version: "1.0.1"
@@ -261,12 +262,12 @@ Check whether:
 
 For deeper material, read these directly:
 
-- `/Users/cyouguang/.agents/skills/skill-design-guidelines/references/perplexity-method-summary.md`
-- `/Users/cyouguang/.agents/skills/skill-design-guidelines/references/anti-patterns.md`
-- `/Users/cyouguang/.agents/skills/skill-design-guidelines/references/perplexity-original-article.md` — full original markdown source; read only when exact wording or raw-source nuance matters
-- `/Users/cyouguang/.agents/skills/skill-design-guidelines/assets/skill-template.md`
-- `/Users/cyouguang/.agents/skills/skill-design-guidelines/assets/review-checklist.md`
-- `/Users/cyouguang/.agents/skills/skill-design-guidelines/assets/review-rubric.md`
+- `references/perplexity-method-summary.md`
+- `references/anti-patterns.md`
+- `references/perplexity-original-article.md` — full original markdown source; read only when exact wording or raw-source nuance matters
+- `assets/skill-template.md`
+- `assets/review-checklist.md`
+- `assets/review-rubric.md`
 
 ## Validator
 
@@ -275,13 +276,13 @@ Use the validator when you want a quick structural and routing sanity check for 
 Run:
 
 ```bash
-python3 /Users/cyouguang/.agents/skills/skill-design-guidelines/scripts/validate_skill.py /path/to/skill
+python3 skills/skill-design-guidelines/scripts/validate_skill.py /path/to/skill
 ```
 
 JSON mode:
 
 ```bash
-python3 /Users/cyouguang/.agents/skills/skill-design-guidelines/scripts/validate_skill.py --json /path/to/skill
+python3 skills/skill-design-guidelines/scripts/validate_skill.py --json /path/to/skill
 ```
 
 The validator checks:

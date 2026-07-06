@@ -15,9 +15,9 @@
     {
       "id": 2,
       "prompt": "Are there directories that should have AGENTS.md but don't? And are existing ones up to date?",
-      "expected_output": "Should load this skill and check AGENTS.md coverage against .agents/skills/fractal-scope/config.yaml L2 include patterns, then hand back findings with follow-up owners.",
+      "expected_output": "Should load this skill, use .agents/skills/fractal-scope/scripts/check-scope.js to find matched L2 directories, then hand back AGENTS.md coverage findings with follow-up owners.",
       "expectations": [
-        "Checks each directory in L2 scope for AGENTS.md existence",
+        "Uses check-scope.js before auditing directory AGENTS.md coverage",
         "Compares AGENTS.md modification times vs latest code commits",
         "Labels missing, stale, incomplete"
       ]

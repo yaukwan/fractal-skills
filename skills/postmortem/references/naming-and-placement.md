@@ -12,7 +12,7 @@ Examples:
 ## Default Placement
 If no repository-specific rule exists, place postmortems under:
 
-`docs/postmortems/`
+`docs/postmortem/`
 
 ## Repository Override
 If the repository uses `fractal-repo`, follow its rules for:

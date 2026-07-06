@@ -6,6 +6,25 @@ All notable changes to the fractal-skills collection are documented here.
 
 ## [Unreleased]
 
+### docs and skill contracts
+
+- Aligned runtime decision skill paths on `.agents/skills/decision-*/` across README, audit, fill, and decision-capture materials.
+- Aligned `fractal-agents-fill` evals and README copy with the ask-first interaction model.
+- Added inline scope-list coverage to `check-scope.js` and a minimal Node self-test.
+- Updated `fractal-setup` to generate `scripts/check-scope.js` with the runtime `fractal-scope` skill.
+- Standardized postmortem placement on `docs/postmortem/`.
+- Documented the current 10-skill inventory and made `skill-design-guidelines` portable for packaged use.
+
+### decision-capture (1.1 → 2.0)
+
+- Promoted decisions to project skills under `.agents/skills/decision-{slug}/SKILL.md`.
+- Added explicit current-truth lifecycle operations for create, update, supersede, merge, reject, orphan, and current decisions.
+- Added skill-sync rules for generated decision skill routing and eval fixtures.
+
+### fractal-context (1.0 → 2.0)
+
+- Marked the frontmatter version to match the Level 1/2/3 Protocol v2 body.
+
 ## [0.1.1] - 2026-06-01
 
 ### fractal-scope

@@ -10,14 +10,14 @@ metadata:
 
 # Fractal Setup
 
-Set up fractal documentation infrastructure in a target project in one pass, including the project-level `.agents/skills/fractal-scope/SKILL.md` and `.agents/skills/fractal-scope/config.yaml` outputs that downstream fractal skills use for gating.
+Set up fractal documentation infrastructure in a target project in one pass, including the project-level `.agents/skills/fractal-scope/SKILL.md`, `.agents/skills/fractal-scope/config.yaml`, and `.agents/skills/fractal-scope/scripts/check-scope.js` outputs that downstream fractal skills use for gating.
 
-Use `assets/fractal-scope-template.md` as the generated config template.
+Use `assets/fractal-scope-template.md` as the generated config template. Copy `../fractal-scope/scripts/check-scope.js` into the generated scope skill.
 
 ## What this does
 
 1. Create the `docs/` directory structure
-2. Generate `.agents/skills/fractal-scope/SKILL.md` and `.agents/skills/fractal-scope/config.yaml` at the target project root (L2/L3 write scope configuration)
+2. Generate `.agents/skills/fractal-scope/SKILL.md`, `.agents/skills/fractal-scope/config.yaml`, and `.agents/skills/fractal-scope/scripts/check-scope.js` at the target project root (L2/L3 write scope configuration)
 3. Do not write root `AGENTS.md` (each coding agent initializes its own)
 
 ## Directory layout
@@ -34,7 +34,9 @@ your-project/
 └── .agents/
     └── skills/
         ├── fractal-scope/
-        │   └── config.yaml   # scope gate configuration
+        │   ├── config.yaml   # scope gate configuration
+        │   └── scripts/
+        │       └── check-scope.js
         └── decision-*/       # auto-generated decision skills (by decision-capture)
 ```
 
@@ -45,11 +47,11 @@ at `.agents/skills/decision-{slug}/SKILL.md`, managed by `decision-capture`.
 
 1. Confirm target project root (`pwd` or user-specified)
 2. Create `.agents/skills/fractal-scope/` directory
-3. Check if `.agents/skills/fractal-scope/SKILL.md` or `config.yaml` already exists
-   - Exists → report "fractal docs already set up", ask whether to regenerate the scope skill and config
+3. Check if `.agents/skills/fractal-scope/SKILL.md`, `config.yaml`, or `scripts/check-scope.js` already exists
+   - Exists → report "fractal docs already set up", ask whether to regenerate the scope skill, config, and script
    - Not found → continue
 4. Create the 5 directories above under `docs/` (skip existing)
-5. Generate `.agents/skills/fractal-scope/SKILL.md` and `.agents/skills/fractal-scope/config.yaml` from the packaged defaults
+5. Generate `.agents/skills/fractal-scope/SKILL.md`, `.agents/skills/fractal-scope/config.yaml`, and `.agents/skills/fractal-scope/scripts/check-scope.js` from the packaged defaults
 6. Ask whether to configure L2/L3 scope now or edit manually later
 
 ## Gotchas

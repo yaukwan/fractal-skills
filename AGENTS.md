@@ -23,6 +23,7 @@
 - `skills/decision-capture/SKILL.md`: decision lifecycle and authority split
 - `skills/to-task-specs/SKILL.md`: spec generation behavior controlled by the fractal scope config
 - `skills/postmortem/SKILL.md`: bugfix and incident root-cause records
+- `skills/skill-design-guidelines/SKILL.md`: skill authoring, routing, layout, and validation guidance
 
 ## Global Constraints
 - This repo owns skill source and packaging assets, not user-local installation state.

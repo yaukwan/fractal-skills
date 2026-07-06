@@ -25,7 +25,7 @@ OAuth provider integration, and access control enforcement.
 
 ## Docs
 
-- [Auth Flow Decision](../../skills/decision-auth-flow/SKILL.md)
+- [Auth Flow Decision](../../.agents/skills/decision-auth-flow/SKILL.md)
 - [OAuth Provider Integration Guide](../docs/engineering/oauth-integration.md)
 
 ## Exceptions

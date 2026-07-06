@@ -111,112 +111,16 @@ If skill mutation was required, include the written or updated path(s).
 
 Return exactly one primary action:
 
-- `CURRENT` — Existing decision skill remains accurate and sufficient.
-- `CREATE` — No existing decision covers a durable system truth that now needs authority.
-  Writes `.agents/skills/decision-{slug}/SKILL.md`.
-- `UPDATE` — Existing decision skill is still fundamentally right but needs refresh.
-  Overwrites the skill body; regenerates description unless manually overridden.
-- `SUPERSEDE` — Existing decision skill's truth materially changed and should be replaced.
-  Old skill gets `[SUPERSEDED]` prefix and status change; new skill gets CREATE.
-- `MERGE` — Multiple current-looking decision skills overlap and should become one
-  clearer authority. Absorbed skills marked `[SUPERSEDED]`; merged result gets UPDATE.
-- `REJECT` — The content is not durable system design truth and should not become
-  a decision skill. If an orphan skill exists, it gets `[ORPHANED]` prefix.
+- `CURRENT` — existing decision remains accurate and sufficient
+- `CREATE` — write a new `.agents/skills/decision-{slug}/SKILL.md`
+- `UPDATE` — refresh an existing decision whose core truth still holds
+- `SUPERSEDE` — replace a materially changed decision and mark the old one inactive
+- `MERGE` — collapse overlapping current-looking decisions into one authority
+- `REJECT` — decline content that is not durable system design truth
 
-## Admission rule
-
-Use this rule as a helper while deciding whether the task deserves a decision skill:
-
-> If a new contributor reads this, will they better understand a stable system-level
-> design truth they are expected to follow?
-
-If not, prefer `CURRENT` or `REJECT` unless there is another clear reason the topic
-must become authority.
-
-### A strong decision candidate usually satisfies all three
-
-1. **Hard to reverse** — changing your mind later would be meaningfully costly
-2. **Surprising without context** — future readers would reasonably ask "why is it this way?"
-3. **Result of a real trade-off** — there were genuine alternatives and one was chosen for specific reasons
-
-### Typical good fits
-
-- cross-module design constraints
-- system boundaries
-- durable architecture choices
-- long-lived behavior contracts
-- authority splits across documentation lanes
-- rules that future implementations are expected to inherit
-
-### Typical non-fits
-
-- a tradeoff inside one feature
-- a naming choice inside one PR
-- an implementation workaround
-- temporary exploration output
-- a local decision with no system-wide implications
-
-## Freshness trigger
-
-When code changes touch an area referenced by an existing decision skill's
-`metadata.affected_modules`, flag that decision for review:
-
-1. Identify decision skills whose `affected_modules` overlap the changed path or contract.
-2. Ask: "Does this task change the design truth documented there?"
-3. If no, return `CURRENT` and note the verification.
-4. If yes, perform the correct mutating action.
-
-This closes the "stale authority driving wrong implementation" failure mode.
-
-## Freshness rule
-
-A decision skill must represent the **current effective design state**.
-
-Stale authority is worse than missing docs.
-
-When a decision no longer matches reality, prefer one of these actions:
-
-- `UPDATE` when the design is still fundamentally the same
-- `SUPERSEDE` when the system truth materially changed
-- `MERGE` when multiple skills drifted into the same topic boundary
-
-Do not leave multiple decision skills silently competing to define the same truth.
-
-## Decision skill format
-
-All content goes into `.agents/skills/decision-{slug}/SKILL.md` using the template at
-`assets/decision-skill-template.md`. The `description` field is the routing trigger
-— it follows `skill-design-guidelines` conventions. See `references/skill-sync-rules.md`
-for the auto-generation algorithm.
-
-Decision frontmatter may include an optional `skill_description` field to manually
-override the auto-generated routing description.
-
-For cross-module decisions (≥2 modules in `affected_modules`), also generate
-`skills/decision-{slug}/evals/evals.json` with positive and negative routing examples.
-
-## Minimal content invariants
-
-This skill does **not** require a single rigid template, but every created or
-materially updated decision must make these points clear:
-
-- what the current design truth is
-- why it deserves long-lived authority
-- which boundaries or constraints it sets for later work
-- how it relates to any prior decision skills
-
-## Supersession rule
-
-When the same design topic already exists:
-
-- update the existing skill if the design is still fundamentally the same
-- supersede it if the system truth materially changed
-- merge if multiple skills now overlap
-- reject parallel current-looking skills that split the same authority surface
-
-Avoid append-only decision growth.
-The decisions directory is not an ADR graveyard — it is a collection of skills
-that shape agent behavior.
+Use `references/authority-rules.md` for admission and rejection details.
+Use `references/freshness-and-supersession.md` when code changes may have invalidated existing authority.
+Use `references/skill-sync-rules.md` for generated skill format, routing description, eval fixture, and lifecycle mechanics.
 
 ## Gotchas
 
