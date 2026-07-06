@@ -1,6 +1,6 @@
 ---
 name: "decision-capture"
-description: "Load when the current task may need decision-doc handling, especially to check whether existing decisions still match current design truth or to update, supersede, or merge them. Do not load for repo-wide lane placement, Level 1/2/3 schema semantics, or postmortem writing"
+description: "Load when the current task may need fractal decision handling, especially to check whether existing decisions still match current design truth or to update, supersede, or merge them. Do not load for explicit ADR files under `docs/adr/`, repo-wide lane placement, Level 1/2/3 schema semantics, or postmortem writing"
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
@@ -42,6 +42,7 @@ full decision content (Context, Decision, Boundaries, Implications, Non-goals).
      - The decision being proposed
      - Why it qualifies as durable system truth (not local task reasoning)
      - Which existing decisions it relates to or replaces
+   - If a `grilling` skill is available, use its one-question-at-a-time interview discipline for unresolved decision tradeoffs; otherwise use this inline confirmation flow.
    - **Wait for explicit user confirmation before writing.**
    - If the user rejects or redirects, respect that and do not proceed.
 6. Once confirmed, write the decision skill at `.agents/skills/decision-{slug}/SKILL.md`.
@@ -83,12 +84,14 @@ This skill owns the rules for:
 
 Do not use this skill for:
 
+- writing explicit ADR files under `docs/adr/` when the user asks for that repository convention
 - choosing which lane a doc belongs to across `engineering / research / postmortem / specs / archive`
 - Level 1/2/3 schema semantics or file header structure
 - writing implementation notes, benchmarks, migrations, or workaround records
 - generating bug-fix postmortems
 - task spec generation
 
+For explicit ADR files, follow the repository's ADR convention or adjacent ADR/domain-modeling skill.
 For lane placement, use `fractal-repo`.
 For schema semantics, use `fractal-context`.
 For failure-learning workflow, use `postmortem`.

@@ -27,11 +27,12 @@
     {
       "id": 3,
       "prompt": "Refresh the consuming project's fractal-scope skill and then check which files are in L3 scope.",
-      "expected_output": "Should load this skill because it is about refreshing the fractal-scope package and validating scope matches.",
+      "expected_output": "Should load this skill because it is about refreshing the fractal-scope config and validating scope matches.",
       "files": [],
       "expectations": [
-        "Mentions the project-local skill path",
-        "Uses the scope checker or equivalent command",
+        "Mentions the project-local config path",
+        "Uses the packaged scope checker or equivalent command",
+        "Does not copy check-scope.js into the consuming repo",
         "Keeps the answer specific to fractal-scope rather than repo topology"
       ]
     },

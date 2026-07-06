@@ -28,7 +28,21 @@ OAuth provider integration, and access control enforcement.
 - [Auth Flow Decision](../../.agents/skills/decision-auth-flow/SKILL.md)
 - [OAuth Provider Integration Guide](../docs/engineering/oauth-integration.md)
 
+## Language
+
+**Principal**: Authenticated actor represented by a session or service credential.
+_Avoid_: user, account
+
+**Provider**: External identity system that supplies authentication assertions.
+_Avoid_: adapter, integration
+
 ## Exceptions
 
 - Rate limiting is intentionally deferred to the API gateway layer
 - Legacy `src/auth/v1/` still routes traffic — migration target Q4 2026
+
+## Format Notes
+
+- `Language` is optional and manual-only. Add it only when vocabulary was resolved from the user, existing docs, or a confirmed semantic correction.
+- Do not create `CONTEXT.md`. Fractal-managed domain language lives in the nearest Level 2 `AGENTS.md` under `## Language`.
+- Keep term definitions tight and list avoided synonyms under `_Avoid_`.

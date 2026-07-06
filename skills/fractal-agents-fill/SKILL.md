@@ -30,7 +30,8 @@ time with a recommended answer. Wait for the user's response before asking the n
 
 After all sections are clarified (or the user says `done`), write the directory contract
 into the local AGENTS.md. Do NOT create additional files — all captured intent goes into
-the existing L2 AGENTS.md sections (Scope / Constraints / Members / Docs / Exceptions).
+the existing L2 AGENTS.md sections (Scope / Constraints / Members / Docs / Language /
+Exceptions).
 
 The user may respond with `skip` to skip a single question, or `done` to stop asking and
 write immediately with whatever has been gathered so far.
@@ -39,21 +40,24 @@ write immediately with whatever has been gathered so far.
 ## Default workflow
 
 1. Explore the directory's code paths, nearest `AGENTS.md`, and overlapping decision docs.
-2. Assess which L2 sections (`Scope`, `Constraints`, `Members`, `Docs`, `Exceptions`) need clarification.
+2. Assess which L2 sections (`Scope`, `Constraints`, `Members`, `Docs`, `Language`, `Exceptions`) need clarification.
 3. Ask the user one question at a time about each unresolved section, with a recommended answer.
    - The user may respond with `skip` to skip a single question or `done` to write immediately.
 4. After all key sections are clarified, write or update the local `AGENTS.md`.
-5. Return a summary of what was written and any remaining open questions.
+5. If a root `AGENTS.md` exists, update only the corresponding `Local Maps` entry for this L2 manifest.
+6. Return a summary of what was written and any remaining open questions.
 
 ## Scope gate
 
-Before writing a local `AGENTS.md`, run the project-local scope checker for the target directory:
+Before writing a local `AGENTS.md`, run the packaged `fractal-scope` checker against the consuming repo's config:
 
 ```bash
-node .agents/skills/fractal-scope/scripts/check-scope.js --path <target-directory>
+node <fractal-scope-skill-root>/scripts/check-scope.js --config .agents/skills/fractal-scope/config.yaml --root . --path <target-directory>
 ```
 
-- If the config is missing or the checker is unavailable, stop and report that local AGENTS.md fill rules do not apply.
+`<fractal-scope-skill-root>` is the installed skill package directory, not a copied script inside the consuming repository.
+
+- If the config is missing or the packaged checker is unavailable, stop and report that local AGENTS.md fill rules do not apply.
 - If `l2_folder_manifest.status` is not `matched`, do not write the manifest just because the directory exists.
 
 ## Completion criteria
@@ -83,7 +87,7 @@ replace asking. The user's intent often differs from what code alone suggests.
 
 Explore code, nearby docs, existing `AGENTS.md`, overlapping decision skills, and current conversation context before asking. Ask only for intent that evidence cannot settle.
 
-Ask one focused question at a time, always with a recommended answer. The user may respond with `skip`, `done`, or `next`.
+Ask one focused question at a time, always with a recommended answer. If a `grilling` skill is available, run the interview as a grilling session using this skill's question sequence and output contract. Otherwise, use the fallback protocol below. The user may respond with `skip`, `done`, or `next`.
 
 Read `references/interaction-protocol.md` for the required question sequence, Fill Result format, and semantic confirmation examples.
 ## Output contract
@@ -104,10 +108,12 @@ Only write or modify `AGENTS.md` when the task exposes that **the directory cont
 
 When writing:
 
-- preserve Level 2 sections: `Scope` / `Constraints` / `Members` / `Docs` / `Exceptions`
+- preserve Level 2 sections: `Scope` / `Constraints` / `Members` / `Docs` / `Language` / `Exceptions`
 - conservatively merge existing content; do not overwrite user-authored information
 - do not list every file; only write groupings meaningful for understanding boundaries
 - do not write timestamps
+- write resolved vocabulary into the nearest L2 `AGENTS.md > Language`; do not create `CONTEXT.md` or sync one bidirectionally
+- when root `AGENTS.md` exists, sync only this manifest's `Local Maps` line; do not regenerate the whole map
 - for specific structure, see `references/output-format.md`
 
 ## Gotchas
@@ -117,3 +123,4 @@ When writing:
 - **decision drift signal ≠ decision conclusion** — after flagging drift, this skill does not modify the decision; it only carries the affected path and drift signal in its output.
 - **If code can answer the fact, don't ask** — avoid asking about file layout, naming conventions, or other observable facts that exploration can settle. But do ask about intent: ownership boundaries, constraints, and direction are rarely inferable from code alone.
 - **Handle one directory at a time** — batch fixes across multiple directories should converge one by one, to avoid blurring boundaries.
+- **Local Maps sync is local** — update the affected root entry after writing one L2 manifest; leave whole-repo map drift detection to `fractal-audit`.

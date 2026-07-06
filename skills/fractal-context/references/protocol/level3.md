@@ -13,6 +13,18 @@ Level 3 is the file contract layer. It exists so a source file remains understan
 - `INVARIANTS`: Important truths that must remain stable.
 - `LOCAL_REVIEW_WHEN`: File-specific reasons this header would become outdated.
 
+## When To Enable
+
+Enable Level 3 only for files whose contract is not obvious from code alone:
+
+- FFI or serialization boundaries
+- state machines
+- concurrency invariants
+- public API surfaces
+- cross-module protocols
+
+Do not blanket-enable L3 for every source file. L3 is an embedded source-file header, not a separate documentation file.
+
 ## Hard Rules
 
 - Keep the header about current truth, not historical chronology.

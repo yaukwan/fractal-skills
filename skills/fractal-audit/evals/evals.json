@@ -15,11 +15,12 @@
     {
       "id": 2,
       "prompt": "Are there directories that should have AGENTS.md but don't? And are existing ones up to date?",
-      "expected_output": "Should load this skill, use .agents/skills/fractal-scope/scripts/check-scope.js to find matched L2 directories, then hand back AGENTS.md coverage findings with follow-up owners.",
+      "expected_output": "Should load this skill, use the packaged fractal-scope checker with .agents/skills/fractal-scope/config.yaml to find matched L2 directories, then hand back AGENTS.md coverage and Local Maps drift findings with follow-up owners.",
       "expectations": [
-        "Uses check-scope.js before auditing directory AGENTS.md coverage",
+        "Uses the packaged check-scope.js before auditing directory AGENTS.md coverage",
         "Compares AGENTS.md modification times vs latest code commits",
-        "Labels missing, stale, incomplete"
+        "Labels missing, stale, incomplete",
+        "Reports root Local Maps drift without regenerating the whole map"
       ]
     },
     {

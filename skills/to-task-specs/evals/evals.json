@@ -79,6 +79,10 @@
     {
       "prompt": "generate a spec doc and tell me where to put it in the repo",
       "expected_output": "should load; placement question should be routed to fractal-repo"
+    },
+    {
+      "prompt": "turn this decision summary into a task spec that to-issues can split later",
+      "expected_output": "should load; output should be valid issue-splitting input and should not start implementation"
     }
   ]
 }

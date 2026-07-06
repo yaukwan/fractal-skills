@@ -16,16 +16,18 @@ Run a report-only health scan across fractal docs and return prioritized repair 
 
 - detect stale or aging decision docs
 - detect missing, stale, or incomplete local `AGENTS.md`
+- detect root `Local Maps` entries that no longer match discovered Level 2 manifests
 - detect likely lane-placement anomalies
 - rank the resulting work by severity and assign a `repair_kind` to each item
 
 ## Default workflow
 
-1. Confirm `.agents/skills/fractal-scope/scripts/check-scope.js` exists.
+1. Confirm `.agents/skills/fractal-scope/config.yaml` exists and the packaged `fractal-scope` checker is available.
 2. Audit decision freshness and overlap risk.
 3. Audit `AGENTS.md` coverage by checking candidate directories with the scope checker.
-4. Audit lane anomalies across `engineering / research / postmortem / archive`.
-5. Produce a ranked report with `repair_kind` per item.
+4. Audit root `Local Maps` drift against discovered Level 2 manifests.
+5. Audit lane anomalies across `engineering / research / postmortem / archive`.
+6. Produce a ranked report with `repair_kind` per item.
 6. Stop. Do not fix anything in this skill.
 
 ## Output contract
@@ -36,6 +38,7 @@ The report must include:
 
 - decision findings
 - `AGENTS.md` findings
+- `Local Maps` drift findings
 - lane findings
 - summary counts
 - ranked next actions
@@ -43,7 +46,7 @@ The report must include:
 
 ## Pre-check
 
-Confirm `.agents/skills/fractal-scope/scripts/check-scope.js` exists. If not found, this project is not a fractal-repo — report and exit.
+Confirm `.agents/skills/fractal-scope/config.yaml` exists. If not found, this project is not a fractal-repo — report and exit. Use the packaged `fractal-scope` checker; do not require a copied checker script inside the consuming repo.
 
 ## What it audits
 
@@ -62,7 +65,7 @@ For each decision skill under `.agents/skills/decision-*/`:
 For each candidate directory, run:
 
 ```bash
-node .agents/skills/fractal-scope/scripts/check-scope.js --path <directory>
+node <fractal-scope-skill-root>/scripts/check-scope.js --config .agents/skills/fractal-scope/config.yaml --root . --path <directory>
 ```
 
 Only audit directories where `l2_folder_manifest.status` is `matched`.
@@ -72,7 +75,11 @@ Only audit directories where `l2_folder_manifest.status` is `matched`.
 3. Exists but last modified before the latest code commit in the directory → mark `stale`
 4. Exists but `Scope` / `Constraints` / `Members` has empty sections → mark `incomplete`
 
-### 3. Lane placement
+### 3. Local Maps drift
+
+If root `AGENTS.md` exists, compare its `Local Maps` entries against discovered Level 2 `AGENTS.md` files in matched directories. Report missing, stale, or orphaned map entries. Do not regenerate the full map here.
+
+### 4. Lane placement
 
 For documents under `docs/engineering/`, `docs/research/`, `docs/postmortem/`, `docs/archive/`:
 
@@ -94,6 +101,10 @@ For documents under `docs/engineering/`, `docs/research/`, `docs/postmortem/`, `
   STALE     src/auth/AGENTS.md — doc 2026-01-15, code last changed 2026-04-20
   OK        src/core/AGENTS.md
 
+## Local Maps Drift
+  MISSING   src/payment/AGENTS.md — L2 manifest exists but root Local Maps has no entry
+  ORPHAN    src/legacy/AGENTS.md — root Local Maps points to a removed manifest
+
 ## Lane Check
   AMBIGUOUS  docs/engineering/cache-failure.md — reads like postmortem content
   ORPHAN     docs/archive/old-api.md — still referenced in src/api/routes.ts
@@ -101,6 +112,7 @@ For documents under `docs/engineering/`, `docs/research/`, `docs/postmortem/`, `
 ## Summary
   Decisions: 2 stale, 1 aging, 3 ok
   AGENTS.md: 1 missing, 1 stale, 1 ok
+  Local Maps: 1 missing, 1 orphan
   Lane: 1 ambiguous, 1 orphan
   Priority: [ranked list of actions]
 ```
@@ -111,8 +123,9 @@ For documents under `docs/engineering/`, `docs/research/`, `docs/postmortem/`, `
 2. STALE AGENTS.md — directory navigation is unreliable
 3. MISSING AGENTS.md — new directory needs docs
 4. INCOMPLETE AGENTS.md — file exists but contract is unusable
-5. AGING decisions — not yet expired but approaching deadline
-6. Lane issues — non-urgent but worth tidying
+5. LOCAL MAPS drift — traversal can miss or misroute a subtree
+6. AGING decisions — not yet expired but approaching deadline
+7. Lane issues — non-urgent but worth tidying
 
 ## Repair kinds
 
@@ -121,6 +134,7 @@ Each finding carries one of these `repair_kind` values:
 - `local-contract-refresh` — MISSING / STALE / INCOMPLETE local `AGENTS.md` needs contract capture from code
 - `decision-freshness-review` — STALE / AGING / overlapping decisions need authority refresh
 - `repo-placement-fix` — lane placement issue (move between engineering / research / postmortem / archive)
+- `root-map-refresh` — root `Local Maps` entry is missing, stale, or orphaned
 
 ## Report-only rule
 

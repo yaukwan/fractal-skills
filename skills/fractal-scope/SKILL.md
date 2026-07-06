@@ -10,12 +10,13 @@ metadata:
 
 # Fractal Scope
 
-Manage the project-local scope gate skill used by downstream fractal skills.
+Manage the scope gate config and packaged checker used by downstream fractal skills.
 
 ## Output location
 
-- Runtime skill: `<project-root>/.agents/skills/fractal-scope/SKILL.md`
+- Runtime marker skill: `<project-root>/.agents/skills/fractal-scope/SKILL.md`
 - Config: `<project-root>/.agents/skills/fractal-scope/config.yaml`
+- Packaged checker: `<skill-root>/scripts/check-scope.js`
 
 ## Configuration model
 
@@ -60,12 +61,14 @@ The checker reports, per level:
 
 1. Confirm the target project root.
 2. Create `.agents/skills/fractal-scope/` if it does not exist.
-3. Write or refresh `SKILL.md`.
+3. Write or refresh the minimal runtime `SKILL.md`.
 4. Write or refresh `config.yaml` from the packaged defaults.
-5. Leave repo-local source files untouched.
+5. Do not copy `scripts/check-scope.js` into the consuming repository.
+6. Leave repo-local source files untouched.
 
 ## Gotchas
 
 - Do not conflate the source repo's `skills/fractal-scope/` package with the consuming project's `.agents/skills/fractal-scope/` runtime path.
 - Keep the config file independent.
+- Behavior lives in the packaged skill; consuming repos own data only.
 - Do not write root `AGENTS.md` from this skill.

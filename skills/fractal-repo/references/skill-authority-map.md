@@ -6,13 +6,13 @@ Use this map when tasks touch multiple adjacent documentation skills.
 
 - `fractal-setup` — first-time bootstrap authority
   - Owns initial `docs/` directory creation
-  - Owns first emission of `.agents/skills/fractal-scope/` runtime files
+  - Owns first emission of `.agents/skills/fractal-scope/SKILL.md` and `config.yaml`
   - Does not own ongoing audits or local `AGENTS.md` content
 
 - `fractal-scope` — scope-gate authority
   - Owns packaged `config.yaml` defaults
-  - Owns deterministic scope matching via `scripts/check-scope.js`
-  - Owns runtime `.agents/skills/fractal-scope/` refresh semantics
+  - Owns deterministic scope matching via packaged `scripts/check-scope.js`
+  - Owns runtime `.agents/skills/fractal-scope/` config refresh semantics
 
 - `fractal-audit` — report-only health authority
   - Owns stale decision, stale/missing `AGENTS.md`, and lane-placement reports
