@@ -21,7 +21,7 @@ Do not use for: pure new feature / pure visual polish / behavior-preserving refa
 
 ## Scope Gate
 
-**This skill's content-quality rules apply only when `skills/fractal-scope/config.yaml` exists**. If the project doesn't use fractal docs, follow `references/naming-and-placement.md` defaults for where to write.
+**This skill's content-quality rules apply only when `.agents/skills/fractal-scope/config.yaml` exists**. If the project doesn't use fractal docs, follow `references/naming-and-placement.md` defaults for where to write.
 
 ## Skill Authority Map
 

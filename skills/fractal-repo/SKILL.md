@@ -16,7 +16,7 @@ Keep repo documentation AI-readable, low-token, and sustainably maintainable.
 
 ## Scope Gate
 
-**This skill applies only when `skills/fractal-scope/config.yaml` exists.**
+**This skill applies only when `.agents/skills/fractal-scope/config.yaml` exists.**
 
 If not found, this is not a fractal-repo — do not apply placement, naming, or lifecycle rules.
 
@@ -43,7 +43,7 @@ Prioritize getting the judgment right before touching docs:
 
 ## Workflow
 
-1. Confirm `skills/fractal-scope/config.yaml` exists
+1. Confirm `.agents/skills/fractal-scope/config.yaml` exists
 2. Read the target directory's local `AGENTS.md` (if present)
 3. Read `../fractal-context/references/protocol/*.md` when Level 1/2/3 semantics need clarification
 4. Identify the affected lanes: `decisions / engineering / research / postmortem / specs / archive`

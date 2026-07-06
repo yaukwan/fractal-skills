@@ -21,7 +21,7 @@ Run a report-only health scan across fractal docs and return prioritized repair 
 
 ## Default workflow
 
-1. Confirm `skills/fractal-scope/config.yaml` exists.
+1. Confirm `.agents/skills/fractal-scope/config.yaml` exists.
 2. Audit decision freshness and overlap risk.
 3. Audit `AGENTS.md` coverage against the configured L2 scope.
 4. Audit lane anomalies across `engineering / research / postmortem / archive`.
@@ -43,7 +43,7 @@ The report must include:
 
 ## Pre-check
 
-Confirm `skills/fractal-scope/config.yaml` exists. If not found, this project is not a fractal-repo — report and exit.
+Confirm `.agents/skills/fractal-scope/config.yaml` exists. If not found, this project is not a fractal-repo — report and exit.
 
 ## What it audits
 
@@ -59,7 +59,7 @@ For each decision skill under `skills/decision-*/`:
 
 ### 2. AGENTS.md coverage
 
-For each directory within the L2 scope `include` range in `skills/fractal-scope/config.yaml`:
+For each directory within the L2 scope `include` range in `.agents/skills/fractal-scope/config.yaml`:
 
 1. Check whether `AGENTS.md` exists
 2. Not found → mark `missing`

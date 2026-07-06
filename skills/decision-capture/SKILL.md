@@ -63,7 +63,7 @@ If the resulting truth is not yet current, this skill is **not done**.
 
 ## Scope Gate
 
-**This skill applies only when `skills/fractal-scope/config.yaml` exists.**
+**This skill applies only when `.agents/skills/fractal-scope/config.yaml` exists.**
 
 If not found, this is not a fractal-repo — do not apply decision capture rules.
 

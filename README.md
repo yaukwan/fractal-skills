@@ -60,7 +60,7 @@ Eight single-responsibility skills cover the entire build-and-maintain lifecycle
 
 ## Skills
 
-- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — One-time manual bootstrap of the `docs/` directory layout and project-level `skills/fractal-scope/config.yaml` output. Run once per project to establish the fractal documentation structure and downstream skill gating.
+- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — One-time manual bootstrap of the `docs/` directory layout and project-level `.agents/skills/fractal-scope/` output. Run once per project to establish the fractal documentation structure and downstream skill gating.
 - **[fractal-audit](./skills/fractal-audit/SKILL.md)** — Report-only fractal health scan. Ranks stale decisions, missing or stale `AGENTS.md` files, and lane-placement issues. Does not fix — produces a ranked repair report.
 - **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — Fill or refresh a directory's local `AGENTS.md` contract by reading code and nearby docs. Writes directly when the contract is clear; asks only for blocking scope or boundary ambiguities.
 - **[fractal-repo](./skills/fractal-repo/SKILL.md)** — Repository-level document topology: placement across `engineering / research / postmortem / specs / archive`, naming conventions, frontmatter, indexes, and lifecycle transitions. Decision skills live at `skills/decision-*/`.

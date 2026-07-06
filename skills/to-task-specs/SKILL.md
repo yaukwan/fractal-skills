@@ -14,7 +14,7 @@ metadata:
 
 Transform a **resolved task context or PRD** into a structured, verifiable, group-executable task specification document.
 
-Output destination is configurable via `skills/fractal-scope/config.yaml`.
+Output destination is configurable via `.agents/skills/fractal-scope/config.yaml`.
 
 This skill exists because the base model tends to either jump straight to implementation or produce vague task lists without proper grouping, file-level scoping, and acceptance criteria.
 
@@ -38,13 +38,13 @@ If decision truth is unclear, stop and resolve that first.
 
 ## Output Mode Configuration
 
-This skill's output behavior is controlled by `skills/fractal-scope/config.yaml` > `spec_output.mode`.
+This skill's output behavior is controlled by `.agents/skills/fractal-scope/config.yaml` > `spec_output.mode`.
 
--   If `skills/fractal-scope/config.yaml` exists and `spec_output.mode` is set:
+-   If `.agents/skills/fractal-scope/config.yaml` exists and `spec_output.mode` is set:
   - `always_file`: Write to `docs/specs/{YYYY_MM_dd}_{task_name}.md`.
   - `always_inline`: Output to conversation context only. Do NOT write to disk or create directories.
   - `ask` or key missing: Use the `question` tool to ask the user before writing.
--   If `skills/fractal-scope/config.yaml` does not exist: default to `ask`.
+-   If `.agents/skills/fractal-scope/config.yaml` does not exist: default to `ask`.
 
 ## Decision rules
 
@@ -88,7 +88,7 @@ Choose the first valid source in this order:
 
 - Always: read `assets/task-spec-template.md` for the spec document skeleton.
 - Always: read `references/task-group-structuring-guidelines.md` for grouping and batching rules.
-- When available: read `skills/fractal-scope/config.yaml` for `spec_output.mode`.
+- When available: read `.agents/skills/fractal-scope/config.yaml` for `spec_output.mode`.
 - When available: read the relevant current decision skills so the spec inherits their constraints.
 
 ## Output expectations
