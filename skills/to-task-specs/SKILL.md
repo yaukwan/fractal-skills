@@ -12,7 +12,7 @@ metadata:
 
 ## Purpose
 
-Transform a **resolved task context or PRD** into a structured, verifiable, group-executable task specification document.
+Transform a **resolved task context, PRD, or decision summary** into a structured, verifiable, group-executable task specification document.
 
 Output destination is configurable via `.agents/skills/fractal-scope/config.yaml`.
 
@@ -25,6 +25,12 @@ Do not generate task specs until relevant decisions are confirmed current.
 Specs must inherit the boundaries and constraints already fixed by current decisions.
 
 If decision truth is unclear, stop and resolve that first.
+
+## Pipeline Position
+
+Typical flow: PRD / resolved context / decision summary → `to-task-specs` → issue-splitting skills.
+
+A generated spec is valid downstream input for tracker or issue-generation skills. This skill still stops after producing the spec and does not start implementation.
 
 ## Default approach
 
@@ -53,7 +59,7 @@ This skill's output behavior is controlled by `.agents/skills/fractal-scope/conf
 Choose the first valid source in this order:
 
 1. `$ARGUMENTS` provides a valid file path → read that file.
-2. `$ARGUMENTS` contains inline PRD or resolved task context → use it directly.
+2. `$ARGUMENTS` contains inline PRD, decision summary, or resolved task context → use it directly.
 3. The conversation already contains resolved local contract context and current decision truth → synthesize from that.
 4. If none of the above exist → stop and ask for the missing context.
 
@@ -78,7 +84,7 @@ Choose the first valid source in this order:
 ## Gotchas
 
 - Do NOT assume a fixed PRD path like `docs/specs/prd.txt`.
-- Do NOT assume a PRD is required — resolved context is a valid input.
+- Do NOT assume a PRD is required — resolved context or a decision summary is a valid input.
 - Do NOT start writing implementation code after generating the spec. The spec is a stop-gate.
 - This skill produces `docs/specs/` documents (type: `specs`), not decision skills or engineering docs.
 - `task_name` should be kebab-case.
@@ -96,5 +102,5 @@ Choose the first valid source in this order:
 - Output file written to `docs/specs/{YYYY_MM_dd}_{task_name}.md` when output mode is `always_file` or user confirms write.
 - Frontmatter follows fractal-repo convention: `type: specs`, `status`, `updated`, `related`.
 - Each Task Group includes: Purpose, Related Files, Requirements, sub-tasks (Input / Instructions / Objective / Acceptance Criteria).
-- The generated spec is explicit enough to serve as a direct implementation input.
+- The generated spec is explicit enough to serve as a direct implementation input or issue-splitting input.
 - After completion, explicitly request human review before implementation begins.

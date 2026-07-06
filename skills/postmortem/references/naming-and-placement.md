@@ -20,3 +20,6 @@ If the repository uses `fractal-repo`, follow its rules for:
 - frontmatter requirements
 - indexing
 - lifecycle transitions
+
+## Retrieval Link
+When the affected directory has a Level 2 `AGENTS.md`, add a `Docs` link to the written postmortem. This makes defect knowledge discoverable during traversal; it does not move the postmortem source of truth out of `docs/postmortem/`.

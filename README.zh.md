@@ -60,10 +60,18 @@ Fractal Skills 提供了一套**三层上下文协议**，直接对应软件的�
 - **单一职责，可编排组合。** 每个 skill 只做一件事。可以独立使用，也可以通过 `FILL → DECIDE → SPEC → BUILD → POSTMORTEM` 流程编排使用。
 - **从底层设计的 AI-native。** headers、manifests、contracts 都是为机器可读性和低 token 消耗设计的——而不是为了人类浏览 wiki。
 
+## 与执行类 skill 生态组合
+
+Fractal Skills 是**知识基底层**：维护 `AGENTS.md` 遍历上下文、当前决策权威、任务规格和 postmortem。它不试图接管实现、TDD、诊断或 review 循环。
+
+执行类 skill 生态可以消费 Fractal 维护的上下文。用 Fractal 在规划前刷新局部 contract，在写 spec 前确认决策真相，在缺陷修复后记录 postmortem；随后用你的执行类 skill 完成构建、测试、诊断和 review。
+
+`BUILD` 阶段没有 Fractal 专属 skill 是刻意边界。它是外部执行动词基于 Fractal 已刷新上下文开始工作的交接点。
+
 ## Skills
 
-- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — 一次性手动搭建 `docs/` 目录布局，并输出项目级 `.agents/skills/fractal-scope/`。每个项目运行一次，建立 fractal 文档基础设施和后续 skill 的门控配置。
-- **[fractal-scope](./skills/fractal-scope/SKILL.md)** — 项目级 scope gate 包和确定性匹配器，控制 L2/L3 写入范围。负责 `config.yaml` 默认值与 `scripts/check-scope.js`。
+- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — 一次性手动搭建 `docs/` 目录布局，并输出项目级 `.agents/skills/fractal-scope/config.yaml`。每个项目运行一次，建立 fractal 文档基础设施和后续 skill 的门控配置。
+- **[fractal-scope](./skills/fractal-scope/SKILL.md)** — scope gate 包和确定性匹配器，控制 L2/L3 写入范围。负责 `config.yaml` 默认值与包内 `scripts/check-scope.js` 实现。
 - **[fractal-audit](./skills/fractal-audit/SKILL.md)** — 报告型 fractal 健康巡检。对过期决策、缺失或过期的 `AGENTS.md`、lane 错位问题进行排名。不修复，只产出带优先级的修复报告。
 - **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — 通过阅读代码和周边文档，填充或刷新目录的局部 `AGENTS.md` contract。写入前会针对未确认的局部意图提出聚焦问题。
 - **[fractal-repo](./skills/fractal-repo/SKILL.md)** — 仓库级文档拓扑管理：`engineering / research / postmortem / specs / archive` 的文档落点、命名规范、frontmatter、索引和生命周期转换。决策 skill 位于 `.agents/skills/decision-*/`。
@@ -83,7 +91,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - **FILL** — `fractal-agents-fill`：必要时补全缺失的局部 contract 上下文并刷新 `AGENTS.md`。
 - **DECIDE** — `decision-capture`：检查决策覆盖范围并更新决策 skill，直到当前真相已文档化。
 - **SPEC** — `to-task-specs`：将已解决上下文转化为可执行的任务文档。
-- **BUILD** — 按已确认的 spec 实施。
+- **BUILD** — 使用你的常规实现、TDD、诊断和 review skills 按已确认的 spec 实施。
 - **POSTMORTEM** — `postmortem`：任务主要性质为缺陷修复时必须产出。
 - **辅助** — `fractal-audit`、`fractal-repo`、`fractal-context` 作为辅助 skill，可在主流程之外使用。
 

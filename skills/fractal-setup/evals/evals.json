@@ -5,10 +5,11 @@
     {
       "id": 1,
       "prompt": "I want to set up fractal documentation for my new Rust project. Create the docs structure.",
-      "expected_output": "Should load this skill and create docs/ with the 5 subdirectories plus .agents/skills/fractal-scope/SKILL.md, config.yaml, and scripts/check-scope.js.",
+      "expected_output": "Should load this skill and create docs/ with the 5 subdirectories plus .agents/skills/fractal-scope/SKILL.md and config.yaml.",
       "expectations": [
         "Creates docs/engineering/, docs/research/, docs/postmortem/, docs/specs/, docs/archive/",
-        "Generates .agents/skills/fractal-scope/SKILL.md, config.yaml, and scripts/check-scope.js",
+        "Generates .agents/skills/fractal-scope/SKILL.md and config.yaml",
+        "Does not copy scripts/check-scope.js into the consuming repo",
         "Does not create root AGENTS.md"
       ]
     },
@@ -38,6 +39,16 @@
       "expectations": [
         "Should not route to fractal-setup",
         "Recognizes fill vs setup boundary"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Set up fractal docs and make sure our domain docs rule tells agents not to create CONTEXT.md.",
+      "expected_output": "Should load this skill, bootstrap fractal docs, and offer the docs/agents/domain.md bridge rule while noting it only affects consumers that read that file.",
+      "expectations": [
+        "Uses AGENTS.md > Language as the glossary source",
+        "Does not create CONTEXT.md",
+        "States that external skills with hard-coded CONTEXT.md behavior are not forcibly intercepted"
       ]
     }
   ]

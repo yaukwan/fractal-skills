@@ -47,7 +47,8 @@ If you are unsure whether this is a defect fix that should leave a postmortem re
    - prevention / follow-ups
 3. Draft postmortem following the template
 4. Place the document according to repo rules
-5. Return the document path in the final delivery
+5. If an affected directory has a Level 2 `AGENTS.md`, add a `Docs` link to the postmortem there
+6. Return the document path in the final delivery
 
 ## Output Standard
 
@@ -81,6 +82,8 @@ If the repo has `fractal-repo` rules, follow them for postmortem:
 - naming
 - indexing
 - lifecycle
+
+After writing the postmortem, update the affected directory's L2 `AGENTS.md > Docs` with a link when that manifest exists. This is a retrieval pointer only; the postmortem remains under `docs/postmortem/`.
 
 If no repo-level rules exist, follow the defaults in `references/naming-and-placement.md`.
 

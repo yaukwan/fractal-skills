@@ -18,7 +18,8 @@
       "expected_output": "Should load this skill and repair each directory sequentially, asking focused questions where the local contract remains semantically unresolved.",
       "expectations": [
         "Processes directories one at a time",
-        "Uses .agents/skills/fractal-scope/scripts/check-scope.js for L2 scope gating",
+        "Uses the packaged fractal-scope checker with .agents/skills/fractal-scope/config.yaml for L2 scope gating",
+        "Updates only the affected root Local Maps entry when root AGENTS.md exists",
         "Does not skip questioning just because code appears clear"
       ]
     },
@@ -67,6 +68,16 @@
         "Detects terminology drift before writing",
         "Uses minimal semantic-confirmation questioning",
         "Updates AGENTS.md once the local direction is reliable"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "We resolved the term Principal for this auth folder. Add it to the docs, but don't create CONTEXT.md.",
+      "expected_output": "Should load this skill and write the resolved vocabulary into the nearest L2 AGENTS.md Language section without creating CONTEXT.md.",
+      "expectations": [
+        "Writes resolved vocabulary to AGENTS.md > Language",
+        "Uses **Term** plus _Avoid_ format when synonyms are known",
+        "Does not create CONTEXT.md"
       ]
     }
   ]

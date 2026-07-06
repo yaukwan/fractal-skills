@@ -9,6 +9,11 @@
 - Last Reviewed:
 - Primary Domains:
 
+## Traversal
+1. Start here: pick the owning subtree from Local Maps.
+2. Read that subtree's AGENTS.md before opening files.
+3. Check .agents/skills/decision-* freshness before changing architecture.
+
 ## Topology
 - `.agents/skills/decision-*/SKILL.md`: design decisions and constraints (managed by `decision-capture`)
 - `docs/engineering/`: implementation notes, benchmarks, tech debt

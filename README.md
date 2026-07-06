@@ -60,10 +60,18 @@ Ten single-responsibility skills cover the entire build-and-maintain lifecycle:
 - **Single responsibility, composable flow.** Each skill does one thing. Skills can be used independently or orchestrated through `FILL → DECIDE → SPEC → BUILD → POSTMORTEM`.
 - **AI-native from the ground up.** Headers, manifests, and contracts are designed for machine readability and low-token consumption — not for human wiki browsing.
 
+## Composing with execution-skill ecosystems
+
+Fractal Skills is the **knowledge substrate**: it maintains `AGENTS.md` traversal context, current decision authority, task specs, and postmortems. It does not try to own implementation, TDD, debugging, or review loops.
+
+Execution-skill ecosystems can consume the context Fractal maintains. Use Fractal to refresh local contracts before planning, confirm decision truth before specs, and write postmortems after defect fixes; then use your execution skills for build, test, diagnosis, and review.
+
+The `BUILD` stage has no Fractal-specific skill by design. It is the handoff point where external execution verbs act on the context Fractal made current.
+
 ## Skills
 
-- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — One-time manual bootstrap of the `docs/` directory layout and project-level `.agents/skills/fractal-scope/` output. Run once per project to establish the fractal documentation structure and downstream skill gating.
-- **[fractal-scope](./skills/fractal-scope/SKILL.md)** — Project-local scope gate package and deterministic matcher for L2/L3 write permissions. Owns `config.yaml` defaults and `scripts/check-scope.js`.
+- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — One-time manual bootstrap of the `docs/` directory layout and project-level `.agents/skills/fractal-scope/config.yaml`. Run once per project to establish the fractal documentation structure and downstream skill gating.
+- **[fractal-scope](./skills/fractal-scope/SKILL.md)** — Scope gate package and deterministic matcher for L2/L3 write permissions. Owns `config.yaml` defaults and the packaged `scripts/check-scope.js` implementation.
 - **[fractal-audit](./skills/fractal-audit/SKILL.md)** — Report-only fractal health scan. Ranks stale decisions, missing or stale `AGENTS.md` files, and lane-placement issues. Does not fix — produces a ranked repair report.
 - **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — Fill or refresh a directory's local `AGENTS.md` contract by reading code and nearby docs. Asks focused questions for unresolved local intent before writing.
 - **[fractal-repo](./skills/fractal-repo/SKILL.md)** — Repository-level document topology: placement across `engineering / research / postmortem / specs / archive`, naming conventions, frontmatter, indexes, and lifecycle transitions. Decision skills live at `.agents/skills/decision-*/`.
@@ -83,7 +91,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - **FILL** — `fractal-agents-fill`: fill missing local contract context and refresh `AGENTS.md` when needed.
 - **DECIDE** — `decision-capture`: check decision coverage and update decision skills until current truth is documented.
 - **SPEC** — `to-task-specs`: turn resolved context into a build-ready task document.
-- **BUILD** — Execute the approved spec.
+- **BUILD** — Execute the approved spec with your normal implementation, TDD, diagnosis, and review skills.
 - **POSTMORTEM** — `postmortem`: required when the primary task nature is defect correction.
 - **AUXILIARY** — `fractal-audit`, `fractal-repo`, and `fractal-context` are helper skills available outside the main delivery flow.
 

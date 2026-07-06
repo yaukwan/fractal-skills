@@ -15,7 +15,7 @@ If these sources already answer the question, do not re-ask the user.
 
 ## Ask one question at a time
 
-Walk through `Scope`, `Constraints`, `Members`, `Docs`, and `Exceptions` one section at a time. Ask only for sections that code and docs do not already clearly settle. Each question must be focused and include a recommended answer.
+Walk through `Scope`, `Constraints`, `Members`, `Docs`, `Language`, and `Exceptions` one section at a time. Ask only for sections that code and docs do not already clearly settle. Each question must be focused and include a recommended answer.
 
 The user may respond with:
 
@@ -44,6 +44,12 @@ Write into: `Boundary clarifications`.
 Ask whether any contracts must be preserved, boundaries cannot move, or content should explicitly stay out of this manifest.
 
 Write into: `Constraints / Exceptions`.
+
+### Q3a. Domain language
+
+If the conversation resolves domain-specific vocabulary, ask for confirmation before adding it to `Language`. Do not create `CONTEXT.md`; fractal-managed vocabulary belongs in the nearest L2 `AGENTS.md`.
+
+Write into: `Language`.
 
 ### Q4. Decision drift check
 

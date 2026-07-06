@@ -86,6 +86,17 @@
       "expectations": [
         "Distinguishes research evidence from final authority"
       ]
+    },
+    {
+      "id": 10,
+      "prompt": "Write an ADR under docs/adr explaining why we chose event sourcing.",
+      "expected_output": "Should not load this skill as primary owner because the user explicitly asked for an ADR file under docs/adr, not a fractal decision skill.",
+      "files": [],
+      "expectations": [
+        "Recognizes explicit ADR request",
+        "Does not create .agents/skills/decision-* by default",
+        "Avoids dual source of truth unless the repo has a strong ADR stub convention"
+      ]
     }
   ]
 }

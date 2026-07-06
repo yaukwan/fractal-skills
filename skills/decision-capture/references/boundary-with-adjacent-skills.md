@@ -11,6 +11,7 @@ When a document should not be a decision skill, route it here:
 |------|-------------|-------|
 | Implementation notes, benchmarks, debt | `docs/engineering/` | manual placement |
 | Explorations, alternatives, experiments | `docs/research/` | manual placement |
+| Explicit ADR requested by user or repo convention | `docs/adr/` | repository ADR workflow |
 | Bug-fix root-cause record | `docs/postmortem/` | `postmortem` |
 | PRD → executable task groups | `docs/specs/` | `to-task-specs` |
 | Archived past docs | `docs/archive/` | `fractal-repo` |
@@ -26,6 +27,12 @@ If the answer is "it might be useful context," prefer `docs/engineering/`.
 
 If it describes current behavior that can be learned from code, it is documentation,
 not a decision. Decision skills constrain — they don't just describe.
+
+### "Write an ADR under docs/adr"
+
+If the user explicitly asks for an ADR file, do not route the request into fractal decision capture. ADRs are historical decision records or repository convention. Fractal decision skills are current, routable authority with freshness metadata.
+
+New fractal decisions default to `.agents/skills/decision-*/SKILL.md`. Add an ADR stub pointer only when the repository already has a strong ADR index convention; otherwise avoid a second source of truth.
 
 ### "Let's record this bug root cause"
 

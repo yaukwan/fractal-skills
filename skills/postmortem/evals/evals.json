@@ -10,7 +10,8 @@
       "expectations": [
         "Treats the task as defect correction",
         "Captures expected vs actual behavior",
-        "Includes reusable prevention notes"
+        "Includes reusable prevention notes",
+        "Adds a Docs link from affected L2 AGENTS.md when present"
       ]
     },
     {

@@ -10,6 +10,11 @@
 <!-- Per-directory status: MISSING / STALE / INCOMPLETE / OK -->
 <!-- Format: STATUS <path> — detail -->
 
+## Local Maps Drift
+
+<!-- Per-entry status: MISSING / STALE / ORPHAN -->
+<!-- Format: STATUS <path/to/AGENTS.md> — reason -->
+
 ## Lane Check
 
 <!-- Per-doc status: AMBIGUOUS / ORPHAN -->
@@ -19,6 +24,7 @@
 
 Decisions: X stale, X aging, X untethered, X ok
 AGENTS.md: X missing, X stale, X incomplete, X ok
+Local Maps: X missing, X stale, X orphan
 Lane: X ambiguous, X orphan
 
 ## Priority
@@ -26,5 +32,6 @@ Lane: X ambiguous, X orphan
 1. [ ] STALE decision: ...
 2. [ ] STALE AGENTS.md: ...
 3. [ ] MISSING AGENTS.md: ...
-4. [ ] AGING decision: ...
-5. [ ] Lane: ...
+4. [ ] LOCAL MAPS drift: ...
+5. [ ] AGING decision: ...
+6. [ ] Lane: ...
