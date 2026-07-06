@@ -40,16 +40,18 @@ Fractal Skills 提供了一套**三层上下文协议**，直接对应软件的�
 | **Level 2** | 目录 / 限界上下文 | 局部所有权、作用域边界、成员模块 |
 | **Level 3** | 源代码文件 | 当前合约：输入、输出、角色、不变量 |
 
-八个单一职责的 skill 覆盖完整的构建与维护生命周期：
+十个单一职责的 skill 覆盖完整的构建与维护生命周期：
 
 1. **建仓**：搭建 `docs/` 文档结构（`fractal-setup`）
-2. **巡检**：扫描决策过期、上下文缺失、lane 错位（`fractal-audit`）
-3. **填充**：从代码中推断并补全缺失或过期的目录 contract（`fractal-agents-fill`）
-4. **维护**：仓库级文档落点、命名、索引与生命周期管理（`fractal-repo`）
-5. **规范**：当 header 语义漂移时，归一化 schema 字段含义（`fractal-context`）
-6. **决策**：完整决策生命周期——检查、创建、更新、取代、合并（`decision-capture`）
-7. **规格**：从已解决上下文或 PRD 生成可执行任务规格文档（`to-task-specs`）
-8. **复盘**：为 bug、回归、故障产出结构化的根因记录（`postmortem`）
+2. **门控**：配置下游写入范围（`fractal-scope`）
+3. **巡检**：扫描决策过期、上下文缺失、lane 错位（`fractal-audit`）
+4. **填充**：从代码中推断并补全缺失或过期的目录 contract（`fractal-agents-fill`）
+5. **维护**：仓库级文档落点、命名、索引与生命周期管理（`fractal-repo`）
+6. **规范**：当 header 语义漂移时，归一化 schema 字段含义（`fractal-context`）
+7. **决策**：完整决策生命周期——检查、创建、更新、取代、合并（`decision-capture`）
+8. **规格**：从已解决上下文或 PRD 生成可执行任务规格文档（`to-task-specs`）
+9. **复盘**：为 bug、回归、故障产出结构化的根因记录（`postmortem`）
+10. **设计**：维护 skill 编写、路由和校验准则（`skill-design-guidelines`）
 
 ### 核心优势
 
@@ -61,13 +63,15 @@ Fractal Skills 提供了一套**三层上下文协议**，直接对应软件的�
 ## Skills
 
 - **[fractal-setup](./skills/fractal-setup/SKILL.md)** — 一次性手动搭建 `docs/` 目录布局，并输出项目级 `.agents/skills/fractal-scope/`。每个项目运行一次，建立 fractal 文档基础设施和后续 skill 的门控配置。
+- **[fractal-scope](./skills/fractal-scope/SKILL.md)** — 项目级 scope gate 包和确定性匹配器，控制 L2/L3 写入范围。负责 `config.yaml` 默认值与 `scripts/check-scope.js`。
 - **[fractal-audit](./skills/fractal-audit/SKILL.md)** — 报告型 fractal 健康巡检。对过期决策、缺失或过期的 `AGENTS.md`、lane 错位问题进行排名。不修复，只产出带优先级的修复报告。
-- **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — 通过阅读代码和周边文档，填充或刷新目录的局部 `AGENTS.md` contract。contract 清晰时直接写入；仅在作用域或边界存在阻塞性歧义时才提问。
-- **[fractal-repo](./skills/fractal-repo/SKILL.md)** — 仓库级文档拓扑管理：`engineering / research / postmortem / specs / archive` 的文档落点、命名规范、frontmatter、索引和生命周期转换。决策 skill 位于 `skills/decision-*/`。
+- **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — 通过阅读代码和周边文档，填充或刷新目录的局部 `AGENTS.md` contract。写入前会针对未确认的局部意图提出聚焦问题。
+- **[fractal-repo](./skills/fractal-repo/SKILL.md)** — 仓库级文档拓扑管理：`engineering / research / postmortem / specs / archive` 的文档落点、命名规范、frontmatter、索引和生命周期转换。决策 skill 位于 `.agents/skills/decision-*/`。
 - **[fractal-context](./skills/fractal-context/SKILL.md)** — Level 1/2/3 fractal schema 守卫者。归一化文件 header、验证目录 manifest 语义、在代码变更后运行 ripple 检查。仅在 scoped fractal repo 内执行写入。
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — 当前任务的完整决策生命周期。检查现有决策 skill 是否仍然覆盖当前真相，然后创建、更新、取代或合并决策 skill，确保设计权威无可争议。决策文件位于 `.agents/skills/decision-*/SKILL.md`。
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — 从 PRD、已解决上下文或对话上下文中生成可执行的任务规格文档。按功能域分组任务，继承决策约束，产出可验证的验收标准。
 - **[postmortem](./skills/postmortem/SKILL.md)** — 为 bug、回归、故障产出结构化的根因记录。记录症状、影响、根因、修复方案、验证方式和预防措施。任务主要性质为缺陷修复时必须产出。
+- **[skill-design-guidelines](./skills/skill-design-guidelines/SKILL.md)** — skill 编写与维护准则。校验路由描述、渐进加载、支持文件布局和 eval 覆盖。
 
 ## 编排流程
 

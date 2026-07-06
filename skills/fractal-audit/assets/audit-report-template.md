@@ -3,7 +3,7 @@
 ## Decision Freshness
 
 <!-- Per-decision status: STALE / AGING / OK / UNTETHERED -->
-<!-- Format: STATUS skills/decision-<name>/SKILL.md — reason + dates -->
+<!-- Format: STATUS .agents/skills/decision-<name>/SKILL.md — reason + dates -->
 
 ## AGENTS.md Coverage
 

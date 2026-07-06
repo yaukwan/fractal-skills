@@ -25,7 +25,7 @@
     {
       "id": 3,
       "prompt": "These two decision skills both define the API version boundary. Merge or supersede them and leave one current source of truth.",
-      "expected_output": "Should load this skill and resolve authority overlap so one current truth remains unambiguous in skills/decision-*/.",
+      "expected_output": "Should load this skill and resolve authority overlap so one current truth remains unambiguous in .agents/skills/decision-*/.",
       "files": [],
       "expectations": [
         "Detects authority collision",

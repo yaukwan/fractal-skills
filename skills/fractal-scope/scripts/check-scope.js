@@ -178,6 +178,72 @@ function parseScalar(rawValue) {
   return value;
 }
 
+function parseInlineArray(rawValue, sourcePath, lineNumber) {
+  const value = rawValue.trim();
+
+  if (!value.startsWith("[") || !value.endsWith("]")) {
+    throw new Error(
+      `Unsupported inline array at ${sourcePath}:${lineNumber}: ${rawValue.trim()}`
+    );
+  }
+
+  const inner = value.slice(1, -1).trim();
+  if (!inner) {
+    return [];
+  }
+
+  const items = [];
+  let current = "";
+  let inSingleQuote = false;
+  let inDoubleQuote = false;
+
+  for (let index = 0; index < inner.length; index += 1) {
+    const char = inner[index];
+    const previous = inner[index - 1];
+
+    if (char === "'" && !inDoubleQuote) {
+      inSingleQuote = !inSingleQuote;
+      current += char;
+      continue;
+    }
+
+    if (char === '"' && !inSingleQuote && previous !== "\\") {
+      inDoubleQuote = !inDoubleQuote;
+      current += char;
+      continue;
+    }
+
+    if (char === "," && !inSingleQuote && !inDoubleQuote) {
+      items.push(current.trim());
+      current = "";
+      continue;
+    }
+
+    current += char;
+  }
+
+  if (inSingleQuote || inDoubleQuote) {
+    throw new Error(`Unclosed quote in inline array at ${sourcePath}:${lineNumber}`);
+  }
+
+  items.push(current.trim());
+
+  return items.map((item) => {
+    if (!item) {
+      throw new Error(`Empty inline array item at ${sourcePath}:${lineNumber}`);
+    }
+
+    const parsed = parseScalar(item);
+    if (typeof parsed !== "string") {
+      throw new Error(
+        `Inline scope patterns must be strings at ${sourcePath}:${lineNumber}: ${item}`
+      );
+    }
+
+    return parsed;
+  });
+}
+
 function parseConfig(text, sourcePath) {
   const result = {};
   const lines = text.split(/\r?\n/);
@@ -242,7 +308,16 @@ function parseConfig(text, sourcePath) {
       } else if (value === "[]") {
         currentSection[key] = [];
         pendingArray = null;
+      } else if (value.startsWith("[")) {
+        currentSection[key] = parseInlineArray(value, sourcePath, lineNumber + 1);
+        pendingArray = null;
       } else {
+        if (key === "include" || key === "exclude") {
+          throw new Error(
+            `Expected ${key} to be a list at ${sourcePath}:${lineNumber + 1}: ${rawLine.trim()}`
+          );
+        }
+
         currentSection[key] = parseScalar(value);
         pendingArray = null;
       }
@@ -575,6 +650,7 @@ module.exports = {
   normalizeInputPath,
   normalizePattern,
   parseConfig,
+  parseInlineArray,
   parseScalar,
   parseArgs,
 };

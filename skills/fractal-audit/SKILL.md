@@ -21,9 +21,9 @@ Run a report-only health scan across fractal docs and return prioritized repair 
 
 ## Default workflow
 
-1. Confirm `.agents/skills/fractal-scope/config.yaml` exists.
+1. Confirm `.agents/skills/fractal-scope/scripts/check-scope.js` exists.
 2. Audit decision freshness and overlap risk.
-3. Audit `AGENTS.md` coverage against the configured L2 scope.
+3. Audit `AGENTS.md` coverage by checking candidate directories with the scope checker.
 4. Audit lane anomalies across `engineering / research / postmortem / archive`.
 5. Produce a ranked report with `repair_kind` per item.
 6. Stop. Do not fix anything in this skill.
@@ -43,13 +43,13 @@ The report must include:
 
 ## Pre-check
 
-Confirm `.agents/skills/fractal-scope/config.yaml` exists. If not found, this project is not a fractal-repo — report and exit.
+Confirm `.agents/skills/fractal-scope/scripts/check-scope.js` exists. If not found, this project is not a fractal-repo — report and exit.
 
 ## What it audits
 
 ### 1. Decision freshness
 
-For each decision skill under `skills/decision-*/`:
+For each decision skill under `.agents/skills/decision-*/`:
 
 1. Read the SKILL.md, extract referenced code areas from `metadata.affected_modules`
 2. Check recent changes in those areas with `git log --oneline <path>`
@@ -59,7 +59,13 @@ For each decision skill under `skills/decision-*/`:
 
 ### 2. AGENTS.md coverage
 
-For each directory within the L2 scope `include` range in `.agents/skills/fractal-scope/config.yaml`:
+For each candidate directory, run:
+
+```bash
+node .agents/skills/fractal-scope/scripts/check-scope.js --path <directory>
+```
+
+Only audit directories where `l2_folder_manifest.status` is `matched`.
 
 1. Check whether `AGENTS.md` exists
 2. Not found → mark `missing`
@@ -79,9 +85,9 @@ For documents under `docs/engineering/`, `docs/research/`, `docs/postmortem/`, `
 # Fractal Audit Report — {{DATE}}
 
 ## Decision Freshness
-  STALE   skills/decision-auth-flow/SKILL.md — last code change 2026-04-10 > decision updated 2026-02-01
-  AGING   skills/decision-api-versioning/SKILL.md — 120 days since last update
-  OK      skills/decision-database-split/SKILL.md — code area unchanged, decision current
+  STALE   .agents/skills/decision-auth-flow/SKILL.md — last code change 2026-04-10 > decision updated 2026-02-01
+  AGING   .agents/skills/decision-api-versioning/SKILL.md — 120 days since last update
+  OK      .agents/skills/decision-database-split/SKILL.md — code area unchanged, decision current
 
 ## AGENTS.md Coverage
   MISSING   src/services/payment/ — no AGENTS.md

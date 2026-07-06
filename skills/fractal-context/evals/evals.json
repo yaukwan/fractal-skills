@@ -8,6 +8,7 @@
       "expected_output": "Should load this skill and update Level 3 contract semantics first, then ripple upward only if ownership or topology semantics changed.",
       "files": [],
       "expectations": [
+        "Uses check-scope.js before writing Level 3 or Level 2 artifacts",
         "Uses Level 3 INPUT/OUTPUT/ROLE semantics",
         "Checks whether folder or root contracts actually changed before updating them",
         "Avoids turning headers into change logs"
@@ -19,6 +20,7 @@
       "expected_output": "Should load this skill only if the request is schema-semantics focused; if the manifest content must be inferred from code, prefer fractal-agents-fill and use this skill as schema reference.",
       "files": [],
       "expectations": [
+        "Uses check-scope.js before normalizing an existing manifest",
         "Uses Scope, Constraints, and Members",
         "Does not steal directory contract fill work from fractal-agents-fill",
         "Keeps current state separate from history",

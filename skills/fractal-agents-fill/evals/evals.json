@@ -5,21 +5,21 @@
     {
       "id": 1,
       "prompt": "Write the AGENTS.md for src/services/payment/ — describe what this directory owns and what shouldn't change.",
-      "expected_output": "Should load this skill, read the directory first, and write the AGENTS.md directly if the contract is already clear enough.",
+      "expected_output": "Should load this skill, read the directory first, and ask focused questions for any unresolved local intent before writing AGENTS.md.",
       "expectations": [
         "Reads directory code before asking questions",
-        "Writes directly when the contract is clear enough",
+        "Asks focused questions for unresolved local intent",
         "Writes Level 2 AGENTS.md with Scope / Constraints / Members"
       ]
     },
     {
       "id": 2,
       "prompt": "The audit says src/auth/AGENTS.md is stale and src/api/ is missing one. Fill them both.",
-      "expected_output": "Should load this skill and repair each directory sequentially, writing updates when the inferred contract is clear.",
+      "expected_output": "Should load this skill and repair each directory sequentially, asking focused questions where the local contract remains semantically unresolved.",
       "expectations": [
         "Processes directories one at a time",
-        "Checks .agents/skills/fractal-scope/config.yaml for L2 scope gating",
-        "Does not require a question loop when code already answers the contract"
+        "Uses .agents/skills/fractal-scope/scripts/check-scope.js for L2 scope gating",
+        "Does not skip questioning just because code appears clear"
       ]
     },
     {
@@ -35,10 +35,10 @@
     {
       "id": 4,
       "prompt": "The directory contract is obvious from the code. Just refresh the AGENTS.md and don't ask me questions unless you hit a real blocker.",
-      "expected_output": "Should load this skill and prefer direct writing over an interactive questionnaire when the contract is already clear.",
+      "expected_output": "Should load this skill, read the code, and ask a focused confirmation question before writing if local intent or boundary semantics remain unconfirmed.",
       "expectations": [
-        "Defaults to read-and-write rather than read-and-ask",
-        "Uses questions only for blocking ambiguities"
+        "Defaults to ask-first rather than write-first",
+        "Uses the fewest focused questions needed to confirm local intent"
       ]
     },
     {

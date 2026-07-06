@@ -4,7 +4,7 @@ description: "Load when Level 1/2/3 fractal header or folder-manifest semantics 
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "1.0"
+  version: "2.0"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -14,13 +14,17 @@ Act as the guardian of the project's fractal semantic map. Keep file, folder, an
 
 ## Scope Gate
 
-**Before writing any L3 header, or normalizing an existing L2 manifest for schema semantics, check `.agents/skills/fractal-scope/config.yaml`.**
+**Before writing any L3 header, or normalizing an existing L2 manifest for schema semantics, run the project-local scope checker.**
 
-- **Not found**: This is not a fractal-repo. Only provide schema consulting. Do NOT write file headers or folder manifests.
-- **Found**: Read the `## L3 File Header` and `## L2 Folder Manifest` sections. Write only when:
-  - The target file path matches `include:` scope patterns
-  - The target file path is NOT matched by `exclude:` patterns
-  - The level is `enabled: true`
+Use:
+
+```bash
+node .agents/skills/fractal-scope/scripts/check-scope.js --path <target-path>
+```
+
+- **Config missing or checker unavailable**: This is not a writable fractal-repo. Only provide schema consulting. Do NOT write file headers or folder manifests.
+- **L3 writes**: proceed only when `l3_file_header.status` is `matched`.
+- **L2 manifest normalization**: proceed only when `l2_folder_manifest.status` is `matched`.
 
 L3 (source file headers) and L2 (folder AGENTS.md) are independently configured — one can be on, one off.
 
@@ -51,79 +55,13 @@ Read these references when needed:
 
 ## Canonical Schema
 
-### Level 3: The Cell (File Contract)
-**Location**: Top of a source file.
-**Purpose**: Describe the file's current contract.
+The canonical schema lives in `references/protocol/`:
 
-Required fields:
-- `INPUT`: Semantic dependencies, upstream types, modules, or contracts.
-- `OUTPUT`: Values, side effects, guarantees, or exported behavior.
-- `ROLE`: Why this file exists in the architecture.
+- `level3.md` — file contract fields and header rules
+- `level2.md` — folder manifest sections and update policies
+- `level1.md` — root context sections and navigation rules
 
-Optional fields:
-- `INVARIANTS`: Non-obvious truths that must remain stable.
-- `LOCAL_REVIEW_WHEN`: File-specific triggers that invalidate this header.
-
-Rules:
-- Never use file headers as append-only change logs.
-- Never record dated history in `LOCAL_REVIEW_WHEN`.
-- Shared review triggers belong in this skill's protocol, not in every file or folder artifact.
-- Omit optional fields when they add no unique value.
-
-### Level 2: The Organ (Folder Manifest)
-**Location**: `AGENTS.md` inside a folder.
-**Purpose**: Describe the folder's worldview and local ownership.
-
-Required sections:
-- `Scope`
-- `Constraints`
-- `Members`
-
-Optional sections:
-- `Docs`
-- `Exceptions`
-
-Rules:
-- `Members` entries must stay at folder/domain granularity, not per-file inventory.
-- Prefer subfolders, bounded contexts, or capability groups over listing every file.
-- Folder manifests describe current ownership and rules, not change history.
-- Do not add `Dependencies` unless a repository-specific convention explicitly requires them.
-- Review triggers are defined by this skill's protocol; do not scatter `Review Triggers` sections across folder manifests.
-
-### Level 1: The System (Root Context)
-**Location**: Project root `AGENTS.md`.
-**Purpose**: Describe the global map and active entry points.
-
-Required sections:
-- `Project`
-- `Topology`
-- `Local Maps`
-- `Global Constraints`
-
-Optional sections:
-- `Active Context`
-
-Rules:
-- Keep root `AGENTS.md` short and entry-point oriented.
-- Put global review logic in this skill's protocol instead of scattering local trigger sections.
-- Do not duplicate detailed implementation notes here.
-
-## Update Policy
-
-Use these policies when updating fractal documents:
-
-- `manual-only`: Human-authored intent or constraints; preserve unless the meaning changes.
-- `replace-on-sync`: Rebuild from current code reality.
-- `merge-on-sync`: Update incrementally while preserving useful existing entries.
-- `append-only`: Use only for explicit exception logs or other sections that are designed for additive history.
-
-Default policy by layer:
-- Level 3 header fields: `replace-on-sync`
-- Level 2 `Scope` and `Constraints`: `manual-only`
-- Level 2 `Members`: `replace-on-sync`
-- Level 2 `Docs`: `merge-on-sync`
-- Level 2 `Exceptions`: `append-only`
-- Level 1 entry-point sections: `merge-on-sync`
+Do not duplicate schema definitions in this root file. If field meaning changes, update the protocol reference first.
 
 ## Ripple Check
 

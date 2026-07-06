@@ -6,9 +6,7 @@ Level 2 is the folder manifest layer. It describes what a folder owns and how it
 
 ```md
 ## Scope
-- Position:
-- Owns:
-- Excludes:
+<current local ownership and boundary summary>
 
 ## Constraints
 - <rule>
@@ -16,6 +14,8 @@ Level 2 is the folder manifest layer. It describes what a folder owns and how it
 ## Members
 - `subdomain-or-group`: <responsibility>
 ```
+
+`Scope` may use `Position` / `Owns` / `Excludes` subfields when that improves clarity, but they are not required schema fields.
 
 ## Optional Sections
 
