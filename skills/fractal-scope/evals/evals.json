@@ -1,0 +1,86 @@
+{
+  "skill": "fractal-scope",
+  "description": "Routing checks for scope-match inspection and project-local fractal-scope refresh work.",
+  "cases": [
+    {
+      "id": 1,
+      "prompt": "I need a quick command that reads `.agents/skills/fractal-scope/config.yaml` and tells me whether `docs/guide.md` is matched or excluded.",
+      "expected_output": "Should load this skill and use the scope checker to report the path result against the config.",
+      "files": [],
+      "expectations": [
+        "Mentions the config file as the source of truth",
+        "Uses matched/excluded/disabled/no-match terminology",
+        "Does not drift into general YAML parsing"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Show me a fast way to inspect the current fractal-scope config and check multiple paths in one run.",
+      "expected_output": "Should load this skill and return quick-check commands plus match semantics.",
+      "files": [],
+      "expectations": [
+        "References quick scope checks",
+        "Supports multiple paths",
+        "Keeps the answer focused on config reading and match decisions"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Refresh the consuming project's fractal-scope skill and then check which files are in L3 scope.",
+      "expected_output": "Should load this skill because it is about refreshing the fractal-scope package and validating scope matches.",
+      "files": [],
+      "expectations": [
+        "Mentions the project-local skill path",
+        "Uses the scope checker or equivalent command",
+        "Keeps the answer specific to fractal-scope rather than repo topology"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Summarize this YAML file for me.",
+      "expected_output": "Should not load this skill because the request is generic summarization, not fractal-scope setup or scope matching.",
+      "files": [],
+      "expectations": [
+        "Should not route to fractal-scope"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Write a generic bash script that parses YAML and prints keys.",
+      "expected_output": "Should not load this skill because the request is generic scripting, not fractal-scope configuration work.",
+      "files": [],
+      "expectations": [
+        "Should not route to fractal-scope"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Move repo docs into the right lane and rename archive tombstones.",
+      "expected_output": "Should prefer fractal-repo, not this skill, because the work is about placement and lifecycle rather than scope matching.",
+      "files": [],
+      "expectations": [
+        "Does not confuse repo topology with scope checking"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Which L3 and L2 scopes are enabled in this config, and what paths do they include or exclude?",
+      "expected_output": "Should load this skill and answer from the config plus the quick scope checker semantics.",
+      "files": [],
+      "expectations": [
+        "Covers l3_file_header and l2_folder_manifest",
+        "Explains include and exclude precedence",
+        "Keeps `spec_output.mode` separate from matching logic"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "The folder has no AGENTS.md yet. Read the code and write one that explains what the directory owns.",
+      "expected_output": "Should not load this skill because that is local contract capture work, not fractal-scope config checking.",
+      "files": [],
+      "expectations": [
+        "Should not steal missing-manifest work from fractal-agents-fill"
+      ]
+    }
+  ]
+}

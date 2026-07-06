@@ -18,7 +18,7 @@
       "expected_output": "Should load this skill and repair each directory sequentially, writing updates when the inferred contract is clear.",
       "expectations": [
         "Processes directories one at a time",
-        "Checks skills/fractal-scope/config.yaml for L2 scope gating",
+        "Checks .agents/skills/fractal-scope/config.yaml for L2 scope gating",
         "Does not require a question loop when code already answers the contract"
       ]
     },

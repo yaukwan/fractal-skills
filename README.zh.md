@@ -60,7 +60,7 @@ Fractal Skills 提供了一套**三层上下文协议**，直接对应软件的�
 
 ## Skills
 
-- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — 一次性手动搭建 `docs/` 目录布局，并输出项目级 `skills/fractal-scope/config.yaml`。每个项目运行一次，建立 fractal 文档基础设施和后续 skill 的门控配置。
+- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — 一次性手动搭建 `docs/` 目录布局，并输出项目级 `.agents/skills/fractal-scope/`。每个项目运行一次，建立 fractal 文档基础设施和后续 skill 的门控配置。
 - **[fractal-audit](./skills/fractal-audit/SKILL.md)** — 报告型 fractal 健康巡检。对过期决策、缺失或过期的 `AGENTS.md`、lane 错位问题进行排名。不修复，只产出带优先级的修复报告。
 - **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — 通过阅读代码和周边文档，填充或刷新目录的局部 `AGENTS.md` contract。contract 清晰时直接写入；仅在作用域或边界存在阻塞性歧义时才提问。
 - **[fractal-repo](./skills/fractal-repo/SKILL.md)** — 仓库级文档拓扑管理：`engineering / research / postmortem / specs / archive` 的文档落点、命名规范、frontmatter、索引和生命周期转换。决策 skill 位于 `skills/decision-*/`。
