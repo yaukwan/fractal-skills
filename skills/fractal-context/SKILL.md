@@ -16,13 +16,14 @@ Act as the guardian of the project's fractal semantic map. Keep file, folder, an
 
 **Before writing any L3 header, or normalizing an existing L2 manifest for schema semantics, run the project-local scope checker.**
 
-Use the packaged `fractal-scope` checker against the consuming repo's config:
+Use the consuming project's local checker:
 
 ```bash
-node <fractal-scope-skill-root>/scripts/check-scope.js --config .agents/skills/fractal-scope/config.yaml --root . --path <target-path>
+node .agents/skills/fractal-scope/scripts/check-scope.js --config .agents/skills/fractal-scope/config.yaml --root . --path <target-path>
 ```
 
-- **Config missing or packaged checker unavailable**: This is not a writable fractal-repo. Only provide schema consulting. Do NOT write file headers or folder manifests.
+- **Config missing**: This is not a writable fractal-repo. Only provide schema consulting. Do NOT write file headers or folder manifests.
+- **Checker missing**: The project-local runtime is incomplete. Stop and repair it with `fractal-setup`.
 - **L3 writes**: proceed only when `l3_file_header.status` is `matched`.
 - **L2 manifest normalization**: proceed only when `l2_folder_manifest.status` is `matched`.
 

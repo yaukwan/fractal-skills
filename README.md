@@ -40,18 +40,19 @@ Fractal Skills provides a **three-layer context protocol** that mirrors how soft
 | **Level 2** | Folder / bounded context | Local ownership, scope boundaries, member modules |
 | **Level 3** | Source file | Current contract: inputs, outputs, role, invariants |
 
-Ten single-responsibility skills cover the entire build-and-maintain lifecycle:
+Nine source skills cover the build-and-maintain lifecycle. `fractal-setup` also emits the project-local `fractal-scope` runtime used by downstream gates:
 
-1. **Bootstrap** the documentation structure (`fractal-setup`)
-2. **Configure** scope gates for downstream writes (`fractal-scope`)
-3. **Audit** health — find stale decisions, missing context, lane issues (`fractal-audit`)
-4. **Fill** missing or stale folder contracts from code (`fractal-agents-fill`)
-5. **Maintain** repo-level placement, naming, and lifecycle (`fractal-repo`)
-6. **Normalize** schema semantics when headers drift (`fractal-context`)
-7. **Capture** decisions and keep design truth current (`decision-capture`)
-8. **Generate** executable task specs from resolved context (`to-task-specs`)
-9. **Record** root-cause postmortems for bugs and incidents (`postmortem`)
-10. **Guide** skill authoring and validation (`skill-design-guidelines`)
+1. **Bootstrap** the documentation structure and scope runtime (`fractal-setup`)
+2. **Audit** health — find stale decisions, missing context, lane issues (`fractal-audit`)
+3. **Fill** missing or stale folder contracts from code (`fractal-agents-fill`)
+4. **Maintain** repo-level placement, naming, and lifecycle (`fractal-repo`)
+5. **Normalize** schema semantics when headers drift (`fractal-context`)
+6. **Capture** decisions and keep design truth current (`decision-capture`)
+7. **Generate** executable task specs from resolved context (`to-task-specs`)
+8. **Record** root-cause postmortems for bugs and incidents (`postmortem`)
+9. **Guide** skill authoring and validation (`skill-design-guidelines`)
+
+The generated `.agents/skills/fractal-scope/` is owned by the consuming project. It configures L2/L3 write scope and runs its local deterministic checker; it is not distributed as a standalone source skill.
 
 ### Core advantages
 
@@ -68,10 +69,10 @@ Execution-skill ecosystems can consume the context Fractal maintains. Use Fracta
 
 The `BUILD` stage has no Fractal-specific skill by design. It is the handoff point where external execution verbs act on the context Fractal made current.
 
-## Skills
+## Source Skills
 
-- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — One-time manual bootstrap of the `docs/` directory layout and project-level `.agents/skills/fractal-scope/config.yaml`. Run once per project to establish the fractal documentation structure and downstream skill gating.
-- **[fractal-scope](./skills/fractal-scope/SKILL.md)** — Scope gate package and deterministic matcher for L2/L3 write permissions. Owns `config.yaml` defaults and the packaged `scripts/check-scope.js` implementation.
+- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — Bootstrap or repair the `docs/` layout and self-contained project-local `.agents/skills/fractal-scope/` runtime. Existing project-owned scope config is preserved during repair.
+- **Generated runtime template:** [fractal-scope](./skills/fractal-setup/assets/fractal-scope/SKILL.template.md) — Project-local scope configuration and deterministic L2/L3 matcher emitted by `fractal-setup`; not installed as a standalone source skill.
 - **[fractal-audit](./skills/fractal-audit/SKILL.md)** — Report-only fractal health scan. Ranks stale decisions, missing or stale `AGENTS.md` files, and lane-placement issues. Does not fix — produces a ranked repair report.
 - **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — Fill or refresh a directory's local `AGENTS.md` contract by reading code and nearby docs. Asks focused questions for unresolved local intent before writing.
 - **[fractal-repo](./skills/fractal-repo/SKILL.md)** — Repository-level document topology: placement across `engineering / research / postmortem / specs / archive`, naming conventions, frontmatter, indexes, and lifecycle transitions. Decision skills live at `.agents/skills/decision-*/`.
@@ -87,7 +88,7 @@ The `BUILD` stage has no Fractal-specific skill by design. It is the handoff poi
 FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 ```
 
-- **SETUP** — `fractal-setup`: one-time manual bootstrap, outside the main flow.
+- **SETUP** — `fractal-setup`: bootstrap the docs layout and project-local scope runtime, outside the main flow.
 - **FILL** — `fractal-agents-fill`: fill missing local contract context and refresh `AGENTS.md` when needed.
 - **DECIDE** — `decision-capture`: check decision coverage and update decision skills until current truth is documented.
 - **SPEC** — `to-task-specs`: turn resolved context into a build-ready task document.

@@ -49,15 +49,14 @@ write immediately with whatever has been gathered so far.
 
 ## Scope gate
 
-Before writing a local `AGENTS.md`, run the packaged `fractal-scope` checker against the consuming repo's config:
+Before writing a local `AGENTS.md`, run the consuming project's local `fractal-scope` checker:
 
 ```bash
-node <fractal-scope-skill-root>/scripts/check-scope.js --config .agents/skills/fractal-scope/config.yaml --root . --path <target-directory>
+node .agents/skills/fractal-scope/scripts/check-scope.js --config .agents/skills/fractal-scope/config.yaml --root . --path <target-directory>
 ```
 
-`<fractal-scope-skill-root>` is the installed skill package directory, not a copied script inside the consuming repository.
-
-- If the config is missing or the packaged checker is unavailable, stop and report that local AGENTS.md fill rules do not apply.
+- If the config is missing, stop and report that local AGENTS.md fill rules do not apply.
+- If the checker is missing, stop and repair the project-local runtime with `fractal-setup`.
 - If `l2_folder_manifest.status` is not `matched`, do not write the manifest just because the directory exists.
 
 ## Completion criteria

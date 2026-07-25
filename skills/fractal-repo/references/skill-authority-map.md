@@ -4,15 +4,17 @@ Use this map when tasks touch multiple adjacent documentation skills.
 
 ## Authority split
 
-- `fractal-setup` — first-time bootstrap authority
+- `fractal-setup` — bootstrap and runtime-template authority
   - Owns initial `docs/` directory creation
-  - Owns first emission of `.agents/skills/fractal-scope/SKILL.md` and `config.yaml`
-  - Does not own ongoing audits or local `AGENTS.md` content
+  - Owns the deployable runtime source under `assets/fractal-scope/`
+  - Owns first emission and repair of managed `.agents/skills/fractal-scope/` runtime files
+  - Preserves the project-owned `config.yaml` during repair
+  - Does not own ongoing audits, scope configuration, or local `AGENTS.md` content
 
-- `fractal-scope` — scope-gate authority
-  - Owns packaged `config.yaml` defaults
-  - Owns deterministic scope matching via packaged `scripts/check-scope.js`
-  - Owns runtime `.agents/skills/fractal-scope/` config refresh semantics
+- project-local `fractal-scope` — scope-gate authority
+  - Owns `.agents/skills/fractal-scope/config.yaml`
+  - Owns deterministic matching via `.agents/skills/fractal-scope/scripts/check-scope.js`
+  - Owns scope configuration and match inspection inside the consuming project
 
 - `fractal-audit` — report-only health authority
   - Owns stale decision, stale/missing `AGENTS.md`, and lane-placement reports
@@ -40,8 +42,8 @@ Use this map when tasks touch multiple adjacent documentation skills.
 
 ## Handoff rules
 
-- If the task bootstraps fractal docs for the first time, start with `fractal-setup`.
-- If the task configures or checks write scope, start with `fractal-scope`.
+- If the task bootstraps fractal docs or repairs generated scope runtime files, start with `fractal-setup`.
+- If the task configures or checks write scope, use the consuming project's local `fractal-scope`; if it is absent, bootstrap it with `fractal-setup`.
 - If the task asks for repo-wide health findings without fixes, start with `fractal-audit`.
 - If the task changes **meaning**, start with `fractal-context`.
 - If the task needs a directory contract inferred or refreshed from local evidence, start with `fractal-agents-fill`.
