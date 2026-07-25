@@ -22,7 +22,7 @@ Run a report-only health scan across fractal docs and return prioritized repair 
 
 ## Default workflow
 
-1. Confirm `.agents/skills/fractal-scope/config.yaml` exists and the packaged `fractal-scope` checker is available.
+1. Confirm `.agents/skills/fractal-scope/config.yaml` and the project-local checker exist.
 2. Audit decision freshness and overlap risk.
 3. Audit `AGENTS.md` coverage by checking candidate directories with the scope checker.
 4. Audit root `Local Maps` drift against discovered Level 2 manifests.
@@ -46,7 +46,7 @@ The report must include:
 
 ## Pre-check
 
-Confirm `.agents/skills/fractal-scope/config.yaml` exists. If not found, this project is not a fractal-repo — report and exit. Use the packaged `fractal-scope` checker; do not require a copied checker script inside the consuming repo.
+Confirm `.agents/skills/fractal-scope/config.yaml` exists. If not found, this project is not a fractal-repo — report and exit. If the project-local checker is missing, stop and repair the runtime with `fractal-setup`.
 
 ## What it audits
 
@@ -65,7 +65,7 @@ For each decision skill under `.agents/skills/decision-*/`:
 For each candidate directory, run:
 
 ```bash
-node <fractal-scope-skill-root>/scripts/check-scope.js --config .agents/skills/fractal-scope/config.yaml --root . --path <directory>
+node .agents/skills/fractal-scope/scripts/check-scope.js --config .agents/skills/fractal-scope/config.yaml --root . --path <directory>
 ```
 
 Only audit directories where `l2_folder_manifest.status` is `matched`.

@@ -1,6 +1,6 @@
 ---
 name: "fractal-setup"
-description: "Load when bootstrapping a project's fractal documentation for the first time and emitting the project-level `.agents/skills/fractal-scope/config.yaml` consumed by other skills. Do not load for ongoing maintenance, audits, `AGENTS.md` filling, or external skill overrides"
+description: "Load when bootstrapping a project's fractal docs or repairing its generated `.agents/skills/fractal-scope/` runtime files. Do not load for scope configuration, audits, `AGENTS.md` filling, or external skill overrides."
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
@@ -10,14 +10,14 @@ metadata:
 
 # Fractal Setup
 
-Set up fractal documentation infrastructure in a target project in one pass, including the project-level `.agents/skills/fractal-scope/SKILL.md` and `.agents/skills/fractal-scope/config.yaml` outputs that downstream fractal skills use for gating.
+Set up fractal documentation infrastructure in a target project in one pass, including a self-contained project-local `.agents/skills/fractal-scope/` runtime skill used by downstream fractal skills for gating.
 
-Use `assets/fractal-scope-template.md` as the generated config template and `assets/fractal-scope-runtime-skill-template.md` as the minimal runtime skill template. Do not copy `../fractal-scope/scripts/check-scope.js` into the consuming repository; downstream skills call the packaged `fractal-scope` checker with the consuming repo config path.
+Use `assets/fractal-scope/` as the deployable runtime template. Copy it into the consuming project and rename `SKILL.template.md` to `SKILL.md` so scope behavior and project-owned configuration stay together without exposing another source skill to recursive discovery.
 
 ## What this does
 
 1. Create the `docs/` directory structure
-2. Generate `.agents/skills/fractal-scope/SKILL.md` and `.agents/skills/fractal-scope/config.yaml` at the target project root (L2/L3 write scope configuration)
+2. Initialize `.agents/skills/fractal-scope/` from `assets/fractal-scope/`, including `SKILL.md`, `config.yaml`, references, and the deterministic checker
 3. Do not write root `AGENTS.md` (each coding agent initializes its own)
 
 ## Directory layout
@@ -34,8 +34,11 @@ your-project/
 └── .agents/
     └── skills/
         ├── fractal-scope/
-        │   ├── SKILL.md      # minimal runtime marker and config notes
-        │   └── config.yaml   # scope gate configuration
+        │   ├── SKILL.md      # project-local scope behavior
+        │   ├── config.yaml   # project-owned scope configuration
+        │   ├── assets/       # runtime command examples
+        │   ├── references/   # matching semantics
+        │   └── scripts/      # deterministic checker and self-test
         └── decision-*/       # auto-generated decision skills (by decision-capture)
 ```
 
@@ -44,15 +47,15 @@ at `.agents/skills/decision-{slug}/SKILL.md`, managed by `decision-capture`.
 
 ## Workflow
 
-1. Confirm target project root (`pwd` or user-specified)
-2. Create `.agents/skills/fractal-scope/` directory
-3. Check if `.agents/skills/fractal-scope/SKILL.md` or `config.yaml` already exists
-   - Exists → report "fractal docs already set up", ask whether to regenerate the scope skill and config
-   - Not found → continue
-4. Create the 5 directories above under `docs/` (skip existing)
-5. Generate `.agents/skills/fractal-scope/SKILL.md` from `assets/fractal-scope-runtime-skill-template.md` and `config.yaml` from `assets/fractal-scope-template.md`
-6. Ask whether to configure L2/L3 scope now or edit manually later
-7. If the consuming repo uses `docs/agents/domain.md` for external execution-skill guidance, offer the fractal domain-language bridge below
+1. Confirm the target project root (`pwd` or user-specified).
+2. Inspect `.agents/skills/fractal-scope/` before writing.
+   - Missing directory: copy the complete `assets/fractal-scope/` runtime template, rename `SKILL.template.md` to `SKILL.md`, and leave no template file in the generated directory.
+   - Existing directory: report that fractal docs are already set up and preserve `config.yaml`.
+   - Missing or outdated managed runtime files: summarize the repair and ask before refreshing `SKILL.md`, `assets/`, `references/`, or `scripts/`.
+   - Missing `config.yaml`: ask before creating it from `assets/fractal-scope/config.yaml`; never overwrite an existing config.
+3. Create the five directories above under `docs/` (skip existing).
+4. Ask whether to configure L2/L3 scope now or edit manually later.
+5. If the consuming repo uses `docs/agents/domain.md` for external execution-skill guidance, offer the fractal domain-language bridge below.
 
 ## Matt Pocock-style domain docs bridge
 
@@ -68,12 +71,12 @@ This is compatibility guidance, not enforcement. It affects skills that read `do
 
 ## Support files
 
-- `assets/fractal-scope-template.md` — generated `config.yaml` defaults
-- `assets/fractal-scope-runtime-skill-template.md` — generated minimal runtime `SKILL.md`
+- `assets/fractal-scope/` — complete project-local runtime template; emit `SKILL.template.md` as `SKILL.md`
 
 ## Gotchas
 
-- This is idempotent: existing directories and files are not overwritten
+- Existing `config.yaml` files are never overwritten
+- Managed runtime files are refreshed only after explicit confirmation
 - `l3_file_header.enabled` and `l2_folder_manifest.enabled` default to `false`; user must enable manually
 - Do not run in non-project directories (e.g. home, tmp)
 - `docs/decisions/` is intentionally absent — decisions live as `.agents/skills/decision-*/SKILL.md`

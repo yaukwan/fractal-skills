@@ -6,7 +6,6 @@ const path = require("path");
 
 const DEFAULT_CONFIG_CANDIDATES = [
   path.join(process.cwd(), ".agents", "skills", "fractal-scope", "config.yaml"),
-  path.join(process.cwd(), "skills", "fractal-scope", "config.yaml"),
   path.join(__dirname, "..", "config.yaml"),
 ];
 
@@ -19,7 +18,7 @@ Usage:
   node scripts/check-scope.js [--config <path>] [--root <project-root>] [--path <path> ...] [--json]
 
 Options:
-  --config <path>  Path to config.yaml. Defaults to the current project's config if present, then the package config.
+  --config <path>  Path to config.yaml. Defaults to the current project's config, then the config beside this checker.
   --root <path>    Project root used to relativize checked paths.
   --path <path>    Path to check. Repeat or pass positional paths.
   --json           Emit machine-readable JSON.
@@ -105,7 +104,7 @@ function resolveDefaultConfigPath() {
 function inferProjectRoot(configPath) {
   const absoluteConfigPath = path.resolve(configPath);
   const normalizedConfigPath = absoluteConfigPath.replace(/\\/g, "/");
-  const markers = ["/.agents/skills/fractal-scope/", "/skills/fractal-scope/"];
+  const markers = ["/.agents/skills/fractal-scope/"];
 
   for (const marker of markers) {
     const index = normalizedConfigPath.lastIndexOf(marker);

@@ -3,20 +3,21 @@
 
 ## Project
 - Phase: skill-source-maintenance
-- Last Reviewed: 2026-06-01
+- Last Reviewed: 2026-07-25
 - Primary Domains: skill source files, skill packaging, OpenCode reference agents
 
 ## Topology
 - `skills/`: source skill definitions, skill-local assets, and deterministic helpers
-- `skills/fractal-scope/`: source package for the fractal-scope skill and its default config
+- `skills/fractal-setup/assets/fractal-scope/`: embedded template for the generated project-local scope runtime
 - `opencode-agents/`: reference agent definitions packaged with the repo
 - `scripts/`: install and packaging utilities
 - `AGENTS.template.md`: template used by `scripts/install.js` to generate a user-local OpenCode `AGENTS.md`
 
 ## Local Maps
-- `skills/fractal-scope/SKILL.md`: source skill definition for project-local fractal scope setup
-- `skills/fractal-scope/config.yaml`: packaged default scope-gate config used by the skill
-- `skills/fractal-setup/SKILL.md`: one-time bootstrap helper for docs layout and scope config
+- `skills/fractal-setup/SKILL.md`: bootstrap and repair authority for docs layout and the project-local scope runtime
+- `skills/fractal-setup/assets/fractal-scope/SKILL.template.md`: generated runtime behavior template
+- `skills/fractal-setup/assets/fractal-scope/config.yaml`: default project-owned scope configuration
+- `skills/fractal-setup/assets/fractal-scope/scripts/check-scope.js`: deterministic local scope matcher
 - `skills/fractal-repo/SKILL.md`: repo-level document topology and lifecycle rules
 - `skills/fractal-agents-fill/SKILL.md`: local contract capture for directories
 - `skills/fractal-context/SKILL.md`: Level 1/2/3 schema semantics
@@ -32,4 +33,4 @@
 - Do not treat consuming-project `.agents/skills/` as repo-owned output.
 
 ## Active Context
-- `skills/fractal-scope/`: source package for the project-local fractal-scope skill and its independent config template
+- `skills/fractal-setup/`: source authority and embedded template for the generated project-local scope runtime
