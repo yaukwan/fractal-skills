@@ -79,7 +79,7 @@ The `BUILD` stage has no Fractal-specific skill by design. It is the handoff poi
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — Full decision lifecycle for the current task. Checks whether existing decision skills still cover the truth, then creates, updates, supersedes, or merges decision skills so current design authority is unambiguous. Decisions live at `.agents/skills/decision-*/SKILL.md`.
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — Generate executable task specifications from a PRD, resolved context, or conversation context. Groups tasks by functional domain, inherits decision constraints, and produces verifiable acceptance criteria.
 - **[postmortem](./skills/postmortem/SKILL.md)** — Structured root-cause records for bugs, regressions, and incidents. Records symptom, impact, root cause, fix applied, verification, and prevention steps. Required when the primary task nature is defect correction.
-- **[skill-design-guidelines](./skills/skill-design-guidelines/SKILL.md)** — Skill authoring and maintenance guidance. Validates routing descriptions, progressive loading, support-file layout, and eval coverage.
+- **[skill-design-guidelines](./skills/skill-design-guidelines/SKILL.md)** — Independent Agent Skills authoring and maintenance guidance. Covers invocation design, predictable execution, completion criteria, progressive disclosure, pruning, temporary prompt validation, and portable structural checks.
 
 ## Orchestration Flow
 

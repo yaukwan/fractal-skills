@@ -123,7 +123,7 @@ Return exactly one primary action:
 
 Use `references/authority-rules.md` for admission and rejection details.
 Use `references/freshness-and-supersession.md` when code changes may have invalidated existing authority.
-Use `references/skill-sync-rules.md` for generated skill format, routing description, eval fixture, and lifecycle mechanics.
+Use `references/skill-sync-rules.md` for generated skill format, routing description, and lifecycle mechanics.
 
 ## Gotchas
 

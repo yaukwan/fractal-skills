@@ -1,105 +1,159 @@
 # Skill Anti-Patterns
 
-Use this file during review when a skill feels bloated, vague, or unreliable.
+Read this reference when a skill is difficult to route, inconsistent in execution, bloated, or expensive to maintain.
 
-## 1. Documentation cosplay
+## 1. No-op instruction
 
-The skill reads like a README for humans.
+The skill repeats behavior the model already performs reliably.
 
-Symptoms:
+Signals:
 
-- long background sections
-- detailed installation/tutorial prose
-- repeated explanations of common tools
+- generic advice such as `be clear` or `be thorough`
+- textbook explanations with no task-specific consequence
+- process narration that does not change a decision
 
-Fix:
+Correction:
 
-- remove generic explanations
-- keep only behavior-changing guidance
+- delete the instruction
+- if behavior still varies, replace it with a checkable completion criterion or a stronger domain rule
 
-## 2. Command spam
+## 2. Duplication
 
-The skill hardcodes exact command sequences the model already knows.
+The same meaning has multiple authoritative homes.
 
-Symptoms:
+Signals:
 
-- numbered shell commands for common tasks
-- rigid paths that break when reality differs
+- routing rules repeated in the description, body, checklist, and README
+- a triad restated with different wording across several sections
+- updates that require synchronized edits to multiple files
 
-Fix:
+Correction:
 
-- rewrite as goals, constraints, and fallback rules
+- choose one source of truth
+- replace copies with a compact term or context pointer
 
-## 3. Feature-summary description
+## 3. Sediment
 
-The description says what the skill does, not when to load it.
+Old guidance remains after the skill's contract changes.
 
-Symptoms:
+Signals:
 
-- starts with "This skill helps..."
-- reads like catalog copy
+- dated reviews describe files or behavior that no longer exist
+- historical decisions appear as current instructions
+- a section survives because nobody can explain whether it is still needed
 
-Fix:
+Correction:
 
-- start with `Load when...`
-- phrase triggers in user language
+- delete stale current-state material
+- retain genuine history only in a changelog or archival source
 
-## 4. Missing boundaries
+## 4. Feature-summary description
 
-The skill sounds useful for too many requests.
+The description explains capabilities but does not let the agent choose the skill reliably.
 
-Symptoms:
+Signals:
 
-- overlap with adjacent skills
-- frequent false-positive routing
+- catalog copy such as `helps with project work`
+- implementation details without user intent
+- many synonyms for one branch but no distinct branch coverage
 
-Fix:
+Correction:
 
-- add explicit non-goals and neighbor boundaries
-- add negative evals
+- state the owned task class and when it applies
+- keep one trigger per branch
+- add a nearby boundary only where confusion is plausible
 
-## 5. Root-file obesity
+## 5. Weak context pointer
 
-The main `SKILL.md` carries everything.
+A referenced file exists, but the agent cannot tell when or why to read it.
 
-Symptoms:
+Signals:
 
-- long walls of examples
-- schemas embedded inline
-- edge cases mixed into the happy path
+- bare lists of filenames
+- `see reference.md for details`
+- required behavior hidden behind an optional-sounding pointer
 
-Fix:
+Correction:
 
-- move deep material to `references/`
-- move templates to `assets/`
-- keep root focused on routing and operating rules
+- name the condition that activates the pointer
+- state what the file contributes to the current task
+- inline the rule if every branch needs it
 
-## 6. No gotchas
+## 6. Root sprawl
 
-The skill describes the happy path only.
+`SKILL.md` carries conditional detail needed by only a subset of runs.
 
-Symptoms:
+Signals:
 
-- no warnings
-- no failure branches
-- no common mistakes recorded
+- long variant-specific examples interrupt the main process
+- schemas or source articles dominate the root file
+- agents must scan unrelated branches before acting
 
-Fix:
+Correction:
 
-- add negative examples
-- add failure handling and boundary rules
+- disclose branch-specific reference behind explicit pointers
+- keep universal steps and rules inline
+- split by sequence only when premature completion is observed
 
-## 7. No eval thinking
+## 7. Vague completion
 
-The skill exists, but there is no proof it routes or improves correctly.
+An ordered step lacks a checkable stopping rule.
 
-Symptoms:
+Signals:
 
-- no positive test prompts
-- no negative routing tests
-- no history of known failure cases
+- `review the code`, `understand the context`, or `validate the result`
+- later steps begin before all affected branches or files are accounted for
+- repeated partial completion across runs
 
-Fix:
+Correction:
 
-- add routing evals first
-- maintain them as regressions appear
+- define observable completion
+- make the bound exhaustive where omissions are costly
+- hide later steps only if a clear bound still fails to prevent rushing
+
+## 8. Prohibition-only steering
+
+The skill names an unwanted behavior without making the target behavior salient.
+
+Signals:
+
+- long lists of `do not` rules
+- the correct replacement is left implicit
+- the prohibited pattern appears more often after the warning
+
+Correction:
+
+- lead with the desired behavior
+- retain a prohibition only as a hard guardrail
+- pair each retained guardrail with the required alternative
+
+## 9. Optional-directory theater
+
+The skill creates or requires support directories without content that earns them.
+
+Signals:
+
+- empty `scripts/`, `references/`, or `assets/`
+- validators warn about absent optional directories
+- templates prescribe a full tree for every skill
+
+Correction:
+
+- create support files only for real callers
+- validate optional content when present, not directory presence itself
+
+## 10. Validation theater
+
+A structural pass is treated as evidence that the skill routes and executes correctly.
+
+Signals:
+
+- a linter result substitutes for representative prompts
+- routing quality is inferred from description syntax
+- ambiguous cases are recorded as `may trigger` rather than resolved
+
+Correction:
+
+- separate structural validation from behavioral judgment
+- exercise realistic intended and near-miss prompts temporarily
+- turn observed failures into durable contract changes

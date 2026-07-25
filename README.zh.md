@@ -79,7 +79,7 @@ Fractal Skills 是**知识基底层**：维护 `AGENTS.md` 遍历上下文、当
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — 当前任务的完整决策生命周期。检查现有决策 skill 是否仍然覆盖当前真相，然后创建、更新、取代或合并决策 skill，确保设计权威无可争议。决策文件位于 `.agents/skills/decision-*/SKILL.md`。
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — 从 PRD、已解决上下文或对话上下文中生成可执行的任务规格文档。按功能域分组任务，继承决策约束，产出可验证的验收标准。
 - **[postmortem](./skills/postmortem/SKILL.md)** — 为 bug、回归、故障产出结构化的根因记录。记录症状、影响、根因、修复方案、验证方式和预防措施。任务主要性质为缺陷修复时必须产出。
-- **[skill-design-guidelines](./skills/skill-design-guidelines/SKILL.md)** — skill 编写与维护准则。校验路由描述、渐进加载、支持文件布局和 eval 覆盖。
+- **[skill-design-guidelines](./skills/skill-design-guidelines/SKILL.md)** — 独立的 Agent Skills 编写与维护准则，覆盖调用设计、可预测执行、完成条件、渐进披露、内容裁剪、临时 prompt 验证与可移植结构检查。
 
 ## 编排流程
 

@@ -14,6 +14,8 @@ All notable changes to the fractal-skills collection are documented here.
 - Updated `fractal-setup` to generate `scripts/check-scope.js` with the runtime `fractal-scope` skill.
 - Standardized postmortem placement on `docs/postmortem/`.
 - Documented the current 10-skill inventory and made `skill-design-guidelines` portable for packaged use.
+- Reworked `skill-design-guidelines` around the Agent Skills common contract, predictable execution, explicit completion criteria, and temporary prompt validation.
+- Removed committed skill eval fixtures and their generation contract; structural validation now checks only portable, deterministic requirements.
 
 ### decision-capture (1.1 → 2.0)
 

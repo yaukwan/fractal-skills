@@ -1,58 +1,58 @@
 # Skill Review Rubric
 
-Score each category from 1 to 5.
+Score each category from 1 to 5. A structural lint pass is a prerequisite, not a scored category.
 
-## 1. Routing Precision
-
-### 5
-Description is concise, trigger-oriented, grounded in user intent, and has clear boundaries.
-
-### 3
-Description is mostly usable but somewhat generic or slightly overlaps neighboring skills.
-
-### 1
-Description is a feature summary, vague, or likely to cause false positives.
-
-## 2. Body Signal Density
+## 1. Invocation Predictability
 
 ### 5
-Nearly every sentence changes model behavior or preserves quality under ambiguity.
+The owned task class, invocation mode, distinct branches, and realistic boundaries let the agent select the skill consistently.
 
 ### 3
-Useful overall, but includes generic explanation or some obvious content.
+The main intent is recognizable, but some branches overlap, duplicate synonyms, or rely on harness assumptions.
 
 ### 1
-Mostly documentation, background, or redundant instructions.
+The description is generic capability copy or the skill has no coherent invocation contract.
 
-## 3. Gotchas and Boundaries
+## 2. Execution Predictability
 
 ### 5
-Includes common mistakes, negative examples, and neighboring-skill boundaries.
+The body makes consequential decisions explicit, handles failure, and drives the same process across varied inputs.
 
 ### 3
-Includes some warnings but misses major failure modes.
+The happy path is usable, but important decisions or recovery behavior remain implicit.
 
 ### 1
-Only describes the happy path.
+The body is mostly exposition, generic advice, or brittle command narration.
 
-## 4. Progressive Structure
+## 3. Completion Quality
 
 ### 5
-Root is lean; heavy material is correctly split into support files.
+Every ordered step has a checkable stopping rule, with exhaustive bounds where omissions are costly.
 
 ### 3
-Some splitting exists, but the root still carries too much.
+Most steps are bounded, but some allow early or partial completion.
 
 ### 1
-Everything is flattened into one large root file.
+The process relies on vague goals such as `review`, `understand`, or `validate` without observable completion.
 
-## 5. Evaluation Readiness
+## 4. Information Hierarchy
 
 ### 5
-Positive, negative, and boundary-routing evals exist and clearly test intended behavior.
+Universal rules are inline, conditional material is disclosed through precise pointers, and every support file has a real caller.
 
 ### 3
-Some test prompts exist but do not meaningfully cover failure and confusion cases.
+The layout is usable but contains weak pointers, unnecessary scaffolding, or misplaced branch detail.
 
 ### 1
-No clear eval coverage.
+Required behavior is hidden, the root sprawls across unrelated branches, or support files are decorative.
+
+## 5. Maintenance Discipline
+
+### 5
+The skill has one source of truth per meaning, no stale sediment, strong positive steering, and representative temporary validation.
+
+### 3
+The skill is mostly current but carries some duplication, no-ops, or untested near-misses.
+
+### 1
+Static validation substitutes for behavior review, or stale and duplicated guidance makes the contract unreliable.
