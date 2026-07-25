@@ -1,302 +1,212 @@
 ---
 name: skill-design-guidelines
-description: Load when creating, reviewing, refining, or maintaining agent skills, especially for SKILL.md design, routing descriptions, progressive loading, skill evals, or skill folder structure. Do not load for generic coding, article summarization, or unrelated documentation tasks.
+description: Load when creating, reviewing, refining, or maintaining Agent Skills, especially for invocation design, SKILL.md structure, progressive disclosure, completion criteria, validation, or pruning. Do not load for unrelated documentation or coding tasks.
 license: Apache-2.0
 metadata:
   author: Alma
-  version: "1.0.1"
-  source: "Perplexity article: Designing, Refining, and Maintaining Agent Skills at Perplexity"
+  version: "2.0.0"
+  sources: "Perplexity: Designing, Refining, and Maintaining Agent Skills; Matt Pocock: writing-great-skills (MIT)"
 ---
 
 # Skill Design Guidelines
 
-Design skills as **model-facing context engineering**, not human-facing documentation.
+Design skills to make an agent follow a **predictable process**. Predictability means stable decisions and execution paths, not identical outputs.
 
-A good skill should change behavior in places where the base model would otherwise:
+For every instruction, ask:
 
-- misroute
-- be inconsistent
-- miss domain judgment
-- forget gotchas
-- follow a brittle default path
+> Would the agent behave differently without this?
 
-For every sentence, ask:
+Remove instructions that fail that test.
 
-> Would the agent get this wrong without this instruction?
+## Authority
 
-If not, delete it.
+Use the Agent Skills specification as the portable baseline:
 
-## What a skill is
+- a skill directory contains `SKILL.md`
+- `SKILL.md` has valid `name` and `description` frontmatter
+- the body contains instructions loaded when the skill activates
+- supporting files are optional and loaded or executed only when needed
 
-A skill is:
+Invocation controls beyond this baseline are harness-specific. Verify the target harness before using fields such as `disable-model-invocation` or external policy files.
 
-1. a directory
-2. a routing entry (`name` + `description`)
-3. an invocable module
-4. a progressively loaded context bundle
+## Design dimensions
 
-## What to optimize for
+### Invocation
 
-### 1. Routing precision first
+Choose the invocation mode before writing the body:
 
-The `description` is a routing trigger. It says **when to load**, not **what the skill does**.
+- **Model-invoked**: the agent must discover the skill from the request. The description needs precise routing branches.
+- **User-invoked**: the user deliberately selects the skill. Use this only when the target harness supports hiding it from model discovery.
 
-Good:
+A model-facing description has two jobs:
 
-- `Load when the user wants PR babysitting, CI watching, or help ensuring a PR lands cleanly.`
+1. identify what class of work the skill owns
+2. state when each distinct branch should activate
 
-Bad:
+Use one trigger per real branch. Collapse synonyms that describe the same branch. Add a nearby boundary only where another skill or ordinary model behavior could plausibly win the request.
 
-- `This skill monitors pull requests and CI workflows.`
+`Load when...` is a useful project convention, not a portable syntax requirement.
 
-Checklist:
+### Information hierarchy
 
-- start with `Load when...`
-- prefer real user phrasing
-- keep it short
-- describe intent, not implementation
-- mention nearby boundary if confusion risk is high
+Arrange content by when the agent needs it:
 
-### 2. High signal per token
+1. **Steps in `SKILL.md`**: ordered actions needed on every relevant run
+2. **Reference in `SKILL.md`**: rules and facts every branch needs
+3. **Referenced files**: conditional or branch-specific material
 
-Skip what the model already knows.
+Move material behind a context pointer when only some branches need it. Keep universally required rules inline even when they are long enough to be inconvenient.
 
-Do **not** waste body text on obvious command sequences, generic workflows, or textbook explanations.
+A context pointer must say:
 
-Bad:
+- when to read or run the target
+- what the target contains or produces
+- how it affects the current task
 
-- `git log; git checkout main; git checkout -b clean-branch; git cherry-pick ...`
+Use paths relative to the skill root. Keep a concept's rules, caveats, and examples together.
 
-Better:
+### Runtime files
 
-- `Cherry-pick onto a clean branch. Resolve conflicts preserving intent. If it cannot land cleanly, explain why.`
-
-### 3. Put rare value in the skill
-
-The most valuable content is usually:
-
-- gotchas
-- negative examples
-- boundary rules with adjacent skills
-- failure handling
-- judgment calls, taste, or organization-specific preferences
-
-### 4. Keep root light, expand progressively
-
-Heavy or conditional material belongs in support files, not in the root body.
-
-## Recommended layout
+Only `SKILL.md` is required. Add other directories when they carry real content:
 
 ```text
 skill-name/
 ├── SKILL.md
-├── references/
-│   └── deep docs, edge cases, domain notes
-├── assets/
-│   └── templates, schemas, review checklists
-├── scripts/
-│   └── deterministic helpers
-└── evals/
-    └── evals.json
+├── references/   # conditional documentation
+├── assets/       # templates or output resources
+└── scripts/      # deterministic or repeated operations
 ```
 
-Use each part like this:
+An absent optional directory is not a defect. Empty scaffolding adds maintenance without changing behavior.
 
-- `SKILL.md` — routing + core operating rules
-- `references/` — long documents read only when relevant
-- `assets/` — templates, scorecards, schemas, examples
-- `scripts/` — logic the agent should run instead of recreating
-- `evals/` — positive and negative test prompts
+### Steps and completion
 
-## Context budget model
+Every ordered step needs a completion criterion. Prefer criteria that are:
 
-Think in three cost tiers:
+- **checkable**: the agent can distinguish done from not done
+- **exhaustive where needed**: all affected branches, files, or constraints are accounted for
 
-### Index tier
+Completion criteria control legwork. A vague instruction such as `review the skill` permits early exit; `account for every invocation branch and adjacent near-miss` sets a useful bound.
 
-`name + description`
+If an agent repeatedly rushes a step, sharpen its completion criterion first. Split the sequence only when the bound cannot be made clear and visible later steps are demonstrably pulling attention forward.
 
-- paid in every session
-- must be concise and sharply routed
+### Pruning
 
-### Load tier
+Keep each meaning in one authoritative place.
 
-root `SKILL.md`
+During every revision, remove:
 
-- paid once loaded
-- every paragraph must matter
+- **No-ops**: instructions the model already follows reliably
+- **Duplication**: the same rule expressed in multiple places
+- **Sediment**: stale guidance preserved only because deletion feels risky
+- **Sprawl**: live content placed too high in the hierarchy
+- **Prohibition-only steering**: a banned behavior named without a positive replacement
 
-### Runtime tier
-
-`references/`, `assets/`, `scripts/`, nested materials
-
-- paid only when used
-- best place for long references, templates, and edge-case logic
+Reserve prohibitions for hard guardrails. Pair them with the behavior the agent should perform instead.
 
 ## When a skill is warranted
 
-Create a skill when at least one is true:
+Create or retain a skill when at least one condition holds:
 
-- the task is regularly wrong without domain context
-- quality is too inconsistent run to run
-- the needed knowledge is durable but not in training
-- the workflow depends on team-specific conventions
-- output quality depends on taste or judgment the model lacks
+- the task is repeatedly misrouted
+- execution varies in a harmful way
+- durable domain judgment is missing from the base model
+- team-specific conventions materially affect the result
+- deterministic helper logic avoids repeated reinvention
 
-## When a skill is not warranted
+Prefer ordinary project documentation, code, or the base model when none of these conditions holds.
 
-Do not create a skill when:
+## Authoring process
 
-- the base model already handles it reliably
-- you are repeating system-prompt rules
-- the material changes too fast to maintain safely
-- the content is general documentation rather than behavior-shaping guidance
+### 1. Establish the contract
 
-## Writing workflow
+Identify:
 
-### Step 0 — Define evals first
+- target harness and compatibility constraints
+- owned task class
+- invocation mode
+- distinct invocation branches
+- nearest non-goals or competing skills
+- expected output or state change
 
-Collect:
+Complete this step when every branch has a clear owner and the remaining ambiguity would not change the skill's design.
 
-- positive routing prompts
-- negative routing prompts
-- known failure cases
-- neighbor-confusion prompts
+### 2. Write the description
 
-Negative examples are extremely valuable.
+Front-load the owned task class, then cover each branch once. Remove synonym lists and implementation details.
 
-### Step 1 — Write the description
+Complete this step when a reader can distinguish every intended trigger from its nearest plausible miss without opening the body.
 
-Template:
+### 3. Write the body
 
-```md
-Load when the user wants to <intent>, especially when they ask to <trigger-1>, <trigger-2>, or <trigger-3>. Do not load for <neighbor-case>.
-```
+Include only behavior-changing material:
 
-Target:
+- ordered steps and completion criteria
+- decisions the model cannot safely infer
+- failure recovery
+- organization-specific judgment
+- conditional context pointers
 
-- ideally under 50 words
-- grounded in real user language
-- precise enough not to steal adjacent requests
+Complete this step when every branch has enough instruction to finish and every ordered step has a stopping rule.
 
-### Step 2 — Write the body
+### 4. Place supporting material
 
-Include only:
+Move branch-specific reference, templates, and deterministic helpers into optional support files. Keep paths relative and pointers explicit.
 
-- purpose
-- default approach
-- decision rules
-- gotchas
-- failure handling
-- conditional reads into support files
+Complete this step when each support file has a real caller and no required rule is hidden behind an unreliable pointer.
 
-Avoid writing a rigid step-by-step shell script for tasks the model already knows how to execute.
+### 5. Validate with temporary prompts
 
-### Step 3 — Split heavy content
+Construct representative prompts during creation or review. Keep them temporary and remove them when validation is complete.
 
-Move content out of `SKILL.md` when it is:
+Cover, in proportion to routing risk:
 
-- long
-- conditional
-- infrequent
-- better as a template or schema
-- deterministic enough to encode in a script
+- at least one intended invocation per branch
+- realistic near-misses that should remain with the base model or another skill
+- ambiguous wording observed in real use
+- behavior cases for the highest-risk completion criteria
 
-### Step 4 — Iterate with evals
+Use an isolated session when the harness makes that practical. Otherwise, perform an explicit routing and behavior walkthrough. Convert failures into sharper descriptions, completion criteria, context pointers, or gotchas.
 
-Refine in this order:
+Complete this step when every branch and high-risk near-miss has been exercised or explicitly reasoned through.
 
-1. routing precision
-2. off-target activation
-3. gotchas and failure handling
-4. wording compression
-5. file structure and progressive reads
+### 6. Prune and finish
 
-Usually the best revision is not adding more text. It is making the text sharper.
+Run the no-op, duplication, sediment, and portability checks. Remove test scaffolding and temporary artifacts.
 
-## Review method
+Complete this step when each remaining sentence changes behavior, each meaning has one source of truth, and the skill passes structural validation.
 
-Review skills in this order.
+## Review order
 
-### Routing review
+Review in this order so later polish does not hide an earlier contract failure:
 
-Check whether:
+1. **Invocation**: ownership, branches, description, boundaries, harness compatibility
+2. **Execution**: ordered steps, decisions, failure recovery, completion criteria
+3. **Hierarchy**: inline rules, context pointers, optional support files, co-location
+4. **Pruning**: no-ops, duplication, sediment, sprawl, positive steering
+5. **Validation**: temporary positive, negative, near-miss, and high-risk behavior prompts
+6. **Structure**: portable frontmatter and file references
 
-- directory name exactly matches `name`
-- name is lowercase and hyphenated
-- description says when to load
-- description is short and trigger-oriented
-- description avoids workflow summary
-- description avoids stealing adjacent requests
+Use these assets when their format is useful:
 
-### Body review
+- `assets/skill-template.md` for a new draft
+- `assets/review-checklist.md` for a binary review pass
+- `assets/review-rubric.md` for a scored review
 
-Check whether:
+Read `references/anti-patterns.md` when a skill is bloated, unreliable, or difficult to route. Read `references/perplexity-original-article.md` only for source provenance or exact source nuance; it is not the current repository policy.
 
-- each sentence changes behavior
-- obvious knowledge has been removed
-- gotchas are present
-- failure cases are covered
-- judgments and preferences are explicit where needed
-- the instructions are principle-based, not brittle command spam
+## Structural validator
 
-### Structure review
-
-Check whether:
-
-- heavy content moved into `references/`
-- templates and checklists live in `assets/`
-- deterministic helpers belong in `scripts/`
-- hierarchy helps retrieval rather than causing indirection
-
-### Maintenance review
-
-Check whether:
-
-- evals include both positive and negative cases
-- new failures are turned into gotchas
-- fast-changing content is kept out
-- the skill is getting shorter and sharper over time
-
-## Use the support files
-
-For deeper material, read these directly:
-
-- `references/perplexity-method-summary.md`
-- `references/anti-patterns.md`
-- `references/perplexity-original-article.md` — full original markdown source; read only when exact wording or raw-source nuance matters
-- `assets/skill-template.md`
-- `assets/review-checklist.md`
-- `assets/review-rubric.md`
-
-## Validator
-
-Use the validator when you want a quick structural and routing sanity check for any skill.
-
-Run:
+Run the bundled linter after writing or reviewing a skill:
 
 ```bash
-python3 skills/skill-design-guidelines/scripts/validate_skill.py /path/to/skill
+python3 <skill-design-guidelines-root>/scripts/validate_skill.py /path/to/skill
 ```
 
-JSON mode:
+JSON output:
 
 ```bash
-python3 skills/skill-design-guidelines/scripts/validate_skill.py --json /path/to/skill
+python3 <skill-design-guidelines-root>/scripts/validate_skill.py --json /path/to/skill
 ```
 
-The validator checks:
-
-- directory name vs frontmatter `name`
-- lowercase-hyphenated naming
-- whether description starts with `Load when`
-- description length and explicit boundary hints
-- presence of `references/`, `assets/`, `scripts/`, and `evals/evals.json`
-- whether evals include both likely positive and likely negative routing cases
-- whether the root file points to support files
-
-## Fast heuristics
-
-- If it is easy to explain, the model probably already knows it.
-- If it is where the model gets confused, inconsistent, or sloppy, it probably belongs in the skill.
-- If the skill feels long, it is probably under-edited.
+The validator checks portable structural requirements. It does not prove routing quality, execution quality, or prompt coverage; those require the review and temporary validation steps above.

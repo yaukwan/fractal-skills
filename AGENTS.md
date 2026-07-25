@@ -7,7 +7,7 @@
 - Primary Domains: skill source files, skill packaging, OpenCode reference agents
 
 ## Topology
-- `skills/`: source skill definitions, skill-local assets, and eval fixtures
+- `skills/`: source skill definitions, skill-local assets, and deterministic helpers
 - `skills/fractal-scope/`: source package for the fractal-scope skill and its default config
 - `opencode-agents/`: reference agent definitions packaged with the repo
 - `scripts/`: install and packaging utilities

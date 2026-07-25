@@ -6,189 +6,233 @@ import sys
 from pathlib import Path
 
 
+NAME_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+FIELD_PATTERN = re.compile(r"^([A-Za-z0-9_-]+):(?:\s*(.*))?$")
+BLOCK_SCALAR_PATTERN = re.compile(r"^([>|])[-+]?$")
+OPTIONAL_DIRECTORIES = ("references", "assets", "scripts")
+
+
 def load_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def parse_frontmatter(text: str):
-    if not text.startswith('---\n'):
+def parse_scalar(value: str) -> str:
+    value = value.strip()
+    if len(value) >= 2 and value[0] == value[-1] == "'":
+        return value[1:-1].replace("''", "'")
+    if len(value) >= 2 and value[0] == value[-1] == '"':
+        try:
+            parsed = json.loads(value)
+            return parsed if isinstance(parsed, str) else value
+        except json.JSONDecodeError:
+            return value[1:-1]
+    return re.sub(r"\s+#.*$", "", value).strip()
+
+
+def parse_block_scalar(lines: list[str], start: int, style: str) -> tuple[str, int]:
+    block: list[str] = []
+    index = start
+
+    while index < len(lines):
+        line = lines[index]
+        if line and not line[0].isspace():
+            break
+        block.append(line)
+        index += 1
+
+    non_empty = [line for line in block if line.strip()]
+    indent = min((len(line) - len(line.lstrip()) for line in non_empty), default=0)
+    normalized = [line[indent:] if line.strip() else "" for line in block]
+
+    if style == "|":
+        value = "\n".join(normalized).strip()
+    else:
+        paragraphs: list[str] = []
+        current: list[str] = []
+        for line in normalized:
+            if line.strip():
+                current.append(line.strip())
+            elif current:
+                paragraphs.append(" ".join(current))
+                current = []
+        if current:
+            paragraphs.append(" ".join(current))
+        value = "\n\n".join(paragraphs).strip()
+
+    return value, index
+
+
+def parse_frontmatter(text: str) -> tuple[dict[str, str] | None, str]:
+    lines = text.lstrip("\ufeff").splitlines()
+    if not lines or lines[0].strip() != "---":
         return None, text
-    parts = text.split('---', 2)
-    if len(parts) < 3:
+
+    try:
+        end = next(index for index in range(1, len(lines)) if lines[index].strip() == "---")
+    except StopIteration:
         return None, text
-    raw = parts[1]
-    body = parts[2].lstrip('\n')
-    data = {}
-    current_parent = None
-    for line in raw.splitlines():
-        if not line.strip() or line.strip().startswith('#'):
+
+    frontmatter_lines = lines[1:end]
+    data: dict[str, str] = {}
+    index = 0
+
+    while index < len(frontmatter_lines):
+        line = frontmatter_lines[index]
+        if not line or line[0].isspace() or line.lstrip().startswith("#"):
+            index += 1
             continue
-        if re.match(r'^\s{2,}[A-Za-z0-9_-]+:\s*', line) and current_parent:
-            m = re.match(r'^\s{2,}([A-Za-z0-9_-]+):\s*(.*)$', line)
-            if m:
-                data.setdefault(current_parent, {})[m.group(1)] = m.group(2).strip().strip('"')
+
+        match = FIELD_PATTERN.match(line)
+        if not match:
+            index += 1
             continue
-        m = re.match(r'^([A-Za-z0-9_-]+):\s*(.*)$', line)
-        if m:
-            key, value = m.group(1), m.group(2).strip()
-            if value == '':
-                data[key] = {}
-                current_parent = key
-            else:
-                data[key] = value.strip('"')
-                current_parent = None
+
+        key = match.group(1)
+        raw_value = (match.group(2) or "").strip()
+        block_match = BLOCK_SCALAR_PATTERN.match(raw_value)
+        if block_match:
+            value, index = parse_block_scalar(frontmatter_lines, index + 1, block_match.group(1))
+            data[key] = value
+            continue
+
+        data[key] = parse_scalar(raw_value)
+        index += 1
+
+    body = "\n".join(lines[end + 1 :]).lstrip("\n")
     return data, body
 
 
-def result(level, code, message):
+def result(level: str, code: str, message: str) -> dict[str, str]:
     return {"level": level, "code": code, "message": message}
 
 
-def validate_skill(skill_dir: Path):
-    results = []
-    skill_md = skill_dir / 'SKILL.md'
+def validate_skill(skill_dir: Path) -> list[dict[str, str]]:
+    results: list[dict[str, str]] = []
+    skill_md = skill_dir / "SKILL.md"
     if not skill_md.exists():
-        results.append(result('error', 'missing-skill-md', 'Missing SKILL.md'))
-        return results
+        return [result("error", "missing-skill-md", "Missing SKILL.md")]
+    if not skill_md.is_file():
+        return [result("error", "invalid-skill-md", "SKILL.md is not a regular file")]
 
-    text = load_text(skill_md)
+    try:
+        text = load_text(skill_md)
+    except (OSError, UnicodeError) as error:
+        return [result("error", "unreadable-skill-md", f"Could not read SKILL.md: {error}")]
+
     frontmatter, body = parse_frontmatter(text)
     if frontmatter is None:
-        results.append(result('error', 'missing-frontmatter', 'SKILL.md is missing YAML frontmatter'))
-        return results
+        return [result("error", "missing-frontmatter", "SKILL.md is missing closed YAML frontmatter")]
 
-    name = frontmatter.get('name')
-    desc = frontmatter.get('description')
-    dir_name = skill_dir.name
+    name = frontmatter.get("name", "").strip()
+    description = frontmatter.get("description", "").strip()
+    directory_name = skill_dir.name
 
     if not name:
-        results.append(result('error', 'missing-name', 'Frontmatter missing name'))
+        results.append(result("error", "missing-name", "Frontmatter is missing a non-empty name"))
     else:
-        if name != dir_name:
-            results.append(result('error', 'name-mismatch', f"Frontmatter name '{name}' does not match directory '{dir_name}'"))
+        if NAME_PATTERN.fullmatch(name):
+            results.append(result("ok", "name-format", "Name follows the Agent Skills format"))
         else:
-            results.append(result('ok', 'name-match', 'Frontmatter name matches directory name'))
-        if not re.fullmatch(r'[a-z0-9-]+', name):
-            results.append(result('error', 'bad-name-format', 'Skill name must be lowercase letters, numbers, and hyphens only'))
+            results.append(
+                result(
+                    "error",
+                    "bad-name-format",
+                    "Name must contain lowercase letters or numbers separated by single hyphens",
+                )
+            )
+
+        if name == directory_name:
+            results.append(result("ok", "name-match", "Name matches the parent directory"))
         else:
-            results.append(result('ok', 'name-format', 'Skill name format is lowercase-hyphenated'))
+            results.append(
+                result(
+                    "error",
+                    "name-mismatch",
+                    f"Frontmatter name '{name}' does not match directory '{directory_name}'",
+                )
+            )
 
-    if not desc:
-        results.append(result('error', 'missing-description', 'Frontmatter missing description'))
+    if not description:
+        results.append(result("error", "missing-description", "Frontmatter is missing a non-empty description"))
+    elif len(description) > 1024:
+        results.append(
+            result(
+                "error",
+                "description-length",
+                f"Description is {len(description)} characters; the maximum is 1024",
+            )
+        )
     else:
-        word_count = len(desc.split())
-        if not desc.startswith('Load when'):
-            results.append(result('warn', 'description-prefix', 'Description should usually start with "Load when"'))
-        else:
-            results.append(result('ok', 'description-prefix', 'Description starts with "Load when"'))
-        if word_count > 50:
-            results.append(result('warn', 'description-length', f'Description is {word_count} words; target is ideally <= 50'))
-        else:
-            results.append(result('ok', 'description-length', f'Description length looks good ({word_count} words)'))
-        lowered = desc.lower()
-        if 'do not load' in lowered:
-            results.append(result('ok', 'description-boundary', 'Description includes an explicit non-goal / boundary'))
-        else:
-            results.append(result('warn', 'description-boundary', 'Description has no explicit non-goal; boundary may be too broad'))
-        weak_phrases = ['this skill', 'helps with', 'helps ', 'tool for']
-        if any(p in lowered for p in weak_phrases):
-            results.append(result('warn', 'description-generic', 'Description may read like a feature summary instead of a routing trigger'))
+        results.append(
+            result(
+                "ok",
+                "description-length",
+                f"Description length is valid ({len(description)} characters)",
+            )
+        )
 
-    body_words = len(body.split())
-    if body_words > 5000:
-        results.append(result('warn', 'body-length', f'Body is very long ({body_words} words); consider moving more into references/assets'))
+    body_lines = body.splitlines()
+    if len(body_lines) > 500:
+        results.append(
+            result(
+                "warn",
+                "body-length",
+                f"SKILL.md body is {len(body_lines)} lines; consider disclosing conditional material",
+            )
+        )
     else:
-        results.append(result('ok', 'body-length', f'Body length is reasonable ({body_words} words)'))
+        results.append(result("ok", "body-length", f"SKILL.md body is {len(body_lines)} lines"))
 
-    references_dir = skill_dir / 'references'
-    assets_dir = skill_dir / 'assets'
-    scripts_dir = skill_dir / 'scripts'
-    evals_file = skill_dir / 'evals' / 'evals.json'
-
-    if references_dir.exists() and any(references_dir.iterdir()):
-        results.append(result('ok', 'references', 'references/ exists with files'))
-    else:
-        results.append(result('warn', 'references', 'references/ missing or empty'))
-
-    if assets_dir.exists() and any(assets_dir.iterdir()):
-        results.append(result('ok', 'assets', 'assets/ exists with files'))
-    else:
-        results.append(result('warn', 'assets', 'assets/ missing or empty'))
-
-    if scripts_dir.exists() and any(scripts_dir.iterdir()):
-        results.append(result('ok', 'scripts', 'scripts/ exists with files'))
-    else:
-        results.append(result('warn', 'scripts', 'scripts/ missing or empty; fine unless deterministic helpers are needed'))
-
-    if evals_file.exists():
-        results.append(result('ok', 'evals-present', 'evals/evals.json exists'))
-        try:
-            data = json.loads(load_text(evals_file))
-            cases = data.get('cases', [])
-            if not isinstance(cases, list) or not cases:
-                results.append(result('error', 'evals-empty', 'evals.json has no cases'))
-            else:
-                results.append(result('ok', 'evals-count', f'evals.json contains {len(cases)} cases'))
-                neg = 0
-                pos = 0
-                for case in cases:
-                    exp = str(case.get('expected_output', '')).lower()
-                    exps = ' '.join(case.get('expectations', [])).lower()
-                    blob = exp + ' ' + exps
-                    if 'should not load' in blob or 'should not route' in blob:
-                        neg += 1
-                    else:
-                        pos += 1
-                if pos == 0:
-                    results.append(result('warn', 'evals-positive', 'No obvious positive routing cases detected'))
-                else:
-                    results.append(result('ok', 'evals-positive', f'Found {pos} likely positive cases'))
-                if neg == 0:
-                    results.append(result('warn', 'evals-negative', 'No obvious negative routing cases detected'))
-                else:
-                    results.append(result('ok', 'evals-negative', f'Found {neg} likely negative cases'))
-        except Exception as e:
-            results.append(result('error', 'evals-parse', f'Could not parse evals.json: {e}'))
-    else:
-        results.append(result('warn', 'evals-missing', 'evals/evals.json is missing'))
-
-    # Root-file hints based on support-file references
-    body_lower = body.lower()
-    if 'references/' in body_lower:
-        results.append(result('ok', 'body-support-links', 'Root body points to support files'))
-    else:
-        results.append(result('warn', 'body-support-links', 'Root body does not reference support files; progressive loading may be weak'))
+    for directory_name in OPTIONAL_DIRECTORIES:
+        directory = skill_dir / directory_name
+        if not directory.exists():
+            continue
+        if not directory.is_dir():
+            results.append(
+                result(
+                    "error",
+                    f"invalid-{directory_name}",
+                    f"{directory_name}/ exists but is not a directory",
+                )
+            )
+            continue
+        if not any(path.is_file() for path in directory.rglob("*")):
+            results.append(
+                result(
+                    "warn",
+                    f"empty-{directory_name}",
+                    f"{directory_name}/ exists but contains no files",
+                )
+            )
 
     return results
 
 
-def summarize(results):
-    counts = {'error': 0, 'warn': 0, 'ok': 0}
-    for r in results:
-        counts[r['level']] += 1
+def summarize(results: list[dict[str, str]]) -> dict[str, int]:
+    counts = {"error": 0, "warn": 0, "ok": 0}
+    for item in results:
+        counts[item["level"]] += 1
     return counts
 
 
-def main():
-    parser = argparse.ArgumentParser(description='Validate an Alma skill against practical design-guideline checks.')
-    parser.add_argument('skill_dir', nargs='?', default='.', help='Path to skill directory')
-    parser.add_argument('--json', action='store_true', help='Output JSON')
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Validate portable Agent Skills structure without judging semantic quality."
+    )
+    parser.add_argument("skill_dir", nargs="?", default=".", help="Path to a skill directory")
+    parser.add_argument("--json", action="store_true", help="Output JSON")
     args = parser.parse_args()
 
     skill_dir = Path(args.skill_dir).resolve()
     results = validate_skill(skill_dir)
     counts = summarize(results)
-    status = 'pass'
-    if counts['error']:
-        status = 'fail'
-    elif counts['warn']:
-        status = 'pass-with-warnings'
+    status = "fail" if counts["error"] else "pass-with-warnings" if counts["warn"] else "pass"
 
     payload = {
-        'skill_dir': str(skill_dir),
-        'status': status,
-        'summary': counts,
-        'results': results,
+        "skill_dir": str(skill_dir),
+        "status": status,
+        "summary": counts,
+        "results": results,
     }
 
     if args.json:
@@ -198,12 +242,12 @@ def main():
         print(f"Status: {status}")
         print(f"Summary: {counts['ok']} ok, {counts['warn']} warnings, {counts['error']} errors")
         print()
-        for r in results:
-            icon = {'ok': '✅', 'warn': '⚠️', 'error': '❌'}[r['level']]
-            print(f"{icon} [{r['code']}] {r['message']}")
+        labels = {"ok": "OK", "warn": "WARN", "error": "ERROR"}
+        for item in results:
+            print(f"[{labels[item['level']]}] [{item['code']}] {item['message']}")
 
-    sys.exit(1 if counts['error'] else 0)
+    sys.exit(1 if counts["error"] else 0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

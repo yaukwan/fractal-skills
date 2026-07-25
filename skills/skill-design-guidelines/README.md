@@ -1,3 +1,3 @@
 # Skill Design Guidelines
 
-Use this skill when designing or reviewing agent skills. It now includes a lightweight validator for checking frontmatter, routing description quality, support-file structure, and eval coverage.
+Independent guidance for creating, reviewing, refining, and structurally validating Agent Skills. The skill focuses on predictable invocation and execution, explicit completion criteria, progressive disclosure, pruning, and temporary prompt validation.

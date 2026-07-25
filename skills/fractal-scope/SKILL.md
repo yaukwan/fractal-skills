@@ -55,7 +55,6 @@ The checker reports, per level:
 - `<skill-root>/scripts/check-scope.js` — config reader and matcher helper.
 - `<skill-root>/references/scope-matching.md` — exact matching semantics and edge cases.
 - `<skill-root>/assets/quick-checks.md` — command snippets and example outputs.
-- `<skill-root>/evals/evals.json` — positive and negative routing prompts.
 
 ## Workflow
 

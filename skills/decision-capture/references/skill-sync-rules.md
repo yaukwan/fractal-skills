@@ -95,7 +95,7 @@ IS the source of truth.
 
 | Action | Skill Operation |
 |--------|----------------|
-| CREATE | Write `.agents/skills/decision-{slug}/SKILL.md` from template. If the decision touches ≥2 modules (from `## Boundaries`), also generate `evals/evals.json` with positive + negative routing examples. |
+| CREATE | Write `.agents/skills/decision-{slug}/SKILL.md` from template. |
 | UPDATE | Regenerate the full SKILL.md body. If `skill_description` exists in the decision's YAML frontmatter, preserve it; otherwise regenerate description. |
 | SUPERSEDE (old) | Modify SKILL.md: prefix `description` with `[SUPERSEDED]`; set `metadata.status` to `superseded`; set `metadata.superseded_by` to the new skill name. |
 | SUPERSEDE (new) | Same as CREATE. |
@@ -103,30 +103,6 @@ IS the source of truth.
 | MERGE (result) | Same as UPDATE. |
 | REJECT | If a skill exists at `.agents/skills/decision-{slug}/SKILL.md`, prefix description with `[ORPHANED]` and set `metadata.status` to `orphaned`. |
 | CURRENT | No operation. |
-
-## Evals Generation
-
-When `## Boundaries` lists ≥2 distinct modules, generate `evals/evals.json`:
-
-```json
-[
-  {
-    "type": "positive_routing",
-    "prompt": "I need to modify the {boundary_1} to support {extracted_from_context}.",
-    "expected_behavior": "Load decision-{slug} skill."
-  },
-  {
-    "type": "negative_routing",
-    "prompt": "Add a comment to the README.",
-    "expected_behavior": "Do NOT load decision-{slug} skill."
-  },
-  {
-    "type": "neighbor_confusion",
-    "prompt": "I need to refactor the {unrelated_module} directory.",
-    "expected_behavior": "Do NOT load decision-{slug} skill. This is general refactoring."
-  }
-]
-```
 
 ## Idempotency
 

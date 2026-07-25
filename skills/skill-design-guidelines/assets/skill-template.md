@@ -1,36 +1,50 @@
 ---
 name: my-skill
-description: Load when the user wants to <intent>, especially when they ask to <trigger-1>, <trigger-2>, or <trigger-3>. Do not load for <neighbor-case>.
+description: <What task class this skill owns and when each distinct branch should invoke it>
 ---
 
 # My Skill
 
 ## Purpose
 
-<What this skill changes that the base model does not do reliably enough>
+<State the behavior this skill makes more predictable than the base model.>
 
-## Default approach
+## Invocation
 
-<High-level approach. Prefer principles and priorities over brittle command-by-command instructions.>
+- Mode: <model-invoked or user-invoked, subject to target harness support>
+- Owned branches: <one entry per distinct branch>
+- Nearest boundaries: <only plausible competing tasks or skills>
+
+## Process
+
+### 1. <Action>
+
+<Behavior-changing instructions.>
+
+Completion: <checkable stopping condition>.
+
+### 2. <Action>
+
+<Behavior-changing instructions.>
+
+Completion: <checkable stopping condition>.
 
 ## Decision rules
 
-- When A, prefer ...
-- When B, do not ...
-- If C fails, switch to ...
+- When A, prefer ... because ...
+- When B, switch to ...
+- If C fails, recover by ...
 
-## Gotchas
+## Conditional resources
 
-- Do not ...
-- Common failure: ...
-- This skill is often confused with ...; the boundary is ...
+- When <condition>, read `references/<file>.md` for <decision or information>.
+- When <condition>, use `assets/<file>` as <input or output template>.
+- When <condition>, run `scripts/<file>` to <deterministic result>.
 
-## Conditional reads
+## Output contract
 
-- If ..., read `/absolute/path/to/references/...`
-- If ..., use `/absolute/path/to/assets/...`
-- If ..., run `/absolute/path/to/scripts/...`
+<Include only constraints that materially affect correctness or reviewability.>
 
-## Output expectations
+## Temporary validation
 
-<Only include format rules that materially affect quality>
+During creation or review, exercise each invocation branch, its nearest realistic miss, and the highest-risk completion criterion. Convert failures into the contract above; remove temporary artifacts before finishing.
