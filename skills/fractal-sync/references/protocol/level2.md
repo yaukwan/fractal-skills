@@ -25,6 +25,9 @@ Level 2 is the folder manifest layer. It describes what a folder owns and how it
 - Implementation:
 - Interfaces:
 
+## Skills
+- `.agents/skills/example/SKILL.md`: <when work in this module should load it>
+
 ## Language
 **Term**: <one or two sentence definition>
 _Avoid_: <synonym, ambiguous phrase>
@@ -39,6 +42,7 @@ _Avoid_: <synonym, ambiguous phrase>
 - `Constraints`: manual-only
 - `Members`: replace-on-sync
 - `Docs`: merge-on-sync
+- `Skills`: replace-on-sync
 - `Language`: manual-only
 - `Exceptions`: append-only
 
@@ -46,8 +50,9 @@ _Avoid_: <synonym, ambiguous phrase>
 
 - `Members` must summarize folder-level responsibilities, not act as a per-file inventory.
 - Prefer subfolders, bounded contexts, capabilities, or ownership groups as `Members` entries.
+- `Skills` lists only project-local skills relevant to this bounded context, with a concrete trigger for each pointer.
 - Keep this manifest focused on current ownership, not history.
 - Use `Language` for domain vocabulary owned by this bounded context. It is the fractal-native glossary source; do not create `CONTEXT.md` for fractal-managed language.
 - Do not add `Dependencies` unless the repository has a strong local convention that truly uses them.
-- Do not add local `Review Triggers`; the fractal-context protocol already defines when Level 2 must be revisited.
+- Do not add local `Review Triggers`; the fractal-sync workflow already defines when Level 2 must be revisited.
 - Treat domain language as intent, not code-derived fact. Code exploration may reveal candidate terms, but resolved vocabulary requires user or existing-doc authority.

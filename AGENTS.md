@@ -18,9 +18,8 @@
 - `skills/fractal-setup/assets/fractal-scope/SKILL.template.md`: generated runtime behavior template
 - `skills/fractal-setup/assets/fractal-scope/config.yaml`: default project-owned scope configuration
 - `skills/fractal-setup/assets/fractal-scope/scripts/check-scope.js`: deterministic local scope matcher
-- `skills/fractal-repo/SKILL.md`: repo-level document topology and lifecycle rules
-- `skills/fractal-agents-fill/SKILL.md`: local contract capture for directories
-- `skills/fractal-context/SKILL.md`: Level 1/2/3 schema semantics
+- `skills/fractal-agents-fill/SKILL.md`: target-module and project-wide contract extraction into local `AGENTS.md`
+- `skills/fractal-sync/SKILL.md`: bidirectional code/document synchronization, Level 1/2/3 semantics, and repository lifecycle
 - `skills/decision-capture/SKILL.md`: decision lifecycle and authority split
 - `skills/to-task-specs/SKILL.md`: spec generation behavior controlled by the fractal scope config
 - `skills/postmortem/SKILL.md`: bugfix and incident root-cause records
@@ -33,4 +32,4 @@
 - Do not treat consuming-project `.agents/skills/` as repo-owned output.
 
 ## Active Context
-- `skills/fractal-setup/`: source authority and embedded template for the generated project-local scope runtime
+- `skills/fractal-agents-fill/`: source authority for target-module and project-wide contract extraction

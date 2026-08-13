@@ -16,25 +16,15 @@ Use this map when tasks touch multiple adjacent documentation skills.
   - Owns deterministic matching via `.agents/skills/fractal-scope/scripts/check-scope.js`
   - Owns scope configuration and match inspection inside the consuming project
 
-- `fractal-audit` — report-only health authority
-  - Owns stale decision, stale/missing `AGENTS.md`, and lane-placement reports
-  - Owns prioritizing repair findings without applying fixes
-  - Does not own the remediation content for each finding
+- `fractal-sync` — synchronization authority
+  - Owns Level 1/2/3 semantics and repository document topology
+  - Owns bidirectional code/document ripple synchronization
+  - Owns placement, naming, indexing, and lifecycle transitions
 
-- `fractal-context` — schema authority
-  - Owns Level 1/2/3 semantics
-  - Owns file header and AGENTS.md contract meaning
-  - Owns ripple rules for semantic changes
-
-- `fractal-agents-fill` — local contract capture authority
-  - Owns creating or refreshing directory `AGENTS.md` from code, nearby docs, and current task evidence
-  - Owns clarifying ambiguous local ownership or constraints one blocker at a time
-  - Owns conservative local-manifest writing when the contract is clear
-
-- `fractal-repo` — placement authority
-  - Owns repo topology
-  - Owns document placement, naming, indexing, and lifecycle transitions
-  - Owns root/local AGENTS.md navigation strategy at repo topology level
+- `fractal-agents-fill` — module contract extraction authority
+  - Owns extracting and writing module contracts from a supplied project or module path
+  - Owns target-module extraction and project-wide module discovery
+  - Owns conservative `AGENTS.md` merging, module-relevant skill pointers, and blocked-boundary reporting
 
 - `postmortem` — content-quality authority
   - Owns defect-vs-feature judgment for reusable incident records
@@ -44,10 +34,8 @@ Use this map when tasks touch multiple adjacent documentation skills.
 
 - If the task bootstraps fractal docs or repairs generated scope runtime files, start with `fractal-setup`.
 - If the task configures or checks write scope, use the consuming project's local `fractal-scope`; if it is absent, bootstrap it with `fractal-setup`.
-- If the task asks for repo-wide health findings without fixes, start with `fractal-audit`.
-- If the task changes **meaning**, start with `fractal-context`.
-- If the task needs a directory contract inferred or refreshed from local evidence, start with `fractal-agents-fill`.
-- If the task changes **where docs live or how they are linked**, start with `fractal-repo`.
+- If code or documentation changed, use `fractal-sync` to reconcile both views.
+- If the task needs one or all module contracts extracted or refreshed from project evidence, start with `fractal-agents-fill`.
 - If the task changes **what incident knowledge must be captured**, start with `postmortem`.
 
 ## Mixed-task rule

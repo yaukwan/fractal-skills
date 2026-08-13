@@ -27,8 +27,7 @@ Do not use for: pure new feature / pure visual polish / behavior-preserving refa
 
 This skill owns **content-quality authority**: whether this defect work deserves a postmortem, and to what quality standard.
 
-- placement / naming / indexing / lifecycle → `fractal-repo`
-- header / AGENTS.md schema semantics → `fractal-context`
+- placement / naming / indexing / lifecycle and AGENTS.md synchronization → `fractal-sync`
 
 ## Boundary Decision
 
@@ -76,7 +75,7 @@ Must not contain only:
 
 ## Placement Rule
 
-If the repo has `fractal-repo` rules, follow them for postmortem:
+If the repo has `fractal-sync` rules, follow them for postmortem:
 
 - placement
 - naming

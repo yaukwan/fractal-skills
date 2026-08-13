@@ -1,48 +1,53 @@
-# AGENTS.md Output Format
+# AGENTS.md and Result Format
 
-Example of a completed Level 2 folder manifest produced by `fractal-agents-fill` when it writes a directory contract directly.
+## Level 2 manifest
 
+Use required sections and include optional sections only when supported content exists.
+
+```md
 ## Scope
-
-Authentication and authorization services. Handles user identity, session management,
-OAuth provider integration, and access control enforcement.
+<current local ownership and boundary summary>
 
 ## Constraints
-
-- Public API signatures in `src/auth/public.ts` must remain backward-compatible — 
-  downstream services depend on these interfaces without version negotiation.
-- SQL queries in `src/auth/queries/` are manually optimized for PostgreSQL.
-  Do not auto-rewrite or add ORM abstraction layers.
-- Session token format must remain opaque to consumers — never expose internal
-  structure through the public API.
+- <durable local rule>
 
 ## Members
-
-- `src/auth/` — Core auth service and public API surface
-- `src/auth/middleware/` — HTTP middleware for session validation
-- `src/auth/providers/` — OAuth, SAML, and custom provider adapters
-- `src/auth/queries/` — Database query layer
+- `subdomain-or-group`: <responsibility>
 
 ## Docs
+- `path/to/doc.md`: <when or why to read it>
 
-- [Auth Flow Decision](../../.agents/skills/decision-auth-flow/SKILL.md)
-- [OAuth Provider Integration Guide](../docs/engineering/oauth-integration.md)
+## Skills
+- `.agents/skills/example/SKILL.md`: <module-specific trigger>
 
 ## Language
-
-**Principal**: Authenticated actor represented by a session or service credential.
-_Avoid_: user, account
-
-**Provider**: External identity system that supplies authentication assertions.
-_Avoid_: adapter, integration
+**Term**: <definition>
+_Avoid_: <ambiguous synonym>
 
 ## Exceptions
+- <deliberate deviation and reason>
+```
 
-- Rate limiting is intentionally deferred to the API gateway layer
-- Legacy `src/auth/v1/` still routes traffic — migration target Q4 2026
+`Scope`, `Constraints`, and `Members` are required. `Docs`, `Skills`, `Language`, and `Exceptions` are optional.
 
-## Format Notes
+## Extraction Result
 
-- `Language` is optional and manual-only. Add it only when vocabulary was resolved from the user, existing docs, or a confirmed semantic correction.
-- Do not create `CONTEXT.md`. Fractal-managed domain language lives in the nearest Level 2 `AGENTS.md` under `## Language`.
-- Keep term definitions tight and list avoided synonyms under `_Avoid_`.
+```md
+## Extraction Result
+- Project root:
+- Mode: Target | Project
+- Changed:
+- Unchanged:
+- Skipped:
+- Blocked:
+- Root map updates:
+- Decision drift signals:
+- Open questions:
+
+### Modules
+| Module | Confidence | Scope | Action | Evidence |
+|---|---|---|---|---|
+| `path` | high | matched | refreshed | `source paths` |
+```
+
+Target mode contains one module row. Project mode contains one row for every normalized candidate, including non-matches and blockers.
