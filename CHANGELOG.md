@@ -17,16 +17,23 @@ All notable changes to the fractal-skills collection are documented here.
 - Reworked `skill-design-guidelines` around the Agent Skills common contract, predictable execution, explicit completion criteria, and temporary prompt validation.
 - Removed committed skill eval fixtures and their generation contract; structural validation now checks only portable, deterministic requirements.
 - Merged `fractal-repo` and `fractal-context` into the action-oriented `fractal-sync` skill for bidirectional code/document synchronization.
+- Removed the `fractal-audit` skill; report-only audits were folded into the fractal docs flow.
+- Dropped the per-language L3 header templates in favor of rendering canonical fields in each target language's standard documentation-comment syntax.
+
+### fractal-agents-fill (1.1 → 2.0)
+
+- Reframed as scope-gated contract extraction: target mode extracts one owning module contract, project mode discovers modules and processes each independently.
+
+### fractal-sync (1.0 → 1.1)
+
+- Narrowed to confirmed code/document changes; extraction belongs to `fractal-agents-fill`.
+- Removed the obsolete root `AGENTS.md` template and tightened lifecycle guidance.
 
 ### decision-capture (1.1 → 2.0)
 
 - Promoted decisions to project skills under `.agents/skills/decision-{slug}/SKILL.md`.
 - Added explicit current-truth lifecycle operations for create, update, supersede, merge, reject, orphan, and current decisions.
 - Added skill-sync rules for generated decision skill routing contracts.
-
-### fractal-context (1.0 → 2.0)
-
-- Marked the frontmatter version to match the Level 1/2/3 Protocol v2 body.
 
 ## [0.1.1] - 2026-06-01
 
