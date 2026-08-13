@@ -4,6 +4,8 @@ Apply this schema only after the project-local scope checker matches the target 
 
 Level 3 is the file contract layer. It exists so a source file remains understandable in isolation.
 
+Write the header using the target language's standard documentation-comment syntax, such as a documentation comment or module docstring. Keep the canonical field names unchanged across languages.
+
 ## Required Fields
 
 - `INPUT`: Semantic dependencies, consumed contracts, upstream assumptions.

@@ -59,12 +59,11 @@ Use the confirmed task outcome as authority and reconcile both diffs against it.
 - Read `references/protocol/level3.md` before writing or normalizing an L3 contract.
 - Read `references/protocol/level2.md` before writing or normalizing an L2 manifest.
 - Read `references/protocol/level1.md` before changing root navigation or global context.
-- Read `references/templates/{lang}.md` only to render an enabled L3 contract in the target language.
 - Read `references/lifecycle.md` when a document may move between `engineering / research / postmortem / specs / archive`.
 - Read `references/frontmatter.md` when creating or normalizing repository-document metadata.
 - Read `references/skill-authority-map.md` when an adjacent fractal skill may own part of the task.
 
-The protocol references are the single source of truth for schema meaning. Language templates render syntax only.
+The protocol references are the single source of truth for schema meaning. Render L3 contracts with the target language's standard documentation-comment syntax.
 
 ## Completion Criteria
 
