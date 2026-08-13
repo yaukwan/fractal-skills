@@ -1,6 +1,6 @@
 ---
 name: "fractal-sync"
-description: "Load after code, architecture, or repository documentation changes to synchronize the machine view and semantic map. Trace affected paths, update scoped Level 3 contracts, local Level 2 `AGENTS.md`, root Level 1 navigation, and repository document placement, then verify both sides describe the same current truth. Do not load for bootstrap, report-only audits, decision lifecycle, or unresolved directory intent."
+description: "Load after a confirmed code, architecture, or repository-document change when affected Level 3 contracts, existing Level 2 manifests, Level 1 navigation, or repository lifecycle must be reconciled with current truth. Do not load for bootstrap, target-module or project-wide contract extraction, report-only health reviews, or decision lifecycle."
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
@@ -29,12 +29,12 @@ L2 and L3 are independently scoped. Never infer scope rules when the checker can
 
 ## Workflow
 
-1. **Traverse inward.** Read root `AGENTS.md`, the nearest local `AGENTS.md`, and existing L3 headers before changing the target. Complete this step when the owning boundary and documented contract are known.
-2. **Establish current truth.** Reconcile the request, code, tests, current decisions, and nearby docs. If directory intent remains unresolved, hand off to `fractal-agents-fill`. Complete this step when one intended contract can be stated without guessing.
-3. **Apply the primary change.** Implement the requested code or documentation change within its owning boundary.
-4. **Ripple outward.** Check and update only affected layers:
+1. **Confirm the outcome.** Establish the confirmed task outcome and the affected paths. Complete this step when the intended contract can be stated without guessing.
+2. **Read current truth.** Read root `AGENTS.md`, relevant existing local `AGENTS.md`, L3 headers, code, tests, current decisions, and repository docs for the affected paths.
+3. **Gate the writes.** Run the scope checker for every affected L2/L3 path.
+4. **Ripple outward.** Synchronize only affected layers:
    - L3 when semantic inputs, outputs, role, or non-obvious invariants changed.
-   - L2 when directory ownership, constraints, member responsibilities, vocabulary, or related docs changed.
+   - Existing L2 manifests, but only for contract changes established by this change (ownership, constraints, member responsibilities, vocabulary, related docs).
    - L1 when top-level topology, global constraints, or local-map navigation changed.
    - Repository docs when placement, naming, frontmatter, indexes, or lifecycle changed.
 5. **Prove both directions.** Verify every changed documentation claim against code and represent every changed code contract at its owning documentation layer.
@@ -61,7 +61,6 @@ Use the confirmed task outcome as authority and reconcile both diffs against it.
 - Read `references/protocol/level1.md` before changing root navigation or global context.
 - Read `references/lifecycle.md` when a document may move between `engineering / research / postmortem / specs / archive`.
 - Read `references/frontmatter.md` when creating or normalizing repository-document metadata.
-- Read `references/skill-authority-map.md` when an adjacent fractal skill may own part of the task.
 
 The protocol references are the single source of truth for schema meaning. Render L3 contracts with the target language's standard documentation-comment syntax.
 
@@ -76,7 +75,7 @@ The protocol references are the single source of truth for schema meaning. Rende
 ## Boundaries
 
 - Bootstrap or runtime repair belongs to `fractal-setup`.
-- Missing, stale, or ambiguous directory intent belongs to `fractal-agents-fill`.
+- Target-module or project-wide extraction, creation, or systematic refresh of Level 2 module contracts belongs to `fractal-agents-fill`.
 - Report-only repository health scans are outside this synchronization workflow.
 - Decision creation, update, supersession, or merge belongs to `decision-capture`.
 - Postmortem content quality belongs to `postmortem`; this skill owns its placement and retrieval links.
