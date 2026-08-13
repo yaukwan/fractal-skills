@@ -122,4 +122,4 @@ When writing:
 - **decision drift signal ≠ decision conclusion** — after flagging drift, this skill does not modify the decision; it only carries the affected path and drift signal in its output.
 - **If code can answer the fact, don't ask** — avoid asking about file layout, naming conventions, or other observable facts that exploration can settle. But do ask about intent: ownership boundaries, constraints, and direction are rarely inferable from code alone.
 - **Handle one directory at a time** — batch fixes across multiple directories should converge one by one, to avoid blurring boundaries.
-- **Local Maps sync is local** — update the affected root entry after writing one L2 manifest; leave whole-repo map drift detection to `fractal-audit`.
+- **Local Maps sync is local** — update the affected root entry after writing one L2 manifest.

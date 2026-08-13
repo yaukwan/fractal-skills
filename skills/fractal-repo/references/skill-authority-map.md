@@ -16,11 +16,6 @@ Use this map when tasks touch multiple adjacent documentation skills.
   - Owns deterministic matching via `.agents/skills/fractal-scope/scripts/check-scope.js`
   - Owns scope configuration and match inspection inside the consuming project
 
-- `fractal-audit` — report-only health authority
-  - Owns stale decision, stale/missing `AGENTS.md`, and lane-placement reports
-  - Owns prioritizing repair findings without applying fixes
-  - Does not own the remediation content for each finding
-
 - `fractal-context` — schema authority
   - Owns Level 1/2/3 semantics
   - Owns file header and AGENTS.md contract meaning
@@ -44,7 +39,6 @@ Use this map when tasks touch multiple adjacent documentation skills.
 
 - If the task bootstraps fractal docs or repairs generated scope runtime files, start with `fractal-setup`.
 - If the task configures or checks write scope, use the consuming project's local `fractal-scope`; if it is absent, bootstrap it with `fractal-setup`.
-- If the task asks for repo-wide health findings without fixes, start with `fractal-audit`.
 - If the task changes **meaning**, start with `fractal-context`.
 - If the task needs a directory contract inferred or refreshed from local evidence, start with `fractal-agents-fill`.
 - If the task changes **where docs live or how they are linked**, start with `fractal-repo`.

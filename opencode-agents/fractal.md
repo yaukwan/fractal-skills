@@ -230,7 +230,6 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 | 场景 | Skill |
 |---|---|
 | 一次性手动 bootstrap | `fractal-setup` |
-| 文档健康巡检 | `fractal-audit` |
 | 仓库级文档 placement / lifecycle | `fractal-repo` |
 | Level 1/2/3 schema 语义 | `fractal-context` |
 
