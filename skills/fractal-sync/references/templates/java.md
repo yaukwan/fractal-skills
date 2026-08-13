@@ -1,6 +1,6 @@
 # Java File Header (Javadoc)
 
-Optional fields may be omitted when empty, redundant, or already covered by folder/root review triggers.
+Render this template only for a scope-matched file. Optional fields may be omitted when empty or redundant.
 
 ```java
 /**

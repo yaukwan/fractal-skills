@@ -100,7 +100,7 @@ Choose the first valid source in this order:
 ## Output expectations
 
 - Output file written to `docs/specs/{YYYY_MM_dd}_{task_name}.md` when output mode is `always_file` or user confirms write.
-- Frontmatter follows fractal-repo convention: `type: specs`, `status`, `updated`, `related`.
+- Frontmatter follows the `fractal-sync` convention: `type: specs`, `status`, `updated`, `related`.
 - Each Task Group includes: Purpose, Related Files, Requirements, sub-tasks (Input / Instructions / Objective / Acceptance Criteria).
 - The generated spec is explicit enough to serve as a direct implementation input or issue-splitting input.
 - After completion, explicitly request human review before implementation begins.

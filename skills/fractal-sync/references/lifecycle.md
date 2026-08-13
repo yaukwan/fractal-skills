@@ -1,4 +1,23 @@
-# Lifecycle Rules
+# Repository Lifecycle Rules
+
+## Document Lanes
+
+- `docs/engineering/`: implementation notes, benchmarks, debt, migrations, and workarounds
+- `docs/research/`: explorations, alternatives, and experiments
+- `docs/postmortem/`: defect and incident root-cause records
+- `docs/specs/`: AI-generated executable task specifications
+- `docs/archive/`: retired documents and tombstones
+
+Design decisions live at `.agents/skills/decision-{slug}/SKILL.md` and are managed by `decision-capture`; they are not a repository document lane.
+
+## Naming
+
+- Use lowercase kebab-case unless a lane requires a date prefix.
+- Engineering: `query-perf-benchmark.md`
+- Research: `cache-alternatives.md`
+- Postmortem: `YYYYMMDD-bug-description-en.md`
+- Specs: `YYYY_MM_dd_task-name.md`
+- Archive: preserve the original searchable name when possible.
 
 ## Event → Doc action
 
@@ -25,6 +44,8 @@
 - reason
 - replacement
 - last relevant links
+
+When moving a document into `docs/archive/`, update active indexes and leave a tombstone or replacement pointer where callers would otherwise lose the trail.
 
 ## AGENTS.md Rule
 

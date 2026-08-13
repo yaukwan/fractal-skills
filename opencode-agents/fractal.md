@@ -230,8 +230,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 | 场景 | Skill |
 |---|---|
 | 一次性手动 bootstrap | `fractal-setup` |
-| 仓库级文档 placement / lifecycle | `fractal-repo` |
-| Level 1/2/3 schema 语义 | `fractal-context` |
+| 代码与文档双向同步、仓库 placement / lifecycle、Level 1/2/3 语义 | `fractal-sync` |
 
 ---
 

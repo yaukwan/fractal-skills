@@ -66,7 +66,7 @@ If the resulting truth is not yet current, this skill is **not done**.
 
 **This skill applies only when `.agents/skills/fractal-scope/config.yaml` exists.**
 
-If not found, this is not a fractal-repo — do not apply decision capture rules.
+If not found, this is not a fractal-managed repository — do not apply decision capture rules.
 
 ## What this skill owns
 
@@ -92,8 +92,7 @@ Do not use this skill for:
 - task spec generation
 
 For explicit ADR files, follow the repository's ADR convention or adjacent ADR/domain-modeling skill.
-For lane placement, use `fractal-repo`.
-For schema semantics, use `fractal-context`.
+For lane placement or Level 1/2/3 synchronization, use `fractal-sync`.
 For failure-learning workflow, use `postmortem`.
 For task specs, use `to-task-specs`.
 

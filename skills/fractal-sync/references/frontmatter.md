@@ -1,4 +1,4 @@
-# Frontmatter Convention
+# Repository Frontmatter Convention
 
 推荐用于仓库文档：
 

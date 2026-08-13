@@ -39,4 +39,4 @@
 - Active Context 只放高相关文档
 - 用相对路径
 - 不新增 `Review Triggers`
-- 字段语义以 `../../fractal-context/references/protocol/level1.md` 为准
+- 字段语义以 `../references/protocol/level1.md` 为准

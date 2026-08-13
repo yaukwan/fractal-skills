@@ -13,9 +13,10 @@ All notable changes to the fractal-skills collection are documented here.
 - Embedded the `fractal-scope` runtime template and checker under `fractal-setup`; consuming projects now run their local checker.
 - Added inline scope-list coverage to `check-scope.js` and a minimal Node self-test.
 - Standardized postmortem placement on `docs/postmortem/`.
-- Documented the current 9-source-skill inventory and the generated project-local scope runtime.
+- Documented the current source-skill inventory and the generated project-local scope runtime.
 - Reworked `skill-design-guidelines` around the Agent Skills common contract, predictable execution, explicit completion criteria, and temporary prompt validation.
 - Removed committed skill eval fixtures and their generation contract; structural validation now checks only portable, deterministic requirements.
+- Merged `fractal-repo` and `fractal-context` into the action-oriented `fractal-sync` skill for bidirectional code/document synchronization.
 
 ### decision-capture (1.1 → 2.0)
 

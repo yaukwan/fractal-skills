@@ -15,7 +15,7 @@ If no repository-specific rule exists, place postmortems under:
 `docs/postmortem/`
 
 ## Repository Override
-If the repository uses `fractal-repo`, follow its rules for:
+If the repository uses `fractal-sync`, follow its rules for:
 - exact directory placement
 - frontmatter requirements
 - indexing

@@ -40,16 +40,15 @@ Fractal Skills provides a **three-layer context protocol** that mirrors how soft
 | **Level 2** | Folder / bounded context | Local ownership, scope boundaries, member modules |
 | **Level 3** | Source file | Current contract: inputs, outputs, role, invariants |
 
-Eight source skills cover the build-and-maintain lifecycle. `fractal-setup` also emits the project-local `fractal-scope` runtime used by downstream gates:
+Seven source skills cover the build-and-maintain lifecycle. `fractal-setup` also emits the project-local `fractal-scope` runtime used by downstream gates:
 
 1. **Bootstrap** the documentation structure and scope runtime (`fractal-setup`)
 2. **Fill** missing or stale folder contracts from code (`fractal-agents-fill`)
-3. **Maintain** repo-level placement, naming, and lifecycle (`fractal-repo`)
-4. **Normalize** schema semantics when headers drift (`fractal-context`)
-5. **Capture** decisions and keep design truth current (`decision-capture`)
-6. **Generate** executable task specs from resolved context (`to-task-specs`)
-7. **Record** root-cause postmortems for bugs and incidents (`postmortem`)
-8. **Guide** skill authoring and validation (`skill-design-guidelines`)
+3. **Synchronize** code and documentation through L3, L2, L1, and repository lifecycle (`fractal-sync`)
+4. **Capture** decisions and keep design truth current (`decision-capture`)
+5. **Generate** executable task specs from resolved context (`to-task-specs`)
+6. **Record** root-cause postmortems for bugs and incidents (`postmortem`)
+7. **Guide** skill authoring and validation (`skill-design-guidelines`)
 
 The generated `.agents/skills/fractal-scope/` is owned by the consuming project. It configures L2/L3 write scope and runs its local deterministic checker; it is not distributed as a standalone source skill.
 
@@ -73,8 +72,7 @@ The `BUILD` stage has no Fractal-specific skill by design. It is the handoff poi
 - **[fractal-setup](./skills/fractal-setup/SKILL.md)** — Bootstrap or repair the `docs/` layout and self-contained project-local `.agents/skills/fractal-scope/` runtime. Existing project-owned scope config is preserved during repair.
 - **Generated runtime template:** [fractal-scope](./skills/fractal-setup/assets/fractal-scope/SKILL.template.md) — Project-local scope configuration and deterministic L2/L3 matcher emitted by `fractal-setup`; not installed as a standalone source skill.
 - **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — Fill or refresh a directory's local `AGENTS.md` contract by reading code and nearby docs. Asks focused questions for unresolved local intent before writing.
-- **[fractal-repo](./skills/fractal-repo/SKILL.md)** — Repository-level document topology: placement across `engineering / research / postmortem / specs / archive`, naming conventions, frontmatter, indexes, and lifecycle transitions. Decision skills live at `.agents/skills/decision-*/`.
-- **[fractal-context](./skills/fractal-context/SKILL.md)** — Guardian of the Level 1/2/3 fractal schema. Normalizes file headers, validates folder manifest semantics, and runs ripple checks after code changes. Only writes within scoped fractal repos.
+- **[fractal-sync](./skills/fractal-sync/SKILL.md)** — Synchronize code and documentation as two views of current truth. Runs scoped L3 → L2 → L1 ripple checks, validates documentation back against code, and maintains repository placement, frontmatter, indexes, and lifecycle.
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — Full decision lifecycle for the current task. Checks whether existing decision skills still cover the truth, then creates, updates, supersedes, or merges decision skills so current design authority is unambiguous. Decisions live at `.agents/skills/decision-*/SKILL.md`.
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — Generate executable task specifications from a PRD, resolved context, or conversation context. Groups tasks by functional domain, inherits decision constraints, and produces verifiable acceptance criteria.
 - **[postmortem](./skills/postmortem/SKILL.md)** — Structured root-cause records for bugs, regressions, and incidents. Records symptom, impact, root cause, fix applied, verification, and prevention steps. Required when the primary task nature is defect correction.
@@ -92,7 +90,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - **SPEC** — `to-task-specs`: turn resolved context into a build-ready task document.
 - **BUILD** — Execute the approved spec with your normal implementation, TDD, diagnosis, and review skills.
 - **POSTMORTEM** — `postmortem`: required when the primary task nature is defect correction.
-- **AUXILIARY** — `fractal-repo` and `fractal-context` are helper skills available outside the main delivery flow.
+- **AUXILIARY** — `fractal-sync` closes the code/document loop outside the main delivery stages.
 
 ## OpenCode Agents (Optional)
 

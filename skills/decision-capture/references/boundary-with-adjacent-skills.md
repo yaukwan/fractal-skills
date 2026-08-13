@@ -14,7 +14,7 @@ When a document should not be a decision skill, route it here:
 | Explicit ADR requested by user or repo convention | `docs/adr/` | repository ADR workflow |
 | Bug-fix root-cause record | `docs/postmortem/` | `postmortem` |
 | PRD → executable task groups | `docs/specs/` | `to-task-specs` |
-| Archived past docs | `docs/archive/` | `fractal-repo` |
+| Archived past docs | `docs/archive/` | `fractal-sync` |
 
 ## Common boundary confusions
 

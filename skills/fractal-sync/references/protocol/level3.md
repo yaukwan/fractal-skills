@@ -1,5 +1,7 @@
 # Level 3 Protocol
 
+Apply this schema only after the project-local scope checker matches the target file.
+
 Level 3 is the file contract layer. It exists so a source file remains understandable in isolation.
 
 ## Required Fields
