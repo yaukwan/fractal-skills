@@ -43,7 +43,7 @@ Fractal Skills provides a **three-layer context protocol** that mirrors how soft
 Seven source skills cover the build-and-maintain lifecycle. `fractal-setup` also emits the project-local `fractal-scope` runtime used by downstream gates:
 
 1. **Bootstrap** the documentation structure and scope runtime (`fractal-setup`)
-2. **Fill** missing or stale folder contracts from code (`fractal-agents-fill`)
+2. **Extract** module contracts for one target or a whole project into scoped `AGENTS.md` files (`fractal-agents-fill`)
 3. **Synchronize** code and documentation through L3, L2, L1, and repository lifecycle (`fractal-sync`)
 4. **Capture** decisions and keep design truth current (`decision-capture`)
 5. **Generate** executable task specs from resolved context (`to-task-specs`)
@@ -71,7 +71,7 @@ The `BUILD` stage has no Fractal-specific skill by design. It is the handoff poi
 
 - **[fractal-setup](./skills/fractal-setup/SKILL.md)** — Bootstrap or repair the `docs/` layout and self-contained project-local `.agents/skills/fractal-scope/` runtime. Existing project-owned scope config is preserved during repair.
 - **Generated runtime template:** [fractal-scope](./skills/fractal-setup/assets/fractal-scope/SKILL.template.md) — Project-local scope configuration and deterministic L2/L3 matcher emitted by `fractal-setup`; not installed as a standalone source skill.
-- **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — Fill or refresh a directory's local `AGENTS.md` contract by reading code and nearby docs. Asks focused questions for unresolved local intent before writing.
+- **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — Extract and write module contracts from a supplied project or module path. Supports one target module or project-wide discovery, writes only scope-matched `AGENTS.md` files, and reports ambiguous boundaries without blocking independent modules.
 - **[fractal-sync](./skills/fractal-sync/SKILL.md)** — Synchronize code and documentation as two views of current truth. Runs scoped L3 → L2 → L1 ripple checks, validates documentation back against code, and maintains repository placement, frontmatter, indexes, and lifecycle.
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — Full decision lifecycle for the current task. Checks whether existing decision skills still cover the truth, then creates, updates, supersedes, or merges decision skills so current design authority is unambiguous. Decisions live at `.agents/skills/decision-*/SKILL.md`.
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — Generate executable task specifications from a PRD, resolved context, or conversation context. Groups tasks by functional domain, inherits decision constraints, and produces verifiable acceptance criteria.
@@ -85,7 +85,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 ```
 
 - **SETUP** — `fractal-setup`: bootstrap the docs layout and project-local scope runtime, outside the main flow.
-- **FILL** — `fractal-agents-fill`: fill missing local contract context and refresh `AGENTS.md` when needed.
+- **FILL** — `fractal-agents-fill`: extract target-module or project-wide contracts and write scoped `AGENTS.md` files.
 - **DECIDE** — `decision-capture`: check decision coverage and update decision skills until current truth is documented.
 - **SPEC** — `to-task-specs`: turn resolved context into a build-ready task document.
 - **BUILD** — Execute the approved spec with your normal implementation, TDD, diagnosis, and review skills.

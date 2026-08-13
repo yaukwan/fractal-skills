@@ -77,6 +77,6 @@ The protocol references are the single source of truth for schema meaning. Rende
 
 - Bootstrap or runtime repair belongs to `fractal-setup`.
 - Missing, stale, or ambiguous directory intent belongs to `fractal-agents-fill`.
-- Report-only repository health scans belong to `fractal-audit`.
+- Report-only repository health scans are outside this synchronization workflow.
 - Decision creation, update, supersession, or merge belongs to `decision-capture`.
 - Postmortem content quality belongs to `postmortem`; this skill owns its placement and retrieval links.

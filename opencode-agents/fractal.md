@@ -91,12 +91,13 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - 需求还没有收敛
 - 现有上下文不足以进入 decision gate
 - 用户只给了 feature / bug 名称、粗粒度目标、或零散背景
+- 用户提供项目或模块路径，要求抽取单模块或全项目规范
 
 **Do**
-1. 调用 `fractal-agents-fill`
-2. 先读代码、现有 `AGENTS.md`、相关 decisions，再决定能否直接写局部 `AGENTS.md`
-3. 若 contract 清晰，直接完成 `AGENTS.md` 更新；若方向仍可能因术语或 owner 边界而偏航，先做最小语义确认
-4. 否则产出 `Fill Result` + blocking questions
+1. 将项目根路径和可选模块路径传给 `fractal-agents-fill`
+2. 有模块路径时执行 Target mode；仅有项目路径或明确要求全项目时执行 Project mode
+3. 从代码、测试、现有 `AGENTS.md`、相关 project skills 和文档抽取 contract，并写入 scope 匹配的模块
+4. 集中报告被跳过或阻塞的模块；只有项目级边界模型不明确时才中断确认
 
 **Exit when**
 - 相关目录 contract 已经写清或被可靠收敛
@@ -106,8 +107,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 
 **Report**
 - 模式：FILL
-- 结果：更新后的 `AGENTS.md` 或 `Fill Result` / candidate decision follow-up
-- 结果：更新后的 `AGENTS.md` 或 `Fill Result` / candidate decision follow-up / direction confirmation
+- 结果：`Extraction Result` / candidate decision follow-up / direction confirmation
 - 状态：DONE | DONE_WITH_CONCERNS | NEEDS_WORK
 - 下一步：DECIDE
 - 等待确认：确认后进入 DECIDE
@@ -220,7 +220,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 
 | 场景 | Skill |
 |---|---|
-| 需求澄清 / 局部 contract 填充 / 方向语义确认 | `fractal-agents-fill` |
+| 单模块或全项目 contract 抽取 / 方向语义确认 | `fractal-agents-fill` |
 | decision gate | `decision-capture` |
 | 生成任务规格文档 | `to-task-specs` |
 | bugfix 复盘 | `postmortem` |

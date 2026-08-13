@@ -43,7 +43,7 @@ Fractal Skills 提供了一套**三层上下文协议**，直接对应软件的�
 七个源码 skill 覆盖构建与维护生命周期；`fractal-setup` 还会生成供下游门控使用的项目本地 `fractal-scope` runtime：
 
 1. **建仓**：搭建文档结构和 scope runtime（`fractal-setup`）
-2. **填充**：从代码中推断并补全缺失或过期的目录 contract（`fractal-agents-fill`）
+2. **抽取**：将单个模块或全项目目录 contract 写入 scope 允许的 `AGENTS.md`（`fractal-agents-fill`）
 3. **同步**：对代码与文档执行 L3、L2、L1 及仓库生命周期回环（`fractal-sync`）
 4. **决策**：完整决策生命周期——检查、创建、更新、取代、合并（`decision-capture`）
 5. **规格**：从已解决上下文或 PRD 生成可执行任务规格文档（`to-task-specs`）
@@ -71,7 +71,7 @@ Fractal Skills 是**知识基底层**：维护 `AGENTS.md` 遍历上下文、当
 
 - **[fractal-setup](./skills/fractal-setup/SKILL.md)** — 搭建或修复 `docs/` 布局及自包含的项目本地 `.agents/skills/fractal-scope/` runtime；修复时保留项目拥有的 scope config。
 - **生成 runtime 模板：[fractal-scope](./skills/fractal-setup/assets/fractal-scope/SKILL.template.md)** — 由 `fractal-setup` 输出的项目本地 scope 配置与 L2/L3 确定性 matcher，不作为独立源码 skill 安装。
-- **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — 通过阅读代码和周边文档，填充或刷新目录的局部 `AGENTS.md` contract。写入前会针对未确认的局部意图提出聚焦问题。
+- **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — 从指定项目或模块路径抽取并写入模块 contract。支持单模块与全项目发现，只写入 scope 匹配的 `AGENTS.md`，并集中报告歧义边界而不阻塞其他独立模块。
 - **[fractal-sync](./skills/fractal-sync/SKILL.md)** — 将代码与文档作为 current truth 的两种视图进行同步。执行受 scope 控制的 L3 → L2 → L1 波纹检查，反向验证文档与代码，并维护仓库文档落点、frontmatter、索引和生命周期。
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — 当前任务的完整决策生命周期。检查现有决策 skill 是否仍然覆盖当前真相，然后创建、更新、取代或合并决策 skill，确保设计权威无可争议。决策文件位于 `.agents/skills/decision-*/SKILL.md`。
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — 从 PRD、已解决上下文或对话上下文中生成可执行的任务规格文档。按功能域分组任务，继承决策约束，产出可验证的验收标准。
@@ -85,7 +85,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 ```
 
 - **SETUP** — `fractal-setup`：搭建文档布局和项目本地 scope runtime，不在主流程中。
-- **FILL** — `fractal-agents-fill`：必要时补全缺失的局部 contract 上下文并刷新 `AGENTS.md`。
+- **FILL** — `fractal-agents-fill`：抽取单模块或全项目 contract，并写入 scope 允许的 `AGENTS.md`。
 - **DECIDE** — `decision-capture`：检查决策覆盖范围并更新决策 skill，直到当前真相已文档化。
 - **SPEC** — `to-task-specs`：将已解决上下文转化为可执行的任务文档。
 - **BUILD** — 使用你的常规实现、TDD、诊断和 review skills 按已确认的 spec 实施。
