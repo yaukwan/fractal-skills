@@ -20,7 +20,7 @@
 - `skills/fractal-setup/assets/fractal-scope/scripts/check-scope.js`: deterministic local scope matcher
 - `skills/fractal-agents-fill/SKILL.md`: target-module and project-wide contract extraction into local `AGENTS.md`
 - `skills/fractal-sync/SKILL.md`: bidirectional code/document synchronization, Level 1/2/3 semantics, and repository lifecycle
-- `skills/decision-capture/SKILL.md`: decision lifecycle and authority split
+- `skills/decision-capture/SKILL.md`: decision lifecycle, authority split, decision skill shape (single-topic or index + `references/`), and retirement by deletion plus tombstone
 - `skills/to-task-specs/SKILL.md`: spec generation behavior controlled by the fractal scope config
 - `skills/postmortem/SKILL.md`: bugfix and incident root-cause records
 - `skills/skill-design-guidelines/SKILL.md`: skill authoring, routing, layout, and validation guidance

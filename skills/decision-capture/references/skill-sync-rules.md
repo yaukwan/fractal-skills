@@ -1,8 +1,8 @@
 # Decision Skill Sync Rules
 
-This file defines the rules for generating and syncing `.agents/skills/decision-{slug}/SKILL.md`
-from a decision document's content. It is read by `decision-capture` during the
-Step 8 skill-sync workflow.
+This file defines the rules for generating and syncing `.agents/skills/decision-{slug}/`
+from a decision's content. It is read by `decision-capture` during the Step 8 skill-sync
+workflow.
 
 ## Description Auto-Generation
 
@@ -10,14 +10,15 @@ The `description` field is a **routing trigger** — it tells an agent *when to 
 not *what the skill contains*. Follow `skill-design-guidelines` conventions:
 start with `Load when...`, use agent-task language, include a `Do not load for...` boundary.
 
+Any description that reaches the routing list is a **live authority claim**. Never carry a
+lifecycle marker in the description.
+
 ### Priority
 
 1. If the decision has a `skill_description` field in its YAML frontmatter, use it directly (no generation).
 2. Otherwise, auto-generate using the rules below.
 
 ### Algorithm
-
-Given a decision document with sections `## Context`, `## Decision`, `## Boundaries`, `## Non-goals`:
 
 ```
 description = "Load when {triggers}. Do not load for {exclusions}."
@@ -48,8 +49,11 @@ description = "Load when {triggers}. Do not load for {exclusions}."
 
 3. If a boundary word is not in the table, keep it as-is: e.g. `modifying {word}`.
 4. Join mapped phrases with commas. The last element gets `, or ` prefix.
+5. For a multi-domain decision, take the triggers from the index scope statement and
+   `## Boundaries`, and the supplementary keywords from the reference file titles. Do not
+   read every reference to write a description — the description routes, it does not summarize.
 
-#### Trigger keywords (from `## Decision` + `## Context`)
+#### Trigger keywords (from the decision content)
 
 After the task phrases, append 2-3 exact tech keywords from the decision content
 as supplementary triggers. These help with exact-match routing:
@@ -87,26 +91,84 @@ Load when database connection handling, pool configuration, or connection lifecy
 
 ## Skill Body Generation
 
-Use `assets/decision-skill-template.md` as the structural template, populated with
-the decision document's content. The body contains the full decision — the skill
-IS the source of truth.
+Decisions are **project skills** at `.agents/skills/decision-{slug}/`. There is no
+`docs/decisions/` directory. The skill directory is the source of truth.
+
+Two shapes:
+
+- **Single-topic decision** — one `SKILL.md` holding the whole decision.
+- **Multi-domain decision** — `SKILL.md` is an index and each internal domain lives in
+  `references/{domain}.md`.
+
+An index `SKILL.md` contains only: frontmatter, a one-paragraph scope statement,
+an index table (`§` range | reference file | read when), `## Invariants` (rules every
+branch must obey), `## Boundaries` (sibling skills only), `## Non-goals`, and
+`## Provenance`. All `## `-level decision prose lives in the references.
+
+`§N` numbering is continuous across the skill's references and stable over time: code,
+`AGENTS.md`, and `docs/**` cite `decision-{slug}` §N, and the index table resolves §N to
+a file. Never renumber as a side effect of editing; never reuse a retired §N for new meaning.
+
+Choose the shape from the merge and separation criteria in `references/authority-rules.md`.
+
+For a single-topic decision, `§N` numbers the decision's own `##` sections in order, so
+`decision-{slug} §N` resolves the same way for both shapes. The single-topic shape therefore
+also carries `## Provenance`. Use `assets/decision-skill-template.md` for both shapes.
+
+## Self-Contained Authority
+
+A decision skill must be self-contained. Links to `docs/**` are allowed only as
+"Background only (not authority)" pointers, plus archived-tombstone paths in
+`## Provenance`. Content that the skill needs in order to be followed belongs in the skill
+(inline, or in `references/`), never in `docs/`.
+
+Do not shorten a decision skill by pushing its rules into `docs/engineering/`,
+`docs/specs/`, or a similar lane: the reader then has to leave the authority to find the
+rule. Shorten an index by moving per-domain prose into `references/`, which stays inside
+the skill.
 
 ## Lifecycle Sync Rules
 
 | Action | Skill Operation |
 |--------|----------------|
-| CREATE | Write `.agents/skills/decision-{slug}/SKILL.md` from template. |
-| UPDATE | Regenerate the full SKILL.md body. If `skill_description` exists in the decision's YAML frontmatter, preserve it; otherwise regenerate description. |
-| SUPERSEDE (old) | Modify SKILL.md: prefix `description` with `[SUPERSEDED]`; set `metadata.status` to `superseded`; set `metadata.superseded_by` to the new skill name. |
+| CREATE | Create `.agents/skills/decision-{slug}/` from the template — an index plus `references/`, or a single `SKILL.md`. |
+| UPDATE | Regenerate the skill body (choose index or single-topic shape from the content). If `skill_description` exists in the decision's YAML frontmatter, preserve it; otherwise regenerate the description. |
+| SUPERSEDE (old) | Delete `.agents/skills/decision-{old}/`, write tombstone `docs/archive/decisions/{old}.md` → `> Archived on {date}. Active authority: {new skill}# {section}.` |
 | SUPERSEDE (new) | Same as CREATE. |
-| MERGE (absorbed) | Same as SUPERSEDE for each absorbed skill. |
-| MERGE (result) | Same as UPDATE. |
-| REJECT | If a skill exists at `.agents/skills/decision-{slug}/SKILL.md`, prefix description with `[ORPHANED]` and set `metadata.status` to `orphaned`. |
+| MERGE (absorbed) | Same as SUPERSEDE (old) for each absorbed skill; list them in the survivor's `metadata.supersedes`. |
+| MERGE (result) | Same as UPDATE (choose index or single-topic shape from the content). |
+| ARCHIVE | Delete the directory, write the same tombstone with `Active authority: none`. |
+| REJECT | Delete the directory if it exists, write the same tombstone. |
 | CURRENT | No operation. |
+
+The description prefix `[SUPERSEDED]` / `[ORPHANED]` is not used: any description that
+reaches the routing list is a live authority claim. Removal is the only unambiguous
+retirement signal.
+
+A tombstone preserves the retired text (move the deleted body there) so the reasoning is
+still auditable after the skill disappears.
+
+`metadata.supersedes` is the only lifecycle metadata. A retired skill carries no metadata,
+because it no longer exists.
+
+## Reference Rewrite
+
+When a decision skill is renamed, merged, or removed, rewrite every reference to the old
+slug in the same operation: root and per-layer `AGENTS.md`, `docs/**`, and code comments.
+`§N` citations keep their number and resolve through the new index table. `ADR 000N` aliases
+must still resolve to a current owner, and local `AGENTS.md` definitions of an alias must be
+updated where the owning skill changed. Relative links inside skills resolve against the
+skill directory (`references/` is one level deeper than `SKILL.md`).
+
+Reference rewrite is part of the SUPERSEDE / MERGE / ARCHIVE / REJECT operation, not follow-up
+work. A rename or removal that leaves citations to a removed slug has not completed.
+
+A slug revived by a later CREATE updates the existing tombstone's `Active authority` line to
+point at the revived skill instead of leaving it at `none`.
 
 ## Idempotency
 
-- `.agents/skills/decision-{slug}/SKILL.md` is fully owned by `decision-capture` — each sync overwrites it.
+- `.agents/skills/decision-{slug}/` is fully owned by `decision-capture` — each sync overwrites it.
 - User modifications to SKILL.md will be lost on next UPDATE. The canonical edit path is through
   the source decision's `skill_description` field for the description override, or through the
   decision content itself.
