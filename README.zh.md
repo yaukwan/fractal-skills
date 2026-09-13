@@ -8,19 +8,11 @@
 
 ## 快速开始
 
-### 安装 skills
-
 ```bash
 npx skills add yaukwan/fractal-skills
 ```
 
-### 可选：配置 OpenCode
-
-```bash
-npx github:yaukwan/fractal-skills install
-```
-
-`npx skills add` 将所有 Fractal Skills 安装到你的 coding agent 中。可选的 `npx github:yaukwan/fractal-skills install` 会生成个性化的 `~/.config/opencode/AGENTS.md`，同时安装 `fractal` 编排 agent 定义文件。
+`npx skills add` 将所有 Fractal Skills 安装到你的 coding agent 中。
 
 ## 为什么需要 Fractal Skills
 
@@ -91,12 +83,3 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - **BUILD** — 使用你的常规实现、TDD、诊断和 review skills 按已确认的 spec 实施。
 - **POSTMORTEM** — `postmortem`：任务主要性质为缺陷修复时必须产出。
 - **辅助** — `fractal-sync` 在主流程阶段之外闭合代码与文档回环。
-
-## OpenCode Agents（可选）
-
-`opencode-agents/` 目录包含面向 OpenCode 用户的参考 agent 定义：
-
-- **`fractal`** — 主导 `FILL → DECIDE → SPEC → BUILD → POSTMORTEM` 流程的主编排 agent。
-- **`gstack`** — 面向 gstack 工具链的集成 agent。
-
-`npx github:yaukwan/fractal-skills install` 会在生成 `AGENTS.md` 时同时安装 `fractal.md`。`gstack.md` 保留为参考文件；如果你需要 gstack 集成，可手动复制到 `~/.config/opencode/agents/`。
