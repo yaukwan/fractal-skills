@@ -12,27 +12,36 @@ If reality changed, the skill must change too.
 
 ## Preferred actions
 
+The operation for each action is defined once in `references/skill-sync-rules.md`
+under Lifecycle Sync Rules. This file only explains when to pick one.
+
 ### Update in place
 
 Use when the underlying design truth is still the same, but details drifted.
-Overwrite `.agents/skills/decision-{slug}/SKILL.md`. Regenerate the routing description
-unless the decision frontmatter has a manually set `skill_description`.
+Overwrite the skill body. Regenerate the routing description unless the decision
+frontmatter has a manually set `skill_description`.
 
 ### Supersede
 
 Use when the old decision skill is no longer the active truth and a new one now
-governs the topic. Mark the old skill: `[SUPERSEDED]` prefix on description,
-`status: superseded` in metadata. Create the new decision skill normally.
+governs the topic. Delete `.agents/skills/decision-{old}/`, write the tombstone at
+`docs/archive/decisions/{old}.md` naming the new authority, then create the new
+decision skill normally.
+
+Do not keep the retired skill on disk with a marked description. A retired skill that still
+sits in `.agents/skills/` keeps competing with the new authority in the routing list, which
+is the ambiguity supersession is supposed to end.
 
 ### Merge
 
-Use when multiple decision skills partially overlap and create authority confusion.
-Mark absorbed skills as superseded. Update the merged result skill.
+Use when multiple decision skills are one co-load unit and create authority confusion.
+Delete each absorbed skill with the same tombstone as supersession, list the absorbed slugs
+in the survivor's `metadata.supersedes`, and update the survivor.
 
 ### Archive
 
-Use when the topic no longer defines any current part of the system.
-Mark the skill: `[SUPERSEDED]` prefix on description, `status: archived` in metadata.
+Use when the topic no longer defines any current part of the system. Delete the directory
+and write the same tombstone with `Active authority: none`.
 
 ## Conflict rule
 
@@ -41,21 +50,22 @@ One topic should not have multiple decision skills that all read like active aut
 If overlap exists, resolve it explicitly:
 
 - pick a canonical current skill
-- mark the others as superseded, merged, or archived
+- retire the others by deleting them and leaving tombstones
 - remove ambiguous index references
 
 ## Skill sync freshness
 
-After any mutating action (CREATE, UPDATE, SUPERSEDE, MERGE), the decision skill's
-`description`, `metadata`, and body must all match the current truth. See
-`references/skill-sync-rules.md` for the detailed sync workflow.
+After any mutating action (CREATE, UPDATE, SUPERSEDE, MERGE, ARCHIVE, REJECT), the resulting
+skill set must match the current truth. See `references/skill-sync-rules.md` for the detailed
+sync workflow.
 
 Specifically:
 
-- `UPDATE`: regenerate body content and description (unless `skill_description` override exists)
-- `SUPERSEDE`: old skill description gets `[SUPERSEDED]` prefix; new skill created fresh
-- `MERGE`: absorbed skills marked `[SUPERSEDED]`; result skill updated
-- `REJECT`: if orphan skill exists, prefix with `[ORPHANED]`
+- `UPDATE`: regenerate the body and the description (unless a `skill_description` override exists)
+- `SUPERSEDE`: the old directory is gone and tombstoned; the new skill is created fresh
+- `MERGE`: absorbed directories are gone and tombstoned; the survivor carries `metadata.supersedes`
+- `ARCHIVE` / `REJECT`: the directory is gone and tombstoned
+- every reference to a retired slug is rewritten in the same operation
 
 ## Freshness warning signs
 
@@ -64,3 +74,4 @@ Specifically:
 - code and skills have drifted for multiple iterations
 - local implementation notes are doing the real authority work
 - a new contributor cannot tell which decision skill is current
+- a tombstone points at an authority that no longer exists

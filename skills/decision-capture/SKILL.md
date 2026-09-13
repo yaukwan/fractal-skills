@@ -4,7 +4,7 @@ description: "Load when the current task may need fractal decision handling, esp
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "2.0"
+  version: "2.1"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -12,7 +12,7 @@ metadata:
 
 Handle the full decision lifecycle for the current task: inspect existing decision coverage,
 choose the right action, and when needed write or update the decision skill at
-`.agents/skills/decision-{slug}/SKILL.md`.
+`.agents/skills/decision-{slug}/`.
 
 This skill is for **decision handling**, not a generic documentation policy explainer.
 
@@ -26,9 +26,23 @@ This skill is for **decision handling**, not a generic documentation policy expl
 
 ## Output location
 
-Decisions are **project skills** at `.agents/skills/decision-{slug}/SKILL.md`. There is no
-`docs/decisions/` directory. The skill is the source of truth — it contains the
-full decision content (Context, Decision, Boundaries, Implications, Non-goals).
+Decisions are **project skills** at `.agents/skills/decision-{slug}/`. There is no
+`docs/decisions/` directory. The skill directory is the source of truth.
+
+Two shapes:
+
+- **Single-topic decision** — one `SKILL.md` holding the whole decision.
+- **Multi-domain decision** — `SKILL.md` is an index and each internal domain lives in
+  `references/{domain}.md`.
+
+An index `SKILL.md` contains only: frontmatter, a one-paragraph scope statement,
+an index table (`§` range | reference file | read when), `## Invariants` (rules every
+branch must obey), `## Boundaries` (sibling skills only), `## Non-goals`, and
+`## Provenance`. All `## `-level decision prose lives in the references.
+
+`§N` numbering is continuous across the skill's references and stable over time: code,
+`AGENTS.md`, and `docs/**` cite `decision-{slug}` §N, and the index table resolves §N to
+a file. Never renumber as a side effect of editing; never reuse a retired §N for new meaning.
 
 ## Default workflow
 
@@ -37,18 +51,20 @@ full decision content (Context, Decision, Boundaries, Implications, Non-goals).
 3. **Determine** whether the task touches a **cross-cutting, long-lived, current design truth**.
    Use the admission rule and authority signals to judge, not mere analysis thoroughness.
 4. Choose the action from the matrix.
-5. **Before any CREATE / UPDATE / SUPERSEDE / MERGE action:**
+5. **Before any mutating action (CREATE / UPDATE / SUPERSEDE / MERGE / ARCHIVE / REJECT):**
    - Present the user with a concise summary of:
      - The decision being proposed
      - Why it qualifies as durable system truth (not local task reasoning)
      - Which existing decisions it relates to or replaces
    - If a `grilling` skill is available, use its one-question-at-a-time interview discipline for unresolved decision tradeoffs; otherwise use this inline confirmation flow.
-   - **Wait for explicit user confirmation before writing.**
+   - **Wait for explicit user confirmation before writing or deleting.**
    - If the user rejects or redirects, respect that and do not proceed.
-6. Once confirmed, write the decision skill at `.agents/skills/decision-{slug}/SKILL.md`.
+6. Once confirmed, write the decision skill at `.agents/skills/decision-{slug}/`.
 7. Return the resulting current truth.
 8. **Skill sync** — after writing, generate the routing description using the rules
-   in `references/skill-sync-rules.md`. Verify the generated skill passes
+   in `references/skill-sync-rules.md`. Delete and tombstone any retired skill, and when a
+   slug was renamed, merged, or removed, rewrite every reference to the old slug in the same
+   operation. Verify the generated skill passes
    `skill-design-guidelines` routing review (description starts with `Load when...`,
    body is lean, no documentation cosplay).
 
@@ -59,6 +75,18 @@ full decision content (Context, Decision, Boundaries, Implications, Non-goals).
   the skill's description is a valid routing trigger, and the resulting authority state is unambiguous.
 - `REJECT` — It is clear this topic should not become a decision skill, and the correct
   alternative is named.
+
+**Sync proof** — required for `CREATE | UPDATE | SUPERSEDE | MERGE | ARCHIVE | REJECT`:
+
+- every touched skill passes
+  `python3 <skill-design-guidelines>/scripts/validate_skill.py <skill-dir>` with no FAIL/ERROR/WARN
+- `§N` in each touched skill is continuous, no duplicates, no gaps, and every reference file
+  is listed in the index table (and vice versa)
+- no stale reference to a removed or renamed slug outside `metadata.supersedes` and
+  `docs/archive/**` — verify with `rg --hidden --glob '!.git' --glob '!node_modules'`
+- every `decision-*` name mentioned anywhere in the repo resolves to an existing skill
+  directory or an archived tombstone
+- links between skills resolve after the reference-depth change
 
 If the resulting truth is not yet current, this skill is **not done**.
 
@@ -104,8 +132,9 @@ Return:
 - the relevant decision skill path(s)
 - one short statement of the resulting current truth
 - a short rationale for the action
-- the generated skill path: `.agents/skills/decision-{slug}/SKILL.md` (empty if REJECT or no scope)
-- skill sync action: `CREATED | UPDATED | SUPERSEDED | MERGED | NONE`
+- the generated skill path: `.agents/skills/decision-{slug}/SKILL.md` (empty when no skill was
+  created or updated)
+- skill sync action: `CREATED | UPDATED | MERGED | REMOVED | NONE`
 
 If skill mutation was required, include the written or updated path(s).
 
@@ -114,9 +143,10 @@ If skill mutation was required, include the written or updated path(s).
 Return exactly one primary action:
 
 - `CURRENT` — existing decision remains accurate and sufficient
-- `CREATE` — write a new `.agents/skills/decision-{slug}/SKILL.md`
+- `CREATE` — create `.agents/skills/decision-{slug}/` as an index or a single file
 - `UPDATE` — refresh an existing decision whose core truth still holds
-- `SUPERSEDE` — replace a materially changed decision and mark the old one inactive
+- `SUPERSEDE` — replace a materially changed decision by deleting the old skill directory
+  and leaving an archive tombstone
 - `MERGE` — collapse overlapping current-looking decisions into one authority
 - `REJECT` — decline content that is not durable system design truth
 
@@ -128,9 +158,15 @@ Use `references/skill-sync-rules.md` for generated skill format, routing descrip
 
 - "Important" does not automatically mean "decision".
 - "We chose A over B" is not enough by itself; the result must become durable system truth.
-- If the content mainly helps future debugging or implementation, it likely belongs in `docs/engineering/`.
+- If the content is not durable authority and mainly helps future debugging or implementation,
+  it likely belongs in `docs/engineering/`.
 - If readers could mistake an outdated skill for active authority, fix that before calling
-  the task's decision truth confirmed.
+  the task's decision truth confirmed. Retiring means deleting the directory and writing the
+  tombstone — a marked description still ships the skill into the routing list and keeps
+  competing with the new authority.
+- A decision skill must stay self-contained. When a skill grows too long, move per-domain
+  prose into `references/` inside the skill, never into `docs/engineering/`, `docs/specs/`, or
+  another lane. Links to `docs/**` are background only, not authority.
 - Do NOT escalate a local feature analysis into a decision skill just because the analysis
   was thorough. The admission bar is about **durability and system-wide impact**, not about
   analysis depth.

@@ -9,6 +9,7 @@ All notable changes to the fractal-skills collection are documented here.
 ### docs and skill contracts
 
 - Aligned runtime decision skill paths on `.agents/skills/decision-*/` across README, audit, fill, and decision-capture materials.
+- Documented the `docs/archive/decisions/{slug}.md` tombstone path for retired decision skills across setup, sync, and decision-capture materials.
 - Aligned `fractal-agents-fill` behavior and README copy with the ask-first interaction model.
 - Embedded the `fractal-scope` runtime template and checker under `fractal-setup`; consuming projects now run their local checker.
 - Added inline scope-list coverage to `check-scope.js` and a minimal Node self-test.
@@ -24,16 +25,29 @@ All notable changes to the fractal-skills collection are documented here.
 
 - Reframed as scope-gated contract extraction: target mode extracts one owning module contract, project mode discovers modules and processes each independently.
 
-### fractal-sync (1.0 → 1.1)
+### fractal-sync (1.0 → 1.2)
 
 - Narrowed to confirmed code/document changes; extraction belongs to `fractal-agents-fill`.
 - Removed the obsolete root `AGENTS.md` template and tightened lifecycle guidance.
+- Decision-skill renames, merges, and removals now trigger the outward ripple: every reference
+  to the old slug (root and per-layer `AGENTS.md`, `docs/**`, code comments) is rewritten in the
+  same operation.
 
-### decision-capture (1.1 → 2.0)
+### decision-capture (1.1 → 2.1)
 
 - Promoted decisions to project skills under `.agents/skills/decision-{slug}/SKILL.md`.
-- Added explicit current-truth lifecycle operations for create, update, supersede, merge, reject, orphan, and current decisions.
+- Added explicit current-truth lifecycle operations for create, update, supersede, merge, and current decisions.
 - Added skill-sync rules for generated decision skill routing contracts.
+- Decision skills now have two shapes: a single-topic `SKILL.md`, or an index `SKILL.md` plus
+  `references/{domain}.md` per internal domain. Both stay self-contained; `docs/**` links are
+  background only, never authority.
+- Retirement (supersede, merge, archive, reject) deletes the skill directory and writes a
+  `docs/archive/decisions/{slug}.md` tombstone. The `[SUPERSEDED]` / `[ORPHANED]` description
+  prefix is gone, so a retired decision can no longer stay in the routing list.
+- Merge is chosen by co-load unit rather than topic similarity; the reference rewrite across
+  `AGENTS.md`, `docs/**`, and code comments is part of the rename, merge, or removal operation.
+- Completion criteria now require `validate_skill.py` to pass, continuous `§N` with a
+  bidirectional index table, no stale slug references, and resolvable links between skills.
 
 ## [0.1.1] - 2026-06-01
 

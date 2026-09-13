@@ -52,3 +52,10 @@ Promote content into a decision skill only when it has crossed from:
 into:
 
 - durable authority
+
+## Merge and Separation Criteria
+
+Merge when one change would normally require loading both skills. Keep separate when:
+the merged index would exceed roughly 250 lines of decision content; one of them is
+reached by a domain the others never touch; or they have no shared invariant.
+Merging is not the goal — one authority per co-load unit is.

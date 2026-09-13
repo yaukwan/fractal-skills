@@ -8,7 +8,7 @@
 - `docs/specs/`: AI-generated executable task specifications
 - `docs/archive/`: retired documents and tombstones
 
-Design decisions live at `.agents/skills/decision-{slug}/SKILL.md` and are managed by `decision-capture`; they are not a repository document lane.
+Design decisions live at `.agents/skills/decision-{slug}/` and are managed by `decision-capture`; they are not a repository document lane. Retiring a decision skill removes it from `.agents/skills/` and leaves its body as a tombstone at `docs/archive/decisions/{slug}.md`.
 
 ## Naming
 
