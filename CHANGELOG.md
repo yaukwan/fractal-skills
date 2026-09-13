@@ -20,6 +20,7 @@ All notable changes to the fractal-skills collection are documented here.
 - Merged `fractal-repo` and `fractal-context` into the action-oriented `fractal-sync` skill for bidirectional code/document synchronization.
 - Removed the `fractal-audit` skill; report-only audits were folded into the fractal docs flow.
 - Dropped the per-language L3 header templates in favor of rendering canonical fields in each target language's standard documentation-comment syntax.
+- Removed the OpenCode installer, reference agent definitions, and `AGENTS.template.md`; the repo now ships skill sources and documentation only.
 
 ### fractal-agents-fill (1.1 → 2.0)
 
