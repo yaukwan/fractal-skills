@@ -23,6 +23,11 @@ Do not use for: pure new feature / pure visual polish / behavior-preserving refa
 
 **This skill's content-quality rules apply only when `.agents/skills/fractal-scope/config.yaml` exists**. If the project doesn't use fractal docs, follow `references/naming-and-placement.md` defaults for where to write.
 
+L2 index writes are separate from the postmortem body. Before any `AGENTS.md > Docs` edit,
+follow Retrieval Link in `references/naming-and-placement.md`; only a recorded
+`l2_folder_manifest.status: matched` permits that write. A skipped or blocked index update
+does not discard the postmortem.
+
 ## Skill Authority Map
 
 This skill owns **content-quality authority**: whether this defect work deserves a postmortem, and to what quality standard.
@@ -44,10 +49,10 @@ If you are unsure whether this is a defect fix that should leave a postmortem re
    - fix applied
    - verification
    - prevention / follow-ups
-3. Draft postmortem following the template
+3. Read `templates/postmortem-template.md` and draft the postmortem; check `references/quality-bar.md` before calling its content complete
 4. Place the document according to repo rules
-5. If an affected directory has a Level 2 `AGENTS.md`, add a `Docs` link to the postmortem there
-6. Return the document path in the final delivery
+5. Apply Retrieval Link in `references/naming-and-placement.md` for affected existing L2 manifests; record each scope result and link outcome
+6. Reread the saved postmortem and any changed manifests; return the document path and index outcomes in the final delivery
 
 ## Output Standard
 
@@ -82,7 +87,9 @@ If the repo has `fractal-sync` rules, follow them for postmortem:
 - indexing
 - lifecycle
 
-After writing the postmortem, update the affected directory's L2 `AGENTS.md > Docs` with a link when that manifest exists. This is a retrieval pointer only; the postmortem remains under `docs/postmortem/`.
+After writing the postmortem, use the gated Retrieval Link procedure in
+`references/naming-and-placement.md` for L2 indexing. This remains a retrieval pointer;
+the postmortem stays under `docs/postmortem/`.
 
 If no repo-level rules exist, follow the defaults in `references/naming-and-placement.md`.
 
@@ -94,3 +101,4 @@ When you complete a bugfix, the final delivery must include:
 - verification method
 - postmortem document path
 - brief root cause and prevention summary
+- index outcomes: changed, already linked, skipped, or blocked, with scope results or missing prerequisites

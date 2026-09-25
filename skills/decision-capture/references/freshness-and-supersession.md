@@ -10,38 +10,14 @@ A decision skill should match the system as it exists now, not as it once existe
 
 If reality changed, the skill must change too.
 
-## Preferred actions
+## Action selection
 
-The operation for each action is defined once in `references/skill-sync-rules.md`
-under Lifecycle Sync Rules. This file only explains when to pick one.
+Use the Action matrix in `SKILL.md` as the single authority for action selection, effects,
+and completion. Check whether the core truth changed, whether a successor exists, and
+whether overlapping skills form one co-load unit before selecting the action.
 
-### Update in place
-
-Use when the underlying design truth is still the same, but details drifted.
-Overwrite the skill body. Regenerate the routing description unless the decision
-frontmatter has a manually set `skill_description`.
-
-### Supersede
-
-Use when the old decision skill is no longer the active truth and a new one now
-governs the topic. Delete `.agents/skills/decision-{old}/`, write the tombstone at
-`docs/archive/decisions/{old}.md` naming the new authority, then create the new
-decision skill normally.
-
-Do not keep the retired skill on disk with a marked description. A retired skill that still
-sits in `.agents/skills/` keeps competing with the new authority in the routing list, which
-is the ambiguity supersession is supposed to end.
-
-### Merge
-
-Use when multiple decision skills are one co-load unit and create authority confusion.
-Delete each absorbed skill with the same tombstone as supersession, list the absorbed slugs
-in the survivor's `metadata.supersedes`, and update the survivor.
-
-### Archive
-
-Use when the topic no longer defines any current part of the system. Delete the directory
-and write the same tombstone with `Active authority: none`.
+A rejected proposal does not authorize deleting an existing skill. If existing content
+itself must retire, select a retirement action and obtain its required authorization.
 
 ## Conflict rule
 
@@ -53,19 +29,9 @@ If overlap exists, resolve it explicitly:
 - retire the others by deleting them and leaving tombstones
 - remove ambiguous index references
 
-## Skill sync freshness
-
-After any mutating action (CREATE, UPDATE, SUPERSEDE, MERGE, ARCHIVE, REJECT), the resulting
-skill set must match the current truth. See `references/skill-sync-rules.md` for the detailed
-sync workflow.
-
-Specifically:
-
-- `UPDATE`: regenerate the body and the description (unless a `skill_description` override exists)
-- `SUPERSEDE`: the old directory is gone and tombstoned; the new skill is created fresh
-- `MERGE`: absorbed directories are gone and tombstoned; the survivor carries `metadata.supersedes`
-- `ARCHIVE` / `REJECT`: the directory is gone and tombstoned
-- every reference to a retired slug is rewritten in the same operation
+Before an authorized mutation, read `references/skill-sync-rules.md` for retirement
+mechanics, reference rewriting, and Sync proof. A lifecycle marker on a still-discoverable
+skill does not remove its competing authority.
 
 ## Freshness warning signs
 

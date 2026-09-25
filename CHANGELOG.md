@@ -14,6 +14,8 @@ All notable changes to the fractal-skills collection are documented here.
 - Embedded the `fractal-scope` runtime template and checker under `fractal-setup`; consuming projects now run their local checker.
 - Added inline scope-list coverage to `check-scope.js` and a minimal Node self-test.
 - Standardized postmortem placement on `docs/postmortem/`.
+- Gated postmortem L2 retrieval links on the project-local scope checker; skipped or blocked
+  indexing preserves the postmortem without modifying the manifest.
 - Documented the current source-skill inventory and the generated project-local scope runtime.
 - Reworked `skill-design-guidelines` around the Agent Skills common contract, predictable execution, explicit completion criteria, and temporary prompt validation.
 - Removed committed skill eval fixtures and their generation contract; structural validation now checks only portable, deterministic requirements.
@@ -37,18 +39,26 @@ All notable changes to the fractal-skills collection are documented here.
 ### decision-capture (1.1 → 2.1)
 
 - Promoted decisions to project skills under `.agents/skills/decision-{slug}/SKILL.md`.
-- Added explicit current-truth lifecycle operations for create, update, supersede, merge, and current decisions.
+- Unified current-truth lifecycle actions: current, create, update, supersede, merge, archive,
+  and reject. Reject is read-only; retiring an existing skill requires a retirement action.
 - Added skill-sync rules for generated decision skill routing contracts.
+- Generate routing from owned contracts instead of generic keyword mappings; relevant
+  refactors and contract-documentation changes are no longer excluded by task category.
+- Load output-format and synchronization details only for write actions, and reuse explicit
+  same-scope authorization while still confirming unapproved scope expansion or retirement.
 - Decision skills now have two shapes: a single-topic `SKILL.md`, or an index `SKILL.md` plus
   `references/{domain}.md` per internal domain. Both stay self-contained; `docs/**` links are
   background only, never authority.
-- Retirement (supersede, merge, archive, reject) deletes the skill directory and writes a
+- Retirement (supersede, merge, archive) deletes the skill directory and writes a
   `docs/archive/decisions/{slug}.md` tombstone. The `[SUPERSEDED]` / `[ORPHANED]` description
   prefix is gone, so a retired decision can no longer stay in the routing list.
 - Merge is chosen by co-load unit rather than topic similarity; the reference rewrite across
   `AGENTS.md`, `docs/**`, and code comments is part of the rename, merge, or removal operation.
-- Completion criteria now require `validate_skill.py` to pass, continuous `§N` with a
-  bidirectional index table, no stale slug references, and resolvable links between skills.
+- Preflight required L2/L3 reference rewrites through the scope gate before retirement;
+  blocked rewrites leave the affected authority in place.
+- Write completion requires applicable structural and routing checks, continuous `§N`
+  (with a bidirectional index for multi-domain skills), no stale active-authority references,
+  and resolvable links. Read-only outcomes do not require mutation or retirement checks.
 
 ## [0.1.1] - 2026-06-01
 
