@@ -42,8 +42,9 @@ your-project/
         └── decision-*/       # auto-generated decision skills (by decision-capture)
 ```
 
-Decisions no longer live under `docs/decisions/`. Each decision is a project skill
-at `.agents/skills/decision-{slug}/SKILL.md`, managed by `decision-capture`.
+Decisions no longer live under `docs/decisions/`. Each decision is a project skill at
+`.agents/skills/decision-{slug}/`, managed by `decision-capture`. A retired decision skill
+leaves its body as a tombstone at `docs/archive/decisions/{slug}.md`.
 
 ## Workflow
 
@@ -79,5 +80,5 @@ This is compatibility guidance, not enforcement. It affects skills that read `do
 - Managed runtime files are refreshed only after explicit confirmation
 - `l3_file_header.enabled` and `l2_folder_manifest.enabled` default to `false`; user must enable manually
 - Do not run in non-project directories (e.g. home, tmp)
-- `docs/decisions/` is intentionally absent — decisions live as `.agents/skills/decision-*/SKILL.md`
+- `docs/decisions/` is intentionally absent — decisions live as `.agents/skills/decision-*/`, and retired ones as `docs/archive/decisions/{slug}.md` tombstones
 - Do not create `CONTEXT.md`; fractal-managed domain language lives in L2 `AGENTS.md > Language`

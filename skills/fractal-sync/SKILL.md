@@ -4,7 +4,7 @@ description: "Load after a confirmed code, architecture, or repository-document 
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "1.0"
+  version: "1.2"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -37,6 +37,9 @@ L2 and L3 are independently scoped. Never infer scope rules when the checker can
    - Existing L2 manifests, but only for contract changes established by this change (ownership, constraints, member responsibilities, vocabulary, related docs).
    - L1 when top-level topology, global constraints, or local-map navigation changed.
    - Repository docs when placement, naming, frontmatter, indexes, or lifecycle changed.
+   - Decision skills when this change renames, merges, or removes one: rewrite every reference
+     to the old slug in the same operation (root and per-layer `AGENTS.md`, `docs/**`, code
+     comments). See `decision-capture`, `references/skill-sync-rules.md`, Reference Rewrite.
 5. **Prove both directions.** Verify every changed documentation claim against code and represent every changed code contract at its owning documentation layer.
 6. **Report the sync.** List `changed`, `checked-no-change`, and `blocked` items for both code and documentation.
 
@@ -69,7 +72,8 @@ The protocol references are the single source of truth for schema meaning. Rende
 - Every affected L2/L3 path has a recorded scope-check result.
 - Every contract change maps to its owning layer, or is explicitly recorded as `checked-no-change`.
 - Documented paths, modules, and contracts resolve against current code.
-- Moved or removed entities leave no stale indexes or navigation entries.
+- Moved or removed entities leave no stale indexes or navigation entries, including no stale
+  reference to a renamed or removed `decision-*` slug.
 - The final report covers both the machine view and semantic map.
 
 ## Boundaries
@@ -77,5 +81,6 @@ The protocol references are the single source of truth for schema meaning. Rende
 - Bootstrap or runtime repair belongs to `fractal-setup`.
 - Target-module or project-wide extraction, creation, or systematic refresh of Level 2 module contracts belongs to `fractal-agents-fill`.
 - Report-only repository health scans are outside this synchronization workflow.
-- Decision creation, update, supersession, or merge belongs to `decision-capture`.
+- Decision creation, update, supersession, merge, and retirement belong to `decision-capture`,
+  as does the reference rewrite that follows a decision-skill rename or removal.
 - Postmortem content quality belongs to `postmortem`; this skill owns its placement and retrieval links.

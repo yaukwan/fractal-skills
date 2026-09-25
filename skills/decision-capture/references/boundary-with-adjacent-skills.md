@@ -15,6 +15,7 @@ When a document should not be a decision skill, route it here:
 | Bug-fix root-cause record | `docs/postmortem/` | `postmortem` |
 | PRD → executable task groups | `docs/specs/` | `to-task-specs` |
 | Archived past docs | `docs/archive/` | `fractal-sync` |
+| Retired decision skill body | `docs/archive/decisions/{slug}.md` tombstone | `decision-capture` |
 
 ## Common boundary confusions
 

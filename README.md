@@ -8,19 +8,11 @@ AI-native documentation orchestration skills for coding agent projects — a thr
 
 ## Quickstart
 
-### Install skills
-
 ```bash
 npx skills add yaukwan/fractal-skills
 ```
 
-### Optional OpenCode setup
-
-```bash
-npx github:yaukwan/fractal-skills install
-```
-
-`npx skills add` makes all Fractal Skills available to your coding agent. The optional `npx github:yaukwan/fractal-skills install` command generates a personalized `~/.config/opencode/AGENTS.md` and installs the `fractal` orchestrator agent definition.
+`npx skills add` makes all Fractal Skills available to your coding agent.
 
 ## Why Fractal Skills
 
@@ -93,12 +85,3 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - **BUILD** — `impl-task-spec`: execute the approved spec with your normal implementation, TDD, diagnosis, and review skills, keeping spec progress and status current.
 - **POSTMORTEM** — `postmortem`: required when the primary task nature is defect correction.
 - **AUXILIARY** — `fractal-sync` closes the code/document loop outside the main delivery stages.
-
-## OpenCode Agents (Optional)
-
-The `opencode-agents/` directory contains reference agent definitions for OpenCode users:
-
-- **`fractal`** — Primary orchestrator that drives the `FILL → DECIDE → SPEC → BUILD → POSTMORTEM` flow.
-- **`gstack`** — Integration agent for gstack toolchain compatibility.
-
-`npx github:yaukwan/fractal-skills install` installs `fractal.md` alongside `AGENTS.md` generation. `gstack.md` remains a reference file that can be manually copied into `~/.config/opencode/agents/` if you want that integration.
