@@ -5,14 +5,14 @@ updated: {YYYY-MM-DD}
 project: "{project_name}"
 taskID: "{unique_task_id}"
 related:
-  - {path_to_prd}
-rawPRD: "{raw_prd_or_summary}"
+  - {relative_path_to_source_or_current_decision} # Use [] when no source document exists.
 ---
 
 # AI Development Task Specification: {task_title}
 
+> Template instructions: summarize settled intent, not the raw conversation. Omit irrelevant optional sections and remove all placeholders and authoring notes. Add only detail needed for the handoff; generation does not imply human approval.
+
 ## 1. Core Intent
-> **[Human Input]** This section describes business objectives and user value.
 
 **Business Objectives**:
 - {business_objective_1}
@@ -25,53 +25,40 @@ rawPRD: "{raw_prd_or_summary}"
 
 ## 2. Context & Boundaries
 
+- **Baseline**: {inspected_revision_or_project_state_and_relevant_local_changes}
+- **In Scope / Non-goals**: {included_outcomes_and_explicit_exclusions}
+- **Unchanged Behavior**: {existing_behavior_and_contracts_to_preserve}
+
 - **Primary Impact Scope**:
   - **Codebase**: {repo_link_or_project_path}
   - **Core Files/Modules**:
-    - `{file_path}` - (Purpose: {short_purpose})
-    - `{file_path}` - (Purpose: {short_purpose})
+    - `{existing_path}::{symbol_or_section}` - {relevant_role_and_observed_behavior}
+  - **Reuse / Reference Implementation**:
+    - `{existing_path}::{symbol_or_section}` - {what_to_reuse_or_follow}
+  - **Planned Additions** (if any): {new_paths_or_interfaces_not_yet_present}
 
 - **Prohibited Modification Scope**:
   - `{path}/**` - (Reason: {reason})
 
+- **Assumptions** (if any): {nonblocking_assumptions_and_their_effects}
+- **Current Decisions** (if applicable): {authority_references_and_inherited_constraints}
+- **Local Design Choices**: {chosen_approach_and_key_rationale}
+- **Executor Freedom**: {private_implementation_details_left_open}
 
-## 3. Visual Logic Models (Optional & Extensible)
-> Include only diagrams that directly help implementation or resolve ambiguity.
-> If no diagram is necessary, write: "N/A – logic is trivial or already covered by code."
+## 3. Behavioral & Interface Contract
 
-### 3.1 {diagram_type} (e.g., State Machine / ER / Deployment / User Journey)
-- **Purpose**: {one sentence describing what this diagram clarifies}
-- **Diagram**:
+- **Inputs / Outputs / Defaults**: {exact_changed_behavior_with_examples}
+- **States / Errors / Side Effects**: {trigger_conditions_results_and_failure_effects}
+- **Invariants**: {properties_that_must_remain_true}
+- **Contract Anchors**: {existing_schema_or_symbol_and_preserved_obligations}
+- **New or Changed Definitions** (if any): {minimal_signatures_fields_types_nullability_or_schema_delta}
+- **Risk Constraints** (as applicable): {compatibility_migration_permissions_concurrency_retry_or_resource_requirements}
 
-```mermaid
-stateDiagram-v2
-  [*] --> Draft
-  Draft --> Approved
-  Approved --> [*]
-```
-
-- **Notes**: {additional notes, edge cases, or pointers to code}
-
-
-## 4. Interface & Data Definitions (Pick One or Both as Needed)
-
-### 4.1 External API (if any)
-- **Protocol**: {HTTP/gRPC/GraphQL/...}
-- **Short Description**: {1-2 sentences}
-- **Contract Source**:
-  - Option A – Link: `{link_to_existing_openapi_or_proto_file}`
-  - Option B – Inline: {minimal table or bullet list}
-- **Notes**: {auth/pagination/rate limit/etc.}
-
-### 4.2 Internal Data Shapes (if not obvious from the code)
-- Source of truth: `{file_path}`
-- Additional notes: {critical fields, allowed enum values, nullability}
-
-If there is nothing to add, write:
-"No additional interface or data definitions are required; refer to the source code."
+### Logic Model (optional)
+{include_a_diagram_or_key_pseudocode_only_if_it_clarifies_a_nontrivial_state_flow_or_invariant}
 
 
-## 5. Task Decomposition & Implementation Directives
+## 4. Task Decomposition & Implementation Directives
 
 ### Task Group 1: {functional_module_name}
 **Purpose**: {why this group exists and why it is grouped this way}
@@ -79,7 +66,9 @@ If there is nothing to add, write:
 **Requirements**: {brief spec description for this group}
 
 - **[ ] 1.1: {sub_task_title}**
+  - **Depends on**: {task_ids_or_none_including_shared_file_sequencing}
   - **Input**: {parameters, data, preconditions}
+  - **Change Anchors**: {existing_or_planned_implementation_and_verification_paths_and_symbols}
   - **Instructions**:
     1. {step_1}
     2. {step_2}
@@ -89,9 +78,15 @@ If there is nothing to add, write:
     - [ ] {verifiable_criteria_1}
     - [ ] {verifiable_criteria_2}
     - [ ] {multi_file_processed_successfully_if_applicable}
+  - **Verification**:
+    - **Entry Point / Check**: {existing_or_planned_test_or_user_flow_and_criteria_it_covers}
+    - **Run From / Command or Procedure**: {directory_command_or_reproducible_steps_and_environment_prerequisites}
+    - **Expected Result**: {observable_success_and_relevant_failure_results_not_claimed_as_executed}
 
 - **[ ] 1.2: {sub_task_title}**
+  - **Depends on**: {task_ids_or_none_including_shared_file_sequencing}
   - **Input**: {parameters, data, preconditions}
+  - **Change Anchors**: {existing_or_planned_implementation_and_verification_paths_and_symbols}
   - **Instructions**:
     1. {step_1}
     2. {step_2}
@@ -99,32 +94,28 @@ If there is nothing to add, write:
   - **Acceptance Criteria**:
     - [ ] {verifiable_criteria_1}
     - [ ] {verifiable_criteria_2}
+  - **Verification**: {entry_point_criteria_covered_directory_command_or_procedure_and_expected_result}
 
 ### Task Group 2: {functional_module_name}
 {continue_with_same_structure}
 
 
-## 6. Implementation Constraints & Guidelines
+## 5. Implementation Constraints & Escalation
 
-- **Technology Stack**: {libraries/frameworks}
-- **Performance Requirements**: {non_functional_requirements}
-- **Coding Standards**: {patterns/style}
-- **Error Handling**: {error_semantics}
+- **Project Conventions / Quality Gates**: {verified_project_sources_and_task_relevant_checks}
+- **Escalate With Evidence When**: {missing_anchors_contract_conflicts_scope_expansion_or_failures_requiring_design_changes}
+- **Return To**: {requirement_clarification_decision_review_or_spec_revision_as_applicable}
+- **Recovery** (for risky steps): {safe_retry_or_rollback_constraints}
 
 
-## 7. Review Checklist
-> **[Human Review]** All items must be checked before status changes to APPROVED.
+## 6. Review Checklist
+> **[Human Review]** Approval requires this review, not merely generation of the spec.
 
-- [ ] **Logic Consistency**: Mermaid diagrams are consistent with task decomposition logic.
-- [ ] **Contract Accuracy**: Interface and type definitions reflect PRD requirements.
-- [ ] **Implementability**: Acceptance criteria for each subtask are clear, specific, and verifiable.
-- [ ] **Boundary Completeness**: Boundary conditions and exception cases are considered.
-- [ ] **Scope Compliance**: Implementation plan adheres to defined scope.
-- [ ] **Task Group Division**: Task groups follow merging and batching rules.
+- [ ] **Grounding**: Existing anchors are verified; planned additions and assumptions are labeled.
+- [ ] **Contract & Scope**: Required behavior, critical edge cases, non-goals, and current constraints agree.
+- [ ] **Execution Order**: Task dependencies and write conflicts are explicit and executable.
+- [ ] **Verification Coverage**: Each required outcome has a concrete check through the relevant entry point.
+- [ ] **Cold Handoff**: The spec and its references suffice without chat memory; local freedoms and escalation conditions are clear.
 
-## Implementation Progress Tracking
-- **Requirements Coverage**: [To Implement/Total Requirements]
-- **Interface Contracts**: [To Complete/Total Contracts]
-- **Acceptance Criteria**: [To Meet/Total Criteria]
-- **Specification Compliance**: [To Verify/Total Specifications]
-
+## Execution Evidence
+{leave_actual_results_empty_until_execution_then_record_task_id_commands_or_procedures_results_and_approved_deviations}

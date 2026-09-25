@@ -1,63 +1,44 @@
 # Task Group Structuring & Splitting Guidelines
 
-## 1. Top-Level Grouping Principle
+## 1. Groups Organize Context; Tasks Define Execution
 
-1. **Group by Functional Domain & Code Boundary**
-   - A top-level Task Group must represent a self-contained functional module impacting a distinct set of core files.
-   - All changes to the same module must be in the same Task Group, even if they address different logical concerns.
-   - If two tasks touch the same set of files, merge them into one Task Group to keep context unified.
+- Group by functional domain and code boundary, not project phases such as design, coding, and testing.
+- A group collects related context; it is not automatically an independent or parallel execution unit.
+- Make each task a bounded, observable outcome that is testable once its declared prerequisites hold. A task may cross entry point, service, storage, and tests to deliver one behavior.
+- Separate independently accepted behaviors even when they share a module or file. File overlap is a dependency or write-conflict signal, not a mandatory merge rule.
+- Name groups by functional responsibility and tasks by delivered outcome. Follow the target project's naming conventions for files and symbols.
 
-2. **Purpose of Top-Level Groups**
-   - Each group should be independently completable and testable.
-   - Groups should be organized to allow parallel execution without excessive cross-group dependencies.
+## 2. Size and Batching
 
-## 2. Sub-Task Splitting Rules
+- Split when a task combines independent outcomes or requires several unresolved design choices; do not split merely to reach a file count, step count, or document length.
+- Batch the same mechanical change across files only when the contract, prerequisites, and verification are shared. List every affected file and ensure the check covers all of them.
+- Keep distinct logic separate when it needs different acceptance or failure handling. Keep the related edits needed to make one outcome work together.
+- Avoid micro-tasks such as "add an import" and broad tasks such as "implement the backend" without a bounded result.
 
-1. **Optimal Size**
-   - Each sub-task should be a complete, small unit of work that contributes to delivering the feature.
-   - Keep sub-tasks small enough for clear acceptance criteria, but large enough to avoid micro-tasks.
-   - Merge similar operations on multiple files into one sub-task to avoid redundant processing.
+## 3. Dependencies and Shared Changes
 
-2. **Operation Batching**
-   - Merge similar operations: when multiple files need identical operations, combine them into a single sub-task listing all files.
-   - File operation batching rules:
-     - If refactoring pattern is identical across files → single sub-task listing all files
-     - If each file needs unique logic → separate sub-tasks
-     - Specify: "Apply to files: `file1.ts`, `file2.ts`, `file3.ts`"
+- Give tasks stable IDs and explicit `Depends on` entries; use `none` for an actual root task.
+- Establish shared contracts before dependent implementations. Identify both the producer and consumers of an interface change.
+- Order tasks so prerequisites are delivered before use. Check for missing IDs and cycles.
+- Sequence tasks that modify the same file unless their non-overlapping write scopes are established. Record this sequencing even if their behaviors are independent.
+- Mark tasks parallel only when prerequisites, shared contracts, and write scopes permit it. Disjoint file lists alone are not proof of independence.
 
-3. **Deliverable-Focused Naming**
-   - Name sub-tasks after the outcome, not the action steps.
+## 4. Acceptance and Verification
 
-4. **Logical Order**
-   - If dependencies exist, sequence sub-tasks so earlier tasks unblock later ones (e.g., logic migration → interface update → edge case fix).
+- State acceptance as observable behavior with concrete inputs, preconditions, outputs, or side effects. Cover the success path and the critical failure/boundary cases introduced by the change.
+- A behavior task owns the test additions and documentation needed to accept that behavior. Its acceptance may use its own changes and completed prerequisites, never checks delivered only by a later task; do not split one outcome into "implement now, add its tests later."
+- Dedicated test or documentation tasks/groups are valid when those are the user's requested deliverables, rather than deferred acceptance for an earlier implementation task.
+- Associate each acceptance criterion with a test/check or reproducible manual procedure. Include the working directory, command or steps, and expected result; distinguish existing checks from planned additions.
+- Validate through the affected user or module entry point, not only a newly introduced helper. For a pure function, its public call can be the entry point; for documentation, use its actual consumer or a reproducible review/check.
+- Reuse the project's verification tools and derive additional checks from change risk. Expand coverage for changed permissions, persistent data, public interfaces, and cross-module behavior; do not invent project-wide tool or coverage requirements.
+- Treat commands and expected results as a validation plan, not execution evidence. If an environment prerequisite is unavailable, state it and the consequence for verification rather than claiming a pass.
 
-## 3. Acceptance Criteria Standard
+## 5. Completion Check
 
-1. **Integrate Testing & QA Into Each Task**
-   - Do not create separate Task Groups for testing or documentation.
-   - Add testing, quality, and type safety requirements into each sub-task’s acceptance criteria.
+Before handing off the task list, verify:
 
-2. **Mandatory Items for Development Tasks**
-   - All database access is moved to the service layer
-   - API request/response types comply with `shared` module definitions
-   - Unit tests for all new/changed service methods
-   - Integration tests for all updated routes
-   - TypeScript passes strict type checks
-   - Test coverage ≥ 80%
-   - Passes ESLint architectural rules with no violations
-
-## 4. Naming Conventions
-
-1. **Top-Level Group Names**
-   - Use `{Module Name} + {Action}` (avoid phase-based group names).
-
-2. **File & Method Naming**
-   - Follow existing codebase conventions (kebab-case for files, PascalCase for service classes, camelCase for methods).
-
-## 5. Prohibited Practices
-
-- Splitting by project phase at top-level
-- Having “Testing Only” or “Documentation Only” groups
-- Creating micro-tasks with vague outcomes
-- Separating related file changes into different Task Groups
-
+- Every requirement and critical edge case has an owning task and a concrete check.
+- Every task identifies its prerequisites, existing/planned change anchors, deliverable, and acceptance.
+- Dependency order is executable and file conflicts are explicit.
+- Tests exercise the delivered behavior at the relevant entry point.
+- No task introduces unrelated refactoring, dependencies, or architecture under the guise of a quality gate.
