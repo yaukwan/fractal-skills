@@ -40,15 +40,16 @@ Fractal Skills 提供了一套**三层上下文协议**，直接对应软件的�
 | **Level 2** | 目录 / 限界上下文 | 局部所有权、作用域边界、成员模块 |
 | **Level 3** | 源代码文件 | 当前合约：输入、输出、角色、不变量 |
 
-七个源码 skill 覆盖构建与维护生命周期；`fractal-setup` 还会生成供下游门控使用的项目本地 `fractal-scope` runtime：
+八个源码 skill 覆盖构建与维护生命周期；`fractal-setup` 还会生成供下游门控使用的项目本地 `fractal-scope` runtime：
 
 1. **建仓**：搭建文档结构和 scope runtime（`fractal-setup`）
 2. **抽取**：将单个模块或全项目目录 contract 写入 scope 允许的 `AGENTS.md`（`fractal-agents-fill`）
 3. **同步**：对代码与文档执行 L3、L2、L1 及仓库生命周期回环（`fractal-sync`）
 4. **决策**：完整决策生命周期——检查、创建、更新、取代、合并（`decision-capture`）
 5. **规格**：从已解决上下文或 PRD 生成可执行任务规格文档（`to-task-specs`）
-6. **复盘**：为 bug、回归、故障产出结构化的根因记录（`postmortem`）
-7. **设计**：维护 skill 编写、路由和校验准则（`skill-design-guidelines`）
+6. **执行**：按已批准的 spec 实施，验证后回写进度与状态（`impl-task-spec`）
+7. **复盘**：为 bug、回归、故障产出结构化的根因记录（`postmortem`）
+8. **设计**：维护 skill 编写、路由和校验准则（`skill-design-guidelines`）
 
 生成的 `.agents/skills/fractal-scope/` 归消费项目所有，负责配置 L2/L3 写入范围并运行项目本地的确定性 checker；它不再作为独立源码 skill 分发。
 
@@ -65,7 +66,7 @@ Fractal Skills 是**知识基底层**：维护 `AGENTS.md` 遍历上下文、当
 
 执行类 skill 生态可以消费 Fractal 维护的上下文。用 Fractal 在规划前刷新局部 contract，在写 spec 前确认决策真相，在缺陷修复后记录 postmortem；随后用你的执行类 skill 完成构建、测试、诊断和 review。
 
-`BUILD` 阶段没有 Fractal 专属 skill 是刻意边界。它是外部执行动词基于 Fractal 已刷新上下文开始工作的交接点。
+`BUILD` 阶段可以使用 `impl-task-spec` 作为薄执行协议：跟踪经验证的任务完成情况、记录证据、更新 spec 状态，同时复用项目已有的实现、测试、诊断与 review 流程。
 
 ## 源码 Skills
 
@@ -75,6 +76,7 @@ Fractal Skills 是**知识基底层**：维护 `AGENTS.md` 遍历上下文、当
 - **[fractal-sync](./skills/fractal-sync/SKILL.md)** — 将代码与文档作为 current truth 的两种视图进行同步。执行受 scope 控制的 L3 → L2 → L1 波纹检查，反向验证文档与代码，并维护仓库文档落点、frontmatter、索引和生命周期。
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — 当前任务的完整决策生命周期。检查现有决策 skill 是否仍然覆盖当前真相，然后创建、更新、取代或合并决策 skill，确保设计权威无可争议。决策文件位于 `.agents/skills/decision-*/SKILL.md`。
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — 从 PRD、已解决上下文或对话上下文中生成可执行的任务规格文档。按功能域分组任务，继承决策约束，产出可验证的验收标准。
+- **[impl-task-spec](./skills/impl-task-spec/SKILL.md)** — 实施或续做已批准的任务规格，逐项验证后勾选任务，并将执行证据和文档状态回写到 spec。
 - **[postmortem](./skills/postmortem/SKILL.md)** — 为 bug、回归、故障产出结构化的根因记录。记录症状、影响、根因、修复方案、验证方式和预防措施。任务主要性质为缺陷修复时必须产出。
 - **[skill-design-guidelines](./skills/skill-design-guidelines/SKILL.md)** — 独立的 Agent Skills 编写与维护准则，覆盖调用设计、可预测执行、完成条件、渐进披露、内容裁剪、临时 prompt 验证与可移植结构检查。
 
@@ -88,7 +90,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - **FILL** — `fractal-agents-fill`：抽取单模块或全项目 contract，并写入 scope 允许的 `AGENTS.md`。
 - **DECIDE** — `decision-capture`：检查决策覆盖范围并更新决策 skill，直到当前真相已文档化。
 - **SPEC** — `to-task-specs`：将已解决上下文转化为可执行的任务文档。
-- **BUILD** — 使用你的常规实现、TDD、诊断和 review skills 按已确认的 spec 实施。
+- **BUILD** — `impl-task-spec`：复用你的常规实现、TDD、诊断和 review skills 按已确认的 spec 实施，同步维护 spec 进度与状态。
 - **POSTMORTEM** — `postmortem`：任务主要性质为缺陷修复时必须产出。
 - **辅助** — `fractal-sync` 在主流程阶段之外闭合代码与文档回环。
 

@@ -172,24 +172,25 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - 用户要求开始实现
 
 **Do**
-1. 按当前 spec 实施
+1. 调用 `impl-task-spec`，按当前 spec 实施并回写经验证的任务进度、执行证据与 spec 状态
 2. 小改动直接实现；大改动分批推进，但不要脱离 spec
 3. 若实现暴露需求误解，回到 `FILL`
 4. 若实现暴露 decision drift，回到 `DECIDE`
-5. 完成后明确判断任务主要性质是 `FEATURE` 还是 `BUGFIX`
+5. 完成后明确判断任务主要性质是 `FEATURE` 还是 `BUGFIX`；BUGFIX 在 spec 记录待复盘交接，保持 `in_progress`，等待确认后进入 POSTMORTEM
 
 **Exit when**
 - 改动完成
 - 必要自检完成
+- spec 任务勾选、执行证据与状态已回写，部分完成或阻塞不视为整份 spec 完成
 - 已完成任务性质判断
 
 **Report**
 - 模式：BUILD
-- 结果：改动文件 / 实现内容 / 自检结果
+- 结果：spec 路径与状态 / 完成及剩余 task IDs / 改动文件 / 实现内容 / 自检结果
 - task nature：FEATURE | BUGFIX
 - 状态：DONE | DONE_WITH_CONCERNS | NEEDS_WORK
-- 下一步：BUGFIX 时进入 POSTMORTEM；否则任务结束
-- 等待确认：若为 BUGFIX，确认后进入 POSTMORTEM；否则无
+- 下一步：未完成时继续 BUILD 或返回澄清；实现完成且为 BUGFIX 时进入 POSTMORTEM；否则任务结束
+- 等待确认：若有阻塞，确认解除条件；若为 BUGFIX，确认后进入 POSTMORTEM；否则无
 
 ---
 
@@ -202,10 +203,12 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 **Do**
 1. 调用 `postmortem`
 2. 记录 symptom / impact / root cause / fix / verification / prevention
-3. 在最终交付中返回文档路径
+3. 存在关联 spec 时，将复盘路径和结果回写其 `Execution Evidence`，按 `impl-task-spec` 的完成条件复核全部任务与最终检查，再更新状态和 `updated`；无关联 spec 时不补建
+4. 在最终交付中返回复盘路径，以及关联 spec 的路径和状态（如有）
 
 **Exit when**
 - postmortem 已写入并可引用
+- 关联 spec（如有）已回写复盘证据与准确状态
 
 **Report**
 - 模式：POSTMORTEM
@@ -223,6 +226,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 | 单模块或全项目 contract 抽取 / 方向语义确认 | `fractal-agents-fill` |
 | decision gate | `decision-capture` |
 | 生成任务规格文档 | `to-task-specs` |
+| 按 spec 实施 / 续做并回写进度 | `impl-task-spec` |
 | bugfix 复盘 | `postmortem` |
 
 辅助但不在主流程 phase 中的 skill：

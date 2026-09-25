@@ -1,6 +1,6 @@
 ---
 type: specs
-status: draft # draft | pending_review | approved | in_progress
+status: draft # draft | pending_review | approved | in_progress | blocked | completed
 updated: {YYYY-MM-DD}
 project: "{project_name}"
 taskID: "{unique_task_id}"

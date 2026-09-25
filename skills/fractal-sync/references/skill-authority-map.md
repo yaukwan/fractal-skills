@@ -30,6 +30,15 @@ Use this map when tasks touch multiple adjacent documentation skills.
   - Owns defect-vs-feature judgment for reusable incident records
   - Owns postmortem structure, root-cause depth, verification, and prevention quality bar
 
+- `to-task-specs` — task-spec generation authority
+  - Owns repository-grounded task contracts, decomposition, and the spec template
+  - Stops for human review before implementation
+
+- `impl-task-spec` — task-spec execution authority
+  - Owns implementing approved tasks with project execution practices
+  - Owns verified task checkmarks, execution evidence, and spec execution status
+  - Returns contract changes for clarification or spec revision; does not own document placement or archiving
+
 ## Handoff rules
 
 - If the task bootstraps fractal docs or repairs generated scope runtime files, start with `fractal-setup`.
@@ -37,6 +46,7 @@ Use this map when tasks touch multiple adjacent documentation skills.
 - If code or documentation changed, use `fractal-sync` to reconcile both views.
 - If the task needs one or all module contracts extracted or refreshed from project evidence, start with `fractal-agents-fill`.
 - If the task changes **what incident knowledge must be captured**, start with `postmortem`.
+- If resolved context needs a task spec, use `to-task-specs`; if an existing spec needs implementation or resumption, use `impl-task-spec`.
 
 ## Mixed-task rule
 

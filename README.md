@@ -40,15 +40,16 @@ Fractal Skills provides a **three-layer context protocol** that mirrors how soft
 | **Level 2** | Folder / bounded context | Local ownership, scope boundaries, member modules |
 | **Level 3** | Source file | Current contract: inputs, outputs, role, invariants |
 
-Seven source skills cover the build-and-maintain lifecycle. `fractal-setup` also emits the project-local `fractal-scope` runtime used by downstream gates:
+Eight source skills cover the build-and-maintain lifecycle. `fractal-setup` also emits the project-local `fractal-scope` runtime used by downstream gates:
 
 1. **Bootstrap** the documentation structure and scope runtime (`fractal-setup`)
 2. **Extract** module contracts for one target or a whole project into scoped `AGENTS.md` files (`fractal-agents-fill`)
 3. **Synchronize** code and documentation through L3, L2, L1, and repository lifecycle (`fractal-sync`)
 4. **Capture** decisions and keep design truth current (`decision-capture`)
 5. **Generate** executable task specs from resolved context (`to-task-specs`)
-6. **Record** root-cause postmortems for bugs and incidents (`postmortem`)
-7. **Guide** skill authoring and validation (`skill-design-guidelines`)
+6. **Execute** approved task specs with verified progress and status writeback (`impl-task-spec`)
+7. **Record** root-cause postmortems for bugs and incidents (`postmortem`)
+8. **Guide** skill authoring and validation (`skill-design-guidelines`)
 
 The generated `.agents/skills/fractal-scope/` is owned by the consuming project. It configures L2/L3 write scope and runs its local deterministic checker; it is not distributed as a standalone source skill.
 
@@ -65,7 +66,7 @@ Fractal Skills is the **knowledge substrate**: it maintains `AGENTS.md` traversa
 
 Execution-skill ecosystems can consume the context Fractal maintains. Use Fractal to refresh local contracts before planning, confirm decision truth before specs, and write postmortems after defect fixes; then use your execution skills for build, test, diagnosis, and review.
 
-The `BUILD` stage has no Fractal-specific skill by design. It is the handoff point where external execution verbs act on the context Fractal made current.
+The `BUILD` stage can use `impl-task-spec` as a thin execution protocol: it tracks verified task completion, records evidence, and updates spec status while composing with the project's existing implementation, test, diagnosis, and review practices.
 
 ## Source Skills
 
@@ -75,6 +76,7 @@ The `BUILD` stage has no Fractal-specific skill by design. It is the handoff poi
 - **[fractal-sync](./skills/fractal-sync/SKILL.md)** — Synchronize code and documentation as two views of current truth. Runs scoped L3 → L2 → L1 ripple checks, validates documentation back against code, and maintains repository placement, frontmatter, indexes, and lifecycle.
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — Full decision lifecycle for the current task. Checks whether existing decision skills still cover the truth, then creates, updates, supersedes, or merges decision skills so current design authority is unambiguous. Decisions live at `.agents/skills/decision-*/SKILL.md`.
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — Generate executable task specifications from a PRD, resolved context, or conversation context. Groups tasks by functional domain, inherits decision constraints, and produces verifiable acceptance criteria.
+- **[impl-task-spec](./skills/impl-task-spec/SKILL.md)** — Implement or resume an approved task spec, verify tasks before checking them off, and write execution evidence and document status back to the spec.
 - **[postmortem](./skills/postmortem/SKILL.md)** — Structured root-cause records for bugs, regressions, and incidents. Records symptom, impact, root cause, fix applied, verification, and prevention steps. Required when the primary task nature is defect correction.
 - **[skill-design-guidelines](./skills/skill-design-guidelines/SKILL.md)** — Independent Agent Skills authoring and maintenance guidance. Covers invocation design, predictable execution, completion criteria, progressive disclosure, pruning, temporary prompt validation, and portable structural checks.
 
@@ -88,7 +90,7 @@ FILL → DECIDE → SPEC → BUILD → POSTMORTEM
 - **FILL** — `fractal-agents-fill`: extract target-module or project-wide contracts and write scoped `AGENTS.md` files.
 - **DECIDE** — `decision-capture`: check decision coverage and update decision skills until current truth is documented.
 - **SPEC** — `to-task-specs`: turn resolved context into a build-ready task document.
-- **BUILD** — Execute the approved spec with your normal implementation, TDD, diagnosis, and review skills.
+- **BUILD** — `impl-task-spec`: execute the approved spec with your normal implementation, TDD, diagnosis, and review skills, keeping spec progress and status current.
 - **POSTMORTEM** — `postmortem`: required when the primary task nature is defect correction.
 - **AUXILIARY** — `fractal-sync` closes the code/document loop outside the main delivery stages.
 

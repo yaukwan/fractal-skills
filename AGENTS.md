@@ -22,6 +22,7 @@
 - `skills/fractal-sync/SKILL.md`: bidirectional code/document synchronization, Level 1/2/3 semantics, and repository lifecycle
 - `skills/decision-capture/SKILL.md`: decision lifecycle and authority split
 - `skills/to-task-specs/SKILL.md`: spec generation behavior controlled by the fractal scope config
+- `skills/impl-task-spec/SKILL.md`: spec execution, verified task progress, and execution-state writeback
 - `skills/postmortem/SKILL.md`: bugfix and incident root-cause records
 - `skills/skill-design-guidelines/SKILL.md`: skill authoring, routing, layout, and validation guidance
 
