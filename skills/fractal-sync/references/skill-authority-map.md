@@ -4,25 +4,19 @@ Use this map when tasks touch multiple adjacent documentation skills.
 
 ## Authority split
 
-- `fractal-setup` — bootstrap and runtime-template authority
+- `fractal-setup` — bootstrap authority
   - Owns initial `docs/` directory creation
-  - Owns the deployable runtime source under `assets/fractal-scope/`
-  - Owns first emission and repair of managed `.agents/skills/fractal-scope/` runtime files
-  - Preserves the project-owned `config.yaml` during repair
-  - Does not own ongoing audits, scope configuration, or local `AGENTS.md` content
-
-- project-local `fractal-scope` — scope-gate authority
-  - Owns `.agents/skills/fractal-scope/config.yaml`
-  - Owns deterministic matching via `.agents/skills/fractal-scope/scripts/check-scope.js`
-  - Owns scope configuration and match inspection inside the consuming project
+  - Does not own ongoing audits or local `AGENTS.md` content
 
 - `fractal-sync` — synchronization authority
   - Owns Level 1/2/3 semantics and repository document topology
+  - Owns write eligibility for existing Level 1/2/3 artifacts and requested Level 3 headers
   - Owns bidirectional code/document ripple synchronization
   - Owns placement, naming, indexing, and lifecycle transitions
 
 - `fractal-agents-fill` — module contract extraction authority
   - Owns extracting and writing module contracts from a supplied project or module path
+  - Owns creation of Level 2 manifests
   - Owns target-module extraction and project-wide module discovery
   - Owns conservative `AGENTS.md` merging, module-relevant skill pointers, and blocked-boundary reporting
 
@@ -41,8 +35,7 @@ Use this map when tasks touch multiple adjacent documentation skills.
 
 ## Handoff rules
 
-- If the task bootstraps fractal docs or repairs generated scope runtime files, start with `fractal-setup`.
-- If the task configures or checks write scope, use the consuming project's local `fractal-scope`; if it is absent, bootstrap it with `fractal-setup`.
+- If the task bootstraps fractal docs, start with `fractal-setup`.
 - If code or documentation changed, use `fractal-sync` to reconcile both views.
 - If the task needs one or all module contracts extracted or refreshed from project evidence, start with `fractal-agents-fill`.
 - If the task changes **what incident knowledge must be captured**, start with `postmortem`.

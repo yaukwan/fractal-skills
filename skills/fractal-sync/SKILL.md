@@ -1,10 +1,10 @@
 ---
 name: "fractal-sync"
-description: "Load after a confirmed code, architecture, or repository-document change when affected Level 3 contracts, existing Level 2 manifests, Level 1 navigation, or repository lifecycle must be reconciled with current truth. Do not load for bootstrap, target-module or project-wide contract extraction, report-only health reviews, or decision lifecycle."
+description: "Load after a confirmed code, architecture, or repository-document change when existing Level 3 contracts, existing Level 2 manifests, Level 1 navigation, or repository lifecycle must be reconciled with current truth, or when the user asks to add a Level 3 contract to named files. Do not load for bootstrap, target-module or project-wide contract extraction, report-only health reviews, or decision lifecycle."
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "1.2"
+  version: "2.0"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -12,36 +12,37 @@ metadata:
 
 Synchronize code and documentation as two views of one system. A change is complete only when the machine view and semantic map describe the same current truth.
 
-## Scope Gate
+## Write Eligibility
 
-Before writing an L2 manifest or L3 header, run the consuming project's checker for every affected path:
+An artifact that exists is maintained. A new artifact needs a request.
 
-```bash
-node .agents/skills/fractal-scope/scripts/check-scope.js --config .agents/skills/fractal-scope/config.yaml --root . --path <target-path>
-```
+| Artifact | Recognized by | Update | Create |
+| --- | --- | --- | --- |
+| L2 manifest | A non-root `AGENTS.md` with a `Scope` section | When it exists | Never here; creation belongs to `fractal-agents-fill` |
+| L3 header | A documentation comment with `INPUT`, `OUTPUT`, and `ROLE` fields; bracketed labels such as `[INPUT]:` count | When it exists | Only in files the user names for a header |
+| Root `AGENTS.md` | The repository-root file | The sections it already has | A missing Level 1 section, or the file itself, only on request |
 
-- Missing config: this is not a writable fractal repository; report the missing gate and do not apply fractal writes.
-- Missing checker: stop and repair the project-local runtime with `fractal-setup`.
-- L3 writes require `l3_file_header.status: matched`.
-- L2 writes require `l2_folder_manifest.status: matched`.
-
-L2 and L3 are independently scoped. Never infer scope rules when the checker can decide them.
+- Leave a nested `AGENTS.md` without a `Scope` section unchanged.
+- A project instruction that excludes a path from fractal writes, such as a root `Global Constraints` rule, overrides this table.
 
 ## Workflow
 
 1. **Confirm the outcome.** Establish the confirmed task outcome and the affected paths. Complete this step when the intended contract can be stated without guessing.
 2. **Read current truth.** Read root `AGENTS.md`, relevant existing local `AGENTS.md`, L3 headers, code, tests, current decisions, and repository docs for the affected paths.
-3. **Gate the writes.** Run the scope checker for every affected L2/L3 path.
+3. **Select the write set.** Apply Write Eligibility to every affected path. Complete when each affected manifest, header, and root section is classified as existing, requested, excluded, or absent.
 4. **Ripple outward.** Synchronize only affected layers:
-   - L3 when semantic inputs, outputs, role, or non-obvious invariants changed.
+   - Existing or requested L3 headers when semantic inputs, outputs, role, or non-obvious invariants changed.
    - Existing L2 manifests, but only for contract changes established by this change (ownership, constraints, member responsibilities, vocabulary, related docs).
-   - L1 when top-level topology, global constraints, or local-map navigation changed.
+   - Existing root `AGENTS.md` sections when top-level topology, global constraints, or local-map navigation changed.
    - Repository docs when placement, naming, frontmatter, indexes, or lifecycle changed.
    - Decision skills when this change renames, merges, or removes one: rewrite every reference
      to the old slug in the same operation (root and per-layer `AGENTS.md`, `docs/**`, code
      comments). See `decision-capture`, `references/skill-sync-rules.md`, Reference Rewrite.
 5. **Prove both directions.** Verify every changed documentation claim against code and represent every changed code contract at its owning documentation layer.
-6. **Report the sync.** List `changed`, `checked-no-change`, and `blocked` items for both code and documentation.
+6. **Report the sync.** List `changed`, `checked-no-change`, and `blocked` items for both code and documentation. List as `not-maintained`, without writing them:
+   - each excluded path whose manifest or header is now stale
+   - each module whose contract changed and that has no L2 manifest at its own directory or a non-root ancestor
+   - each file without a header whose changed contract is not obvious from the code alone
 
 ## Direction Rules
 
@@ -69,8 +70,8 @@ The protocol references are the single source of truth for schema meaning. Rende
 
 ## Completion Criteria
 
-- Every affected L2/L3 path has a recorded scope-check result.
-- Every contract change maps to its owning layer, or is explicitly recorded as `checked-no-change`.
+- Every affected path is classified under Write Eligibility; no manifest was created, and no header was created without a request.
+- Every contract change maps to its owning layer, or is explicitly recorded as `checked-no-change` or `not-maintained`.
 - Documented paths, modules, and contracts resolve against current code.
 - Moved or removed entities leave no stale indexes or navigation entries, including no stale
   reference to a renamed or removed `decision-*` slug.
@@ -78,7 +79,7 @@ The protocol references are the single source of truth for schema meaning. Rende
 
 ## Boundaries
 
-- Bootstrap or runtime repair belongs to `fractal-setup`.
+- Bootstrap belongs to `fractal-setup`.
 - Target-module or project-wide extraction, creation, or systematic refresh of Level 2 module contracts belongs to `fractal-agents-fill`.
 - Report-only repository health scans are outside this synchronization workflow.
 - Decision creation, update, supersession, merge, and retirement belong to `decision-capture`,

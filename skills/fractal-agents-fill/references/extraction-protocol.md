@@ -78,4 +78,4 @@ When evidence conflicts:
 - **Medium**: current structure and an existing manifest agree, but independent ownership evidence is incomplete.
 - **Low**: ownership is inferred mainly from names or layout, or authoritative sources conflict.
 
-Confidence controls Project mode creation. It does not bypass the scope gate or evidence requirements.
+Confidence controls Project mode creation. It does not bypass creation confirmation or evidence requirements.

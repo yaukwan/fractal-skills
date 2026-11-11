@@ -1,6 +1,6 @@
 # Level 3 Protocol
 
-Apply this schema only after the project-local scope checker matches the target file.
+Apply this schema to files that already carry an L3 header, and to files the user names for a new one.
 
 Level 3 is the file contract layer. It exists so a source file remains understandable in isolation.
 

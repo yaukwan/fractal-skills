@@ -4,7 +4,7 @@ description: "Load when turning a clarified PRD, decision summary, or resolved c
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "1.0"
+  version: "2.0"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -41,13 +41,14 @@ The spec must require evidence-backed review for missing anchors, contract confl
 
 ## Output
 
-Before writing, read `.agents/skills/fractal-scope/config.yaml` when present and apply `spec_output.mode`:
+Before writing, choose the destination from the first row that applies:
 
-| Mode | Action |
+| Condition | Action |
 | --- | --- |
-| `always_file` | Write `docs/specs/{YYYY_MM_dd}_{task_name}.md`; create the directory if needed. |
-| `always_inline` | Output only in conversation; no file writes or directory creation. |
-| `ask`, missing key, or missing config | Ask before writing, using the host's question tool or conversation. If confirmed, use the file path above. |
+| The request or a project instruction asks for a file | Write `docs/specs/{YYYY_MM_dd}_{task_name}.md`; create the directory if needed. |
+| The request or a project instruction asks for inline output | Output only in conversation; no file writes or directory creation. |
+| `docs/specs/` already contains a spec | Write the file path above. |
+| None of the above | Ask before writing, using the host's question tool or conversation. If confirmed, use the file path above. |
 
 - `task_name`: use the second `$ARGUMENTS` token when provided; otherwise infer from the title/objective, falling back to `task-spec`. Use kebab-case.
 - Frontmatter follows `fractal-sync`: `type: specs`, `status`, `updated`, `related`. Reference real source documents, or use `related: []`; summarize settled intent in the body instead of copying raw input.

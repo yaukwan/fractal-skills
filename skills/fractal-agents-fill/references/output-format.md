@@ -45,9 +45,9 @@ _Avoid_: <ambiguous synonym>
 - Open questions:
 
 ### Modules
-| Module | Confidence | Scope | Action | Evidence |
+| Module | Confidence | Basis | Action | Evidence |
 |---|---|---|---|---|
-| `path` | high | matched | refreshed | `source paths` |
+| `path` | high | existing | refreshed | `source paths` |
 ```
 
-Target mode contains one module row. Project mode contains one row for every normalized candidate, including non-matches and blockers.
+Target mode contains one module row. Project mode contains one row for every normalized candidate, including declined, excluded, and blocked candidates.
