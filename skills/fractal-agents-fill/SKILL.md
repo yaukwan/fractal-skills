@@ -4,7 +4,7 @@ description: "Load when extracting, creating, or refreshing module contracts in 
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "3.0"
+  version: "3.1"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -43,10 +43,10 @@ Record every write basis in the final report.
 ## Target mode
 
 1. Resolve the project root and one owning module directory. Complete when both paths are unambiguous.
-2. Record the module's write basis. Complete when it is `requested`, or when `excluded` is reported and the run stops.
-3. Read the root and nearest ancestor `AGENTS.md`, the local manifest if present, relevant code and tests, nearby docs, and overlapping project skills. Read `references/extraction-protocol.md` for evidence, field extraction, and merge rules. Complete when every proposed claim has a source or is excluded.
+2. Read the root `AGENTS.md` and other project instructions for a rule that excludes the module from fractal writes, then record the module's write basis. Complete when it is `requested`, or when `excluded` is reported and the run stops.
+3. Read the root and nearest ancestor `AGENTS.md`, the local manifest if present, relevant code and tests, nearby docs, and overlapping project skills. Read `references/extraction-protocol.md` for evidence and field extraction rules. Complete when every proposed claim has a source or is excluded.
 4. If ownership, durable constraints, or terminology remain direction-changing and unresolved, read `references/interaction-protocol.md` and ask one blocking question with a recommendation. Complete when writing is safe or the module is marked blocked.
-5. Create or update `<module-directory>/AGENTS.md` using `references/output-format.md`. Complete when the manifest describes current ownership without inventing intent.
+5. Read `../fractal-sync/references/protocol/level2.md`, the Level 2 protocol in the sibling `fractal-sync` skill, for the manifest schema, Section Authority, and hard rules. Create or update `<module-directory>/AGENTS.md` with them. Complete when the manifest describes current ownership without inventing intent.
 6. If root `AGENTS.md` exists, add or update only this manifest's `Local Maps` entry. Complete when unrelated root content is unchanged.
 
 ## Project mode
@@ -54,7 +54,7 @@ Record every write basis in the final report.
 1. Read `references/project-discovery.md` and collect all supported candidate signals. Complete when existing manifests, root navigation, workspace manifests, and semantic module roots have been considered.
 2. Normalize and de-duplicate candidates. Keep nested candidates only when each has independent ownership evidence. Complete when no candidate exists solely because it is a directory.
 3. Confirm the creation set. Existing manifests proceed without confirmation. List every high-confidence candidate that would create or restructure an `AGENTS.md`, with its signals, and ask once which of them to write. A request that names those directories is the confirmation; a whole-project request is not. Complete when every candidate has a recorded write basis.
-4. Process retained candidates independently with the Target mode extraction and merge rules:
+4. Process retained candidates independently with Target mode steps 3 and 5:
    - high confidence and clear contract: refresh the manifest, or create it when its basis is `confirmed`
    - medium confidence: refresh an existing manifest, but do not create one
    - low confidence or direction-changing conflict: skip and record the blocker
@@ -63,13 +63,8 @@ Record every write basis in the final report.
 
 ## Write rules
 
-- Preserve the Level 2 sections `Scope`, `Constraints`, `Members`, `Docs`, `Skills`, `Language`, and `Exceptions`; optional sections may be absent.
+- If `../fractal-sync/references/protocol/level2.md` is missing, `fractal-sync` is not installed: stop and report it instead of writing a manifest from memory.
 - To restructure an `AGENTS.md` that is not an L2 manifest, add the Level 2 sections and keep its existing content verbatim.
-- Treat existing user-authored intent conservatively according to the merge rules in `references/extraction-protocol.md`.
-- Summarize bounded contexts, capabilities, or ownership groups; do not produce a file inventory.
-- Put only project-local, module-relevant skills in `Skills`, with a concrete trigger for each pointer.
-- Put resolved vocabulary in `Language`; do not create or synchronize `CONTEXT.md`.
-- Write current truth only: no timestamps, history, dependency dumps, or local review triggers.
 - A decision conflict is a `decision_drift_signal`, not authority to modify the decision.
 
 ## Output contract
@@ -97,4 +92,4 @@ Return an `Extraction Result` using `references/output-format.md`. At minimum re
 - Bootstrap belongs to `fractal-setup`.
 - Synchronizing contracts after ordinary code or documentation changes belongs to `fractal-sync`.
 - Creating or changing decision authority belongs to `decision-capture`.
-- This skill performs extraction and writes manifests; it is not a report-only audit.
+- Report-only drift checks belong to `fractal-sync`; this skill performs extraction and writes manifests.

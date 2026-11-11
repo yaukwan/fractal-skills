@@ -2,7 +2,7 @@
 
 Level 1 is the root context layer. It exists to orient an agent quickly at repository entry.
 
-## Required Sections
+## Standard Sections
 
 ```md
 ## Project
@@ -47,4 +47,4 @@ Level 1 is the root context layer. It exists to orient an agent quickly at repos
 - The root file is project-owned. Synchronize the sections it already has; add a missing section only on request.
 - Put global synchronization logic in the fractal-sync protocol instead of scattering local trigger sections.
 - Do not turn the root file into an implementation dump.
-- Keep `Local Maps` synchronized opportunistically when filling an affected Level 2 manifest; use audits to report drift rather than forcing full automatic regeneration.
+- Keep `Local Maps` synchronized opportunistically when filling an affected Level 2 manifest; use Report-only Mode to report drift rather than forcing full automatic regeneration.

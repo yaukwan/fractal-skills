@@ -1,10 +1,10 @@
 ---
 name: "fractal-sync"
-description: "Load after a confirmed code, architecture, or repository-document change when existing Level 3 contracts, existing Level 2 manifests, Level 1 navigation, or repository lifecycle must be reconciled with current truth, or when the user asks to add a Level 3 contract to named files. Do not load for bootstrap, target-module or project-wide contract extraction, report-only health reviews, or decision lifecycle."
+description: "Load after a confirmed code, architecture, or repository-document change when existing Level 3 contracts, existing Level 2 manifests, Level 1 navigation, or repository lifecycle must be reconciled with current truth; when the user asks to add a Level 3 contract to named files; or when the user asks for a report-only drift check of those artifacts. Do not load for bootstrap, target-module or project-wide contract extraction, or decision lifecycle."
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "2.0"
+  version: "2.1"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -42,7 +42,7 @@ An artifact that exists is maintained. A new artifact needs a request.
 6. **Report the sync.** List `changed`, `checked-no-change`, and `blocked` items for both code and documentation. List as `not-maintained`, without writing them:
    - each excluded path whose manifest or header is now stale
    - each module whose contract changed and that has no L2 manifest at its own directory or a non-root ancestor
-   - each file without a header whose changed contract is not obvious from the code alone
+   - each file without a header whose changed contract is a kind listed under Header Candidates in `references/protocol/level3.md`
 
 ## Direction Rules
 
@@ -58,13 +58,24 @@ Resolve documented paths, modules, dependencies, and public behavior against the
 
 Use the confirmed task outcome as authority and reconcile both diffs against it. Neither side wins merely because it changed most recently.
 
+## Report-only Mode
+
+When the user asks for a drift report, audit, or health check instead of a sync, write nothing.
+
+1. Set the scope to the paths the user names. When none are named, use every existing L2 manifest, L3 header, root `AGENTS.md` section, and `docs/` lane document.
+2. Read the Canonical References for each layer in scope, then read current truth as in Workflow step 2. No task outcome applies.
+3. Check every claim in each manifest, header, and root section against current code, including a module or path that the artifact should list and does not. Check the lane, name, and frontmatter of each `docs/` document; its content belongs to the skill that produced it.
+4. Report each mismatch as `drift`: its path, owning layer, the documented statement, the conflicting or missing fact, and the write a sync would make. Name the stale side when the evidence shows it; otherwise state the question that decides it. Report the number of artifacts checked without drift for each layer, counting each root section as one artifact.
+
+Complete when every artifact in scope was checked and no file changed.
+
 ## Canonical References
 
-- Read `references/protocol/level3.md` before writing or normalizing an L3 contract.
-- Read `references/protocol/level2.md` before writing or normalizing an L2 manifest.
-- Read `references/protocol/level1.md` before changing root navigation or global context.
-- Read `references/lifecycle.md` when a document may move between `engineering / research / postmortem / specs / archive`.
-- Read `references/frontmatter.md` when creating or normalizing repository-document metadata.
+- Read `references/protocol/level3.md` before writing, normalizing, or checking an L3 contract, or listing header candidates.
+- Read `references/protocol/level2.md` before writing, normalizing, or checking an L2 manifest; it holds the schema and the authority of each section.
+- Read `references/protocol/level1.md` before changing or checking root navigation or global context.
+- Read `references/lifecycle.md` when placing, naming, or checking a repository document, or when it may move between `engineering / research / postmortem / specs / archive`.
+- Read `references/frontmatter.md` when creating, normalizing, or checking repository-document metadata.
 
 The protocol references are the single source of truth for schema meaning. Render L3 contracts with the target language's standard documentation-comment syntax.
 
@@ -81,7 +92,6 @@ The protocol references are the single source of truth for schema meaning. Rende
 
 - Bootstrap belongs to `fractal-setup`.
 - Target-module or project-wide extraction, creation, or systematic refresh of Level 2 module contracts belongs to `fractal-agents-fill`.
-- Report-only repository health scans are outside this synchronization workflow.
-- Decision creation, update, supersession, merge, and retirement belong to `decision-capture`,
-  as does the reference rewrite that follows a decision-skill rename or removal.
-- Postmortem content quality belongs to `postmortem`; this skill owns its placement and retrieval links.
+- Decision freshness checks, creation, update, supersession, merge, and retirement belong to
+  `decision-capture`, as does the reference rewrite that follows a decision-skill rename or removal.
+- Postmortem content quality and its retrieval link belong to `postmortem`; this skill owns the lane, naming, and frontmatter rules that `postmortem` follows, and later lifecycle transitions.

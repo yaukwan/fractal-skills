@@ -1,5 +1,10 @@
 {
   "name": "fractal-skills",
   "version": "0.1.1",
-  "private": true
+  "private": true,
+  "scripts": {
+    "validate": "for d in skills/*/; do python3 -B skills/skill-design-guidelines/scripts/validate_skill.py \"$d\" || exit 1; done",
+    "test:validator": "python3 -B skills/skill-design-guidelines/scripts/test_validate_skill.py",
+    "test": "npm run validate && npm run test:validator"
+  }
 }

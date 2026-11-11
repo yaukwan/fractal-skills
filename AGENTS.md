@@ -10,11 +10,12 @@
 - `skills/`: source skill definitions, skill-local assets, and deterministic helpers
 - `skills/<name>/`: one source skill per directory, plus its local assets and scripts
 - `README.md` / `README.zh.md`: public project documentation
+- `package.json` / `.github/workflows/ci.yml`: `npm test` entry point and CI for skill validation
 
 ## Local Maps
 - `skills/fractal-setup/SKILL.md`: bootstrap authority for the docs layout
 - `skills/fractal-agents-fill/SKILL.md`: target-module and project-wide contract extraction into local `AGENTS.md`, and Level 2 manifest creation
-- `skills/fractal-sync/SKILL.md`: bidirectional code/document synchronization, Level 1/2/3 semantics and write eligibility, and repository lifecycle
+- `skills/fractal-sync/SKILL.md`: bidirectional code/document synchronization, report-only drift checks, Level 1/2/3 semantics and write eligibility, and repository lifecycle
 - `skills/decision-capture/SKILL.md`: decision lifecycle, authority split, decision skill shape (single-topic or index + `references/`), and retirement by deletion plus tombstone
 - `skills/to-task-specs/SKILL.md`: spec generation and output-destination rules
 - `skills/impl-task-spec/SKILL.md`: spec execution, verified task progress, and execution-state writeback

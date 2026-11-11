@@ -62,9 +62,9 @@ The `BUILD` stage can use `impl-task-spec` as a thin execution protocol: it trac
 
 ## Source Skills
 
-- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — Bootstrap the `docs/` layout and offer the domain-language bridge. Installs no runtime or configuration.
+- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — Bootstrap the `docs/` layout, with a `.gitkeep` in each empty lane, and offer the domain-language bridge. Installs no runtime or configuration.
 - **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — Extract and write module contracts from a supplied project or module path. Supports one target module or project-wide discovery, refreshes existing manifests, creates new ones only for the requested target or after one creation confirmation, and reports ambiguous boundaries without blocking independent modules.
-- **[fractal-sync](./skills/fractal-sync/SKILL.md)** — Synchronize code and documentation as two views of current truth. Runs L3 → L2 → L1 ripple checks over existing artifacts, validates documentation back against code, and maintains repository placement, frontmatter, indexes, and lifecycle.
+- **[fractal-sync](./skills/fractal-sync/SKILL.md)** — Synchronize code and documentation as two views of current truth. Runs L3 → L2 → L1 ripple checks over existing artifacts, validates documentation back against code, and maintains repository placement, frontmatter, indexes, and lifecycle. Its report-only mode lists drift without writing.
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — Full decision lifecycle for the current task. Checks whether existing decision skills still cover the truth, then creates, updates, supersedes, or merges decision skills so current design authority is unambiguous. Decisions live at `.agents/skills/decision-*/SKILL.md`.
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — Generate executable task specifications from a PRD, resolved context, or conversation context. Groups tasks by functional domain, inherits decision constraints, and produces verifiable acceptance criteria.
 - **[impl-task-spec](./skills/impl-task-spec/SKILL.md)** — Implement or resume an approved task spec, verify tasks before checking them off, and write execution evidence and document status back to the spec.

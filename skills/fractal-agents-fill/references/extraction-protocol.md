@@ -55,17 +55,9 @@ Record domain terms only when confirmed by the user, an existing manifest, a cur
 
 Record deliberate, current deviations and their reason. Require explicit authority; unusual code alone is not proof that a deviation is intentional.
 
-## Merge policy
+## Conflicts
 
-- `Scope`: manual-preserve. Replace only with confirmed higher-authority truth.
-- `Constraints`: manual-preserve. Add supported rules; flag contradictions.
-- `Members`: replace from current module structure at responsibility-group granularity.
-- `Docs`: merge relevant links and remove paths proven missing or out of scope.
-- `Skills`: replace from current project-local relevance.
-- `Language`: manual-preserve. Add only authority-confirmed vocabulary.
-- `Exceptions`: append confirmed items; remove only when explicit evidence says the exception ended.
-
-When evidence conflicts:
+Section Authority in the Level 2 protocol of `fractal-sync` decides how each section merges. When evidence conflicts:
 
 - resolve observable facts from the repository
 - preserve unresolved intent and mark the module blocked

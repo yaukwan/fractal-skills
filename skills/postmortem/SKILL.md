@@ -4,7 +4,7 @@ description: "Load when bugfix, regression, incident, or reliability work should
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "1.1"
+  version: "1.2"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -18,18 +18,6 @@ When the primary nature of the task is **defect correction** rather than pure fe
 
 Prioritize for: regression / correctness issue / incident / broken test exposing a real defect / needing a reusable root cause record.
 Do not use for: pure new feature / pure visual polish / behavior-preserving refactors / formatting or renames.
-
-## L2 Indexing
-
-L2 index writes are separate from the postmortem body. Before any `AGENTS.md > Docs` edit,
-follow Retrieval Link in `references/naming-and-placement.md`; it links only from an
-existing L2 manifest. A skipped index update does not discard the postmortem.
-
-## Skill Authority Map
-
-This skill owns **content-quality authority**: whether this defect work deserves a postmortem, and to what quality standard.
-
-- placement / naming / indexing / lifecycle and AGENTS.md synchronization → `fractal-sync`
 
 ## Boundary Decision
 
@@ -47,8 +35,8 @@ If you are unsure whether this is a defect fix that should leave a postmortem re
    - verification
    - prevention / follow-ups
 3. Read `templates/postmortem-template.md` and draft the postmortem; check `references/quality-bar.md` before calling its content complete
-4. Place the document according to repo rules
-5. Apply Retrieval Link in `references/naming-and-placement.md` for affected existing L2 manifests; record each link outcome
+4. Read `references/naming-and-placement.md` and save the document under its naming and placement rules
+5. Apply Retrieval Link from the same file for affected existing L2 manifests; record each link outcome
 6. Reread the saved postmortem and any changed manifests; return the document path and index outcomes in the final delivery
 
 ## Output Standard
@@ -73,22 +61,12 @@ Must not contain only:
 - `templates/postmortem-template.md` — default template
 - `references/decision-rules.md` — when a postmortem is mandatory after loading this skill
 - `references/quality-bar.md` — quality threshold
-- `references/naming-and-placement.md` — default naming and placement recommendations
+- `references/naming-and-placement.md` — naming, placement, repository override, and the L2 retrieval link
 
-## Placement Rule
+## Boundaries
 
-If the repo has `fractal-sync` rules, follow them for postmortem:
-
-- placement
-- naming
-- indexing
-- lifecycle
-
-After writing the postmortem, use the Retrieval Link procedure in
-`references/naming-and-placement.md` for L2 indexing. This remains a retrieval pointer;
-the postmortem stays under `docs/postmortem/`.
-
-If no repo-level rules exist, follow the defaults in `references/naming-and-placement.md`.
+- This skill owns whether defect work deserves a postmortem and its quality bar. Lifecycle
+  transitions and `AGENTS.md` synchronization beyond the retrieval link belong to `fractal-sync`.
 
 ## Final Handoff Requirement
 

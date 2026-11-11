@@ -4,7 +4,7 @@ description: "Load when bootstrapping a project's fractal `docs/` layout or addi
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "2.0"
+  version: "2.1"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -14,7 +14,7 @@ Set up the fractal documentation layout in a target project in one pass. Setup i
 
 ## What this does
 
-1. Create the `docs/` directory structure
+1. Create the `docs/` directory structure, with a `.gitkeep` in each directory that holds no file so git tracks it
 2. Do not write root `AGENTS.md` (each coding agent initializes its own)
 
 ## Directory layout
@@ -41,8 +41,9 @@ leaves its body as a tombstone at `docs/archive/decisions/{slug}.md`.
 
 1. Confirm the target project root (`pwd` or user-specified).
 2. Create the five directories above under `docs/` (skip existing).
-3. If the consuming repo uses `docs/agents/domain.md` for external execution-skill guidance, offer the fractal domain-language bridge below.
-4. Report which directories were created and which already existed. State the next steps: `fractal-agents-fill` creates L2 manifests, and `fractal-sync` adds an L3 header to files the user names.
+3. Add an empty `.gitkeep` to each of the five directories that holds no file at any depth. Leave a directory that already holds a file unchanged.
+4. If the consuming repo uses `docs/agents/domain.md` for external execution-skill guidance, offer the fractal domain-language bridge below.
+5. Report which directories were created, which already existed, and where `.gitkeep` was added. State the next steps: `fractal-agents-fill` creates L2 manifests, and `fractal-sync` adds L3 headers on request.
 
 ## Matt Pocock-style domain docs bridge
 

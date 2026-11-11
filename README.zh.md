@@ -62,9 +62,9 @@ Fractal Skills 是**知识基底层**：维护 `AGENTS.md` 遍历上下文、当
 
 ## 源码 Skills
 
-- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — 搭建 `docs/` 布局，并可写入领域语言 bridge。不安装 runtime 或配置。
+- **[fractal-setup](./skills/fractal-setup/SKILL.md)** — 搭建 `docs/` 布局（空目录内放置 `.gitkeep`），并可写入领域语言 bridge。不安装 runtime 或配置。
 - **[fractal-agents-fill](./skills/fractal-agents-fill/SKILL.md)** — 从指定项目或模块路径抽取并写入模块 contract。支持单模块与全项目发现，刷新已有 manifest，只为请求的目标或经一次创建确认后新建 manifest，并集中报告歧义边界而不阻塞其他独立模块。
-- **[fractal-sync](./skills/fractal-sync/SKILL.md)** — 将代码与文档作为 current truth 的两种视图进行同步。对已存在的产物执行 L3 → L2 → L1 波纹检查，反向验证文档与代码，并维护仓库文档落点、frontmatter、索引和生命周期。
+- **[fractal-sync](./skills/fractal-sync/SKILL.md)** — 将代码与文档作为 current truth 的两种视图进行同步。对已存在的产物执行 L3 → L2 → L1 波纹检查，反向验证文档与代码，并维护仓库文档落点、frontmatter、索引和生命周期。其 report-only 模式只列出漂移，不写入。
 - **[decision-capture](./skills/decision-capture/SKILL.md)** — 当前任务的完整决策生命周期。检查现有决策 skill 是否仍然覆盖当前真相，然后创建、更新、取代或合并决策 skill，确保设计权威无可争议。决策文件位于 `.agents/skills/decision-*/SKILL.md`。
 - **[to-task-specs](./skills/to-task-specs/SKILL.md)** — 从 PRD、已解决上下文或对话上下文中生成可执行的任务规格文档。按功能域分组任务，继承决策约束，产出可验证的验收标准。
 - **[impl-task-spec](./skills/impl-task-spec/SKILL.md)** — 实施或续做已批准的任务规格，逐项验证后勾选任务，并将执行证据和文档状态回写到 spec。

@@ -1,7 +1,5 @@
 # Level 3 Protocol
 
-Apply this schema to files that already carry an L3 header, and to files the user names for a new one.
-
 Level 3 is the file contract layer. It exists so a source file remains understandable in isolation.
 
 Write the header using the target language's standard documentation-comment syntax, such as a documentation comment or module docstring. Keep the canonical field names unchanged across languages.
@@ -17,9 +15,9 @@ Write the header using the target language's standard documentation-comment synt
 - `INVARIANTS`: Important truths that must remain stable.
 - `LOCAL_REVIEW_WHEN`: File-specific reasons this header would become outdated.
 
-## When To Enable
+## Header Candidates
 
-Enable Level 3 only for files whose contract is not obvious from code alone:
+A file is a header candidate when its contract is not obvious from code alone:
 
 - FFI or serialization boundaries
 - state machines
@@ -27,7 +25,7 @@ Enable Level 3 only for files whose contract is not obvious from code alone:
 - public API surfaces
 - cross-module protocols
 
-Do not blanket-enable L3 for every source file. L3 is an embedded source-file header, not a separate documentation file.
+Do not add a header to every source file. L3 is an embedded source-file header, not a separate documentation file.
 
 ## Hard Rules
 

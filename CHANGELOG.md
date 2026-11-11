@@ -25,15 +25,20 @@ All notable changes to the fractal-skills collection are documented here.
   - Move a `spec_output.mode` of `always_file` or `always_inline` into the project
     instructions.
 
-### fractal-setup (1.1 → 2.0)
+### fractal-setup (1.1 → 2.1)
 
 - Bootstraps only the `docs/` layout and the domain-language bridge; installs no runtime or
   configuration.
+- Adds a `.gitkeep` to each empty `docs/` lane directory so git tracks the layout.
 
-### postmortem (1.0 → 1.1)
+### postmortem (1.0 → 1.2)
 
 - Content-quality rules always apply. Retrieval links are added only to existing L2
   manifests, without a checker.
+- Removed the `SKILL.md` sections that repeated the placement and indexing rules;
+  `references/naming-and-placement.md` is their single source.
+- Owns its L2 retrieval link; `fractal-sync` owns the lane, naming, and frontmatter rules
+  that it follows.
 
 ### to-task-specs (1.0 → 2.0)
 
@@ -50,17 +55,23 @@ All notable changes to the fractal-skills collection are documented here.
 - Reworked `skill-design-guidelines` around the Agent Skills common contract, predictable execution, explicit completion criteria, and temporary prompt validation.
 - Removed committed skill eval fixtures and their generation contract; structural validation now checks only portable, deterministic requirements.
 - Merged `fractal-repo` and `fractal-context` into the action-oriented `fractal-sync` skill for bidirectional code/document synchronization.
-- Removed the `fractal-audit` skill; report-only audits were folded into the fractal docs flow.
+- Removed the `fractal-audit` skill; report-only drift checks are a mode of `fractal-sync`.
 - Dropped the per-language L3 header templates in favor of rendering canonical fields in each target language's standard documentation-comment syntax.
 - Removed the OpenCode installer, reference agent definitions, and `AGENTS.template.md`; the repo now ships skill sources and documentation only.
+- Removed the leftover `agent_title.json` and the unreferenced
+  `fractal-sync/references/skill-authority-map.md`.
+- Added `npm test`, which validates the structure of every skill and runs the validator's
+  unit tests, and a CI workflow that runs it.
 
-### fractal-agents-fill (1.1 → 3.0)
+### fractal-agents-fill (1.1 → 3.1)
 
 - Reframed as contract extraction: target mode extracts one owning module contract, project mode discovers modules and processes each independently.
 - Records a write basis per module. Project mode asks one creation confirmation for every
   manifest it would create or restructure.
+- Reads the Level 2 schema and section authority from the `fractal-sync` protocol instead of
+  carrying a second copy.
 
-### fractal-sync (1.0 → 2.0)
+### fractal-sync (1.0 → 2.1)
 
 - Narrowed to confirmed code/document changes; extraction belongs to `fractal-agents-fill`.
 - Removed the obsolete root `AGENTS.md` template and tightened lifecycle guidance.
@@ -71,6 +82,12 @@ All notable changes to the fractal-skills collection are documented here.
   an L3 header only in files the user names, and synchronizes only the root `AGENTS.md`
   sections that exist.
 - The sync report lists unmaintained modules and files as `not-maintained` candidates.
+- Added Report-only Mode: a drift report over existing artifacts that writes nothing.
+- `references/protocol/level2.md` owns Section Authority for every skill that writes an L2
+  manifest and defines confirmed intent. `Exceptions` is no longer append-only: a deviation
+  is removed when explicit evidence says it ended.
+- Level 1 sections are standard instead of required; a missing section is added only on
+  request.
 
 ### decision-capture (1.1 → 2.2)
 
