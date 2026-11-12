@@ -1,7 +1,6 @@
 ---
 title: "<short bug title>"
 type: postmortem
-status: closed
 date: "<YYYY-MM-DD>"
 tags: [bugfix, postmortem]
 ---

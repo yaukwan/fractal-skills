@@ -111,11 +111,11 @@ because it no longer exists.
 
 ## Reference Rewrite
 
-Before a rename or retirement, collect all affected references and use `fractal-sync`'s
-scope gate for any L2 manifest or L3 header edits. Preflight the full rewrite set before
-mutating authority: if a required edit is out of scope or its checker is unavailable or
-fails, leave the affected decision skills in place and report the blocker. Do not widen
-scope or delete an authority first and defer its blocked reference cleanup.
+Before a rename or retirement, collect all affected references. Preflight the full rewrite
+set before mutating authority: if a required edit cannot be made, because a project
+instruction excludes its path from fractal writes or the file is not writable, leave the
+affected decision skills in place and report the blocker. Do not delete an authority first
+and defer its blocked reference cleanup.
 
 When a decision skill is renamed, merged, or removed, rewrite every reference to the old
 slug in the same operation: root and per-layer `AGENTS.md`, `docs/**`, and code comments.

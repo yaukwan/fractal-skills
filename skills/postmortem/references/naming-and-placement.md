@@ -1,49 +1,39 @@
 # Naming and Placement
 
+These rules and the frontmatter in `templates/postmortem-template.md` are the standard for
+every new postmortem. Apply them even when older postmortems in the repository use another
+name pattern or frontmatter, and leave those older files unchanged.
+
 ## Default Naming
 Use a concise, searchable file name:
 
-`YYYYMMDD-bug-description-en.md`
+`YYYYMMDD-bug-description.md`
+
+`YYYYMMDD` and the frontmatter `date` are both the date the postmortem is written, not the
+date of the incident or the fix.
 
 Examples:
 - `20260510-login-redirect-loop.md`
 - `20260510-empty-cart-price-crash.md`
 
 ## Default Placement
-If no repository-specific rule exists, place postmortems under:
+Unless a project instruction names another directory, place postmortems under:
 
 `docs/postmortem/`
 
-## Repository Override
-If the repository uses `fractal-sync`, follow its rules for:
-- exact directory placement
-- frontmatter requirements
-- indexing
-- lifecycle transitions
-
 ## Retrieval Link
 
-Use `fractal-sync` for L2 indexing under the following gate; an existing manifest alone
-is not write permission. Keep the saved postmortem regardless of the index outcome.
+Link the postmortem from each affected module's existing L2 manifest. Keep the saved
+postmortem regardless of the index outcome.
 
-1. Identify each affected module's existing `AGENTS.md`. If absent, skip its index update;
-   do not create a manifest solely to link a postmortem.
-2. Confirm the project-local config and checker exist, then run the checker for that
-   manifest's owning module directory:
+1. Identify each affected module's `AGENTS.md`. It is an L2 manifest only when it is not
+   the root file and has a `Scope` section. Otherwise skip its index update; do not create
+   or restructure a manifest solely to link a postmortem.
+2. Skip a manifest in a path that a project instruction excludes from fractal writes.
+3. Add the `Docs` link, creating the `Docs` section when it is absent; leave an existing
+   correct link unchanged. Match the shape of the section's existing entries; in a new
+   section write ``- `<path from the project root>`: <when to read it>``. Preserve unrelated
+   manifest content and verify the link resolves.
 
-   ```bash
-   node <project-root>/.agents/skills/fractal-scope/scripts/check-scope.js \
-     --config <project-root>/.agents/skills/fractal-scope/config.yaml \
-     --root <project-root> --path <module-directory> --json
-   ```
-
-3. Add the `Docs` link only when `l2_folder_manifest.status` is `matched`; leave an existing
-   correct link unchanged. Preserve unrelated manifest content and verify the link resolves.
-4. For `disabled`, `excluded`, or `no-match`, skip the manifest edit and report the result.
-   Missing config, missing checker, or checker errors block only the index update: leave
-   the manifest untouched, report the prerequisite, and route runtime repair to
-   `fractal-setup`. Never infer a match or change scope configuration to enable the write.
-
-Complete when every candidate has an index outcome and a scope result or missing/error
-prerequisite. Outside a fractal-managed project, the default postmortem path still applies;
-this skill grants no ungated `AGENTS.md` writes.
+Complete when every affected module has an index outcome: changed, already linked, or
+skipped with its reason.

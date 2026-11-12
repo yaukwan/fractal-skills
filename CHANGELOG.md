@@ -6,39 +6,110 @@ All notable changes to the fractal-skills collection are documented here.
 
 ## [Unreleased]
 
+### scope gate removal (breaking)
+
+- Removed the project-local `fractal-scope` runtime: the embedded template, `config.yaml`,
+  `check-scope.js`, and its self-test. No skill runs a checker before writing.
+- Write eligibility now comes from the project. An existing L2 manifest (a non-root
+  `AGENTS.md` with a `Scope` section) or L3 header (`INPUT`, `OUTPUT`, `ROLE`) is
+  maintained. A new one is created only on request: `fractal-agents-fill` creates L2
+  manifests, and `fractal-sync` adds an L3 header to files the user names.
+- A project instruction that excludes a path from fractal writes, such as a root
+  `Global Constraints` rule, replaces `exclude` patterns.
+- Migration for consuming projects:
+  - Delete `.agents/skills/fractal-scope/` and remove references to it from the project
+    instructions; nothing reads it.
+  - The default changes from "disabled until configured" to "existing artifacts are
+    maintained". For a path that was excluded but already holds an L2 manifest or L3
+    header, add an exclusion rule to the project instructions or delete the artifact.
+  - Move a `spec_output.mode` of `always_file` or `always_inline` into the project
+    instructions.
+
+### fractal-setup (1.1 → 2.1)
+
+- Bootstraps only the `docs/` layout and the domain-language bridge; installs no runtime or
+  configuration.
+- Adds a `.gitkeep` to each empty `docs/` lane directory so git tracks the layout.
+
+### postmortem (1.0 → 1.4)
+
+- Content-quality rules always apply. Retrieval links are added only to existing L2
+  manifests, without a checker.
+- Removed the `SKILL.md` sections that repeated the placement and indexing rules;
+  `references/naming-and-placement.md` is their single source.
+- Owns its naming, placement, frontmatter, and L2 retrieval link. New postmortems use the
+  skill's own template frontmatter and `YYYYMMDD-bug-description.md`; the `-en` suffix and the
+  `fractal-sync` repository override are gone. Existing postmortems are left unchanged.
+- The template frontmatter has no `status`. A postmortem is written after the fix, so a fixed
+  `closed` value recorded nothing.
+- The frontmatter `date` and the file name's `YYYYMMDD` are the date the postmortem is
+  written.
+- The body text uses the document language from project or user instructions, else the
+  language of the request. Template headings and frontmatter keys stay unchanged.
+
+### to-task-specs (1.0 → 2.0)
+
+- Output destination comes from the request or a project instruction, then from an existing
+  `docs/specs/` spec, then from a question; `spec_output.mode` is gone.
+
 ### docs and skill contracts
 
 - Aligned runtime decision skill paths on `.agents/skills/decision-*/` across README, audit, fill, and decision-capture materials.
 - Documented the `docs/archive/decisions/{slug}.md` tombstone path for retired decision skills across setup, sync, and decision-capture materials.
 - Aligned `fractal-agents-fill` behavior and README copy with the ask-first interaction model.
-- Embedded the `fractal-scope` runtime template and checker under `fractal-setup`; consuming projects now run their local checker.
-- Added inline scope-list coverage to `check-scope.js` and a minimal Node self-test.
 - Standardized postmortem placement on `docs/postmortem/`.
-- Gated postmortem L2 retrieval links on the project-local scope checker; skipped or blocked
-  indexing preserves the postmortem without modifying the manifest.
-- Documented the current source-skill inventory and the generated project-local scope runtime.
+- Documented the current source-skill inventory.
 - Reworked `skill-design-guidelines` around the Agent Skills common contract, predictable execution, explicit completion criteria, and temporary prompt validation.
 - Removed committed skill eval fixtures and their generation contract; structural validation now checks only portable, deterministic requirements.
 - Merged `fractal-repo` and `fractal-context` into the action-oriented `fractal-sync` skill for bidirectional code/document synchronization.
-- Removed the `fractal-audit` skill; report-only audits were folded into the fractal docs flow.
+- Removed the `fractal-audit` skill; report-only drift checks are a mode of `fractal-sync`.
 - Dropped the per-language L3 header templates in favor of rendering canonical fields in each target language's standard documentation-comment syntax.
 - Removed the OpenCode installer, reference agent definitions, and `AGENTS.template.md`; the repo now ships skill sources and documentation only.
+- Removed the leftover `agent_title.json` and two unreferenced files:
+  `fractal-sync/references/skill-authority-map.md` and
+  `decision-capture/assets/decision-frontmatter-example.md`.
+- Added `npm test`, which validates the structure of every skill and runs the validator's
+  unit tests, and a CI workflow that runs it.
 
-### fractal-agents-fill (1.1 → 2.0)
+### fractal-agents-fill (1.1 → 3.3)
 
-- Reframed as scope-gated contract extraction: target mode extracts one owning module contract, project mode discovers modules and processes each independently.
+- Reframed as contract extraction: target mode extracts one owning module contract, project mode discovers modules and processes each independently.
+- Records a write basis per module. Project mode asks one creation confirmation for every
+  manifest it would create or restructure.
+- Reads the Level 2 schema and section authority from the `fractal-sync` protocol instead of
+  carrying a second copy.
+- An L3 header statement is promoted into L2 `Constraints` only when it states a module-wide
+  rule; a file-local statement stays at Level 3.
 
-### fractal-sync (1.0 → 1.2)
+### fractal-sync (1.0 → 2.3)
 
 - Narrowed to confirmed code/document changes; extraction belongs to `fractal-agents-fill`.
 - Removed the obsolete root `AGENTS.md` template and tightened lifecycle guidance.
 - Decision-skill renames, merges, and removals now trigger the outward ripple: every reference
   to the old slug (root and per-layer `AGENTS.md`, `docs/**`, code comments) is rewritten in the
   same operation.
+- Replaced the Scope Gate with Write Eligibility. It never creates an L2 manifest, creates
+  an L3 header only in files the user names, and synchronizes only the root `AGENTS.md`
+  sections that exist.
+- The sync report lists unmaintained modules and files as `not-maintained` candidates.
+- Added Report-only Mode: a drift report over existing artifacts that writes nothing.
+- `references/protocol/level2.md` owns Section Authority for every skill that writes an L2
+  manifest and defines confirmed intent. `Exceptions` is no longer append-only: a deviation
+  is removed when explicit evidence says it ended.
+- Level 1 sections are standard instead of required; a missing section is added only on
+  request.
+- Naming and frontmatter conventions apply to new documents only. Report-only Mode checks a
+  document's lane, not its name or frontmatter.
+- An L3 header statement is evidence for an L2 `Constraints` rule only when it states a
+  module-wide rule: one that binds other members of the module or its `Scope` boundary.
+- An L2 `Constraints` rule is removed when a confirmed task outcome changes or ends it. Code
+  that breaks a rule without such an outcome is reported, and the rule stays.
 
-### decision-capture (1.1 → 2.1)
+### decision-capture (1.1 → 2.2)
 
 - Promoted decisions to project skills under `.agents/skills/decision-{slug}/SKILL.md`.
+- Applies when the project already has a decision skill or the user asks to capture or
+  check a decision.
 - Unified current-truth lifecycle actions: current, create, update, supersede, merge, archive,
   and reject. Reject is read-only; retiring an existing skill requires a retirement action.
 - Added skill-sync rules for generated decision skill routing contracts.
@@ -54,8 +125,8 @@ All notable changes to the fractal-skills collection are documented here.
   prefix is gone, so a retired decision can no longer stay in the routing list.
 - Merge is chosen by co-load unit rather than topic similarity; the reference rewrite across
   `AGENTS.md`, `docs/**`, and code comments is part of the rename, merge, or removal operation.
-- Preflight required L2/L3 reference rewrites through the scope gate before retirement;
-  blocked rewrites leave the affected authority in place.
+- Preflight required reference rewrites before retirement; blocked rewrites leave the
+  affected authority in place.
 - Write completion requires applicable structural and routing checks, continuous `§N`
   (with a bidirectional index for multi-domain skills), no stale active-authority references,
   and resolvable links. Read-only outcomes do not require mutation or retirement checks.

@@ -4,7 +4,7 @@ description: "Load when checking or changing current design authority in fractal
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "2.1"
+  version: "2.2"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -14,11 +14,11 @@ Keep durable system design truth current and discoverable at
 `.agents/skills/decision-{slug}/`. The decision skill is the authority, not a copy of
 `docs/decisions/` or a record of local implementation reasoning.
 
-## Scope Gate
+## Applicability
 
-**This skill applies only when `.agents/skills/fractal-scope/config.yaml` exists.**
-
-If not found, this is not a fractal-managed repository — do not apply decision capture rules.
+Apply this skill when the project already has a `.agents/skills/decision-*/` skill, or when
+the user asks to capture or check a decision. When neither holds, report that the project
+keeps no decision skills and stop without proposing one.
 
 ## Workflow
 

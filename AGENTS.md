@@ -3,24 +3,21 @@
 
 ## Project
 - Phase: skill-source-maintenance
-- Last Reviewed: 2026-09-13
+- Last Reviewed: 2026-11-12
 - Primary Domains: skill source files, skill packaging, repo documentation
 
 ## Topology
 - `skills/`: source skill definitions, skill-local assets, and deterministic helpers
-- `skills/fractal-setup/assets/fractal-scope/`: embedded template for the generated project-local scope runtime
 - `skills/<name>/`: one source skill per directory, plus its local assets and scripts
 - `README.md` / `README.zh.md`: public project documentation
+- `package.json` / `.github/workflows/ci.yml`: `npm test` entry point and CI for skill validation
 
 ## Local Maps
-- `skills/fractal-setup/SKILL.md`: bootstrap and repair authority for docs layout and the project-local scope runtime
-- `skills/fractal-setup/assets/fractal-scope/SKILL.template.md`: generated runtime behavior template
-- `skills/fractal-setup/assets/fractal-scope/config.yaml`: default project-owned scope configuration
-- `skills/fractal-setup/assets/fractal-scope/scripts/check-scope.js`: deterministic local scope matcher
-- `skills/fractal-agents-fill/SKILL.md`: target-module and project-wide contract extraction into local `AGENTS.md`
-- `skills/fractal-sync/SKILL.md`: bidirectional code/document synchronization, Level 1/2/3 semantics, and repository lifecycle
+- `skills/fractal-setup/SKILL.md`: bootstrap authority for the docs layout
+- `skills/fractal-agents-fill/SKILL.md`: target-module and project-wide contract extraction into local `AGENTS.md`, and Level 2 manifest creation
+- `skills/fractal-sync/SKILL.md`: bidirectional code/document synchronization, report-only drift checks, Level 1/2/3 semantics and write eligibility, and repository lifecycle
 - `skills/decision-capture/SKILL.md`: decision lifecycle, authority split, decision skill shape (single-topic or index + `references/`), and retirement by deletion plus tombstone
-- `skills/to-task-specs/SKILL.md`: spec generation behavior controlled by the fractal scope config
+- `skills/to-task-specs/SKILL.md`: spec generation and output-destination rules
 - `skills/impl-task-spec/SKILL.md`: spec execution, verified task progress, and execution-state writeback
 - `skills/postmortem/SKILL.md`: bugfix and incident root-cause records
 - `skills/skill-design-guidelines/SKILL.md`: skill authoring, routing, layout, and validation guidance
