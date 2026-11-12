@@ -4,7 +4,7 @@ description: "Load when extracting, creating, or refreshing module contracts in 
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "3.2"
+  version: "3.3"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 

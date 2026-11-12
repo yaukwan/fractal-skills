@@ -4,7 +4,7 @@ description: "Load after a confirmed code, architecture, or repository-document 
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "2.2"
+  version: "2.3"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 

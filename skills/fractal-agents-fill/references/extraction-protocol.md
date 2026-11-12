@@ -23,7 +23,7 @@ State the module's long-term ownership, boundary, and material exclusions. Scope
 
 ### Constraints
 
-Record durable rules that affect future changes. Require evidence from user intent, existing manifest, project decisions, public contracts, configuration, or tests. Do not promote incidental implementation details or L3 header statements into constraints.
+Record durable rules that affect future changes. Require evidence from user intent, existing manifest, project decisions, public contracts, configuration, tests, or a module-wide L3 header statement as the Level 2 protocol of `fractal-sync` defines it. Do not promote incidental implementation details or a file-local L3 header statement into constraints.
 
 When review finds no module-specific rule beyond ancestor manifests, keep the required section explicit with `- No module-specific constraints; inherit ancestor constraints.`
 

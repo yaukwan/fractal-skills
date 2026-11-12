@@ -31,7 +31,7 @@ All notable changes to the fractal-skills collection are documented here.
   configuration.
 - Adds a `.gitkeep` to each empty `docs/` lane directory so git tracks the layout.
 
-### postmortem (1.0 → 1.3)
+### postmortem (1.0 → 1.4)
 
 - Content-quality rules always apply. Retrieval links are added only to existing L2
   manifests, without a checker.
@@ -40,6 +40,12 @@ All notable changes to the fractal-skills collection are documented here.
 - Owns its naming, placement, frontmatter, and L2 retrieval link. New postmortems use the
   skill's own template frontmatter and `YYYYMMDD-bug-description.md`; the `-en` suffix and the
   `fractal-sync` repository override are gone. Existing postmortems are left unchanged.
+- The template frontmatter has no `status`. A postmortem is written after the fix, so a fixed
+  `closed` value recorded nothing.
+- The frontmatter `date` and the file name's `YYYYMMDD` are the date the postmortem is
+  written.
+- The body text uses the document language from project or user instructions, else the
+  language of the request. Template headings and frontmatter keys stay unchanged.
 
 ### to-task-specs (1.0 → 2.0)
 
@@ -65,16 +71,17 @@ All notable changes to the fractal-skills collection are documented here.
 - Added `npm test`, which validates the structure of every skill and runs the validator's
   unit tests, and a CI workflow that runs it.
 
-### fractal-agents-fill (1.1 → 3.2)
+### fractal-agents-fill (1.1 → 3.3)
 
 - Reframed as contract extraction: target mode extracts one owning module contract, project mode discovers modules and processes each independently.
 - Records a write basis per module. Project mode asks one creation confirmation for every
   manifest it would create or restructure.
 - Reads the Level 2 schema and section authority from the `fractal-sync` protocol instead of
   carrying a second copy.
-- L3 header statements are not promoted into L2 `Constraints`.
+- An L3 header statement is promoted into L2 `Constraints` only when it states a module-wide
+  rule; a file-local statement stays at Level 3.
 
-### fractal-sync (1.0 → 2.2)
+### fractal-sync (1.0 → 2.3)
 
 - Narrowed to confirmed code/document changes; extraction belongs to `fractal-agents-fill`.
 - Removed the obsolete root `AGENTS.md` template and tightened lifecycle guidance.
@@ -93,7 +100,10 @@ All notable changes to the fractal-skills collection are documented here.
   request.
 - Naming and frontmatter conventions apply to new documents only. Report-only Mode checks a
   document's lane, not its name or frontmatter.
-- An L3 header statement is not evidence for an L2 `Constraints` rule.
+- An L3 header statement is evidence for an L2 `Constraints` rule only when it states a
+  module-wide rule: one that binds other members of the module or its `Scope` boundary.
+- An L2 `Constraints` rule is removed when a confirmed task outcome changes or ends it. Code
+  that breaks a rule without such an outcome is reported, and the rule stays.
 
 ### decision-capture (1.1 → 2.2)
 

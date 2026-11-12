@@ -4,7 +4,7 @@ description: "Load when bugfix, regression, incident, or reliability work should
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "1.3"
+  version: "1.4"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -35,6 +35,8 @@ If you are unsure whether this is a defect fix that should leave a postmortem re
    - verification
    - prevention / follow-ups
 3. Read `templates/postmortem-template.md` and draft the postmortem; check `references/quality-bar.md` before calling its content complete
+   - Write the body text in the language that project or user instructions set for documents; when none sets one, use the language of the user's request
+   - Keep the template's frontmatter keys and section headings unchanged
 4. Read `references/naming-and-placement.md` and save the document under its naming and placement rules
 5. Apply Retrieval Link from the same file for affected existing L2 manifests; record each link outcome
 6. Reread the saved postmortem and any changed manifests; return the document path and index outcomes in the final delivery

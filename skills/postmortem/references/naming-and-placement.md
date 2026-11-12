@@ -9,6 +9,9 @@ Use a concise, searchable file name:
 
 `YYYYMMDD-bug-description.md`
 
+`YYYYMMDD` and the frontmatter `date` are both the date the postmortem is written, not the
+date of the incident or the fix.
+
 Examples:
 - `20260510-login-redirect-loop.md`
 - `20260510-empty-cart-price-crash.md`

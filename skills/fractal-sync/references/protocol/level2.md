@@ -39,7 +39,7 @@ _Avoid_: <synonym, ambiguous phrase>
 Every skill that writes an L2 manifest applies this policy.
 
 - `Scope`: intent. Preserve it; replace it only with confirmed intent.
-- `Constraints`: intent. Preserve existing rules; add a rule only with confirmed intent or evidence from a public contract, configuration, or tests; report a contradiction instead of deleting a rule. An L3 header statement stays at Level 3 and is not such evidence.
+- `Constraints`: intent. Preserve existing rules; add a rule only with confirmed intent, evidence from a public contract, configuration, or tests, or a module-wide L3 header statement; remove a rule that a confirmed task outcome contradicts; report any other contradiction instead of deleting a rule.
 - `Members`: fact-derived. Replace from the current module structure at responsibility-group granularity.
 - `Docs`: fact-derived. Merge relevant links and keep the shape of existing entries; remove a path proven missing or out of scope.
 - `Skills`: fact-derived. Replace from current project-local relevance.
@@ -47,6 +47,10 @@ Every skill that writes an L2 manifest applies this policy.
 - `Exceptions`: intent. Add a confirmed deviation; remove one only when explicit evidence says it ended.
 
 Confirmed intent is a user statement, a confirmed task outcome that states the ownership, rule, or term, or a current decision skill. Implementation details alone are not intent.
+
+A confirmed task outcome contradicts a rule when the outcome itself changes or ends that rule. Code that breaks a rule while the outcome is silent on it does not contradict the rule; report it.
+
+A module-wide L3 header statement states a rule that binds other members of the module or the module boundary that `Scope` describes, not only the file that holds the header. A statement about that file's own implementation, such as a constant, an algorithm, or an internal state, stays at Level 3.
 
 ## Hard Rules
 
