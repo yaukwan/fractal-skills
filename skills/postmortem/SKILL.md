@@ -4,7 +4,7 @@ description: "Load when bugfix, regression, incident, or reliability work should
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "1.2"
+  version: "1.3"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -61,12 +61,13 @@ Must not contain only:
 - `templates/postmortem-template.md` — default template
 - `references/decision-rules.md` — when a postmortem is mandatory after loading this skill
 - `references/quality-bar.md` — quality threshold
-- `references/naming-and-placement.md` — naming, placement, repository override, and the L2 retrieval link
+- `references/naming-and-placement.md` — naming, placement, and the L2 retrieval link
 
 ## Boundaries
 
-- This skill owns whether defect work deserves a postmortem and its quality bar. Lifecycle
-  transitions and `AGENTS.md` synchronization beyond the retrieval link belong to `fractal-sync`.
+- This skill owns whether defect work deserves a postmortem, its quality bar, and its naming,
+  placement, and frontmatter. Lifecycle transitions and `AGENTS.md` synchronization beyond the
+  retrieval link belong to `fractal-sync`.
 
 ## Final Handoff Requirement
 

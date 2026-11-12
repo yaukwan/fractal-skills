@@ -13,9 +13,10 @@ Design decisions live at `.agents/skills/decision-{slug}/` and are managed by `d
 ## Naming
 
 - Use lowercase kebab-case unless a lane requires a date prefix.
+- Apply these patterns when a document is created; keep the name of an existing document.
 - Engineering: `query-perf-benchmark.md`
 - Research: `cache-alternatives.md`
-- Postmortem: `YYYYMMDD-bug-description-en.md`
+- Postmortem: `YYYYMMDD-bug-description.md`
 - Specs: `YYYY_MM_dd_task-name.md`
 - Archive: preserve the original searchable name when possible.
 

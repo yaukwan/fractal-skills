@@ -31,14 +31,15 @@ All notable changes to the fractal-skills collection are documented here.
   configuration.
 - Adds a `.gitkeep` to each empty `docs/` lane directory so git tracks the layout.
 
-### postmortem (1.0 → 1.2)
+### postmortem (1.0 → 1.3)
 
 - Content-quality rules always apply. Retrieval links are added only to existing L2
   manifests, without a checker.
 - Removed the `SKILL.md` sections that repeated the placement and indexing rules;
   `references/naming-and-placement.md` is their single source.
-- Owns its L2 retrieval link; `fractal-sync` owns the lane, naming, and frontmatter rules
-  that it follows.
+- Owns its naming, placement, frontmatter, and L2 retrieval link. New postmortems use the
+  skill's own template frontmatter and `YYYYMMDD-bug-description.md`; the `-en` suffix and the
+  `fractal-sync` repository override are gone. Existing postmortems are left unchanged.
 
 ### to-task-specs (1.0 → 2.0)
 
@@ -58,20 +59,22 @@ All notable changes to the fractal-skills collection are documented here.
 - Removed the `fractal-audit` skill; report-only drift checks are a mode of `fractal-sync`.
 - Dropped the per-language L3 header templates in favor of rendering canonical fields in each target language's standard documentation-comment syntax.
 - Removed the OpenCode installer, reference agent definitions, and `AGENTS.template.md`; the repo now ships skill sources and documentation only.
-- Removed the leftover `agent_title.json` and the unreferenced
-  `fractal-sync/references/skill-authority-map.md`.
+- Removed the leftover `agent_title.json` and two unreferenced files:
+  `fractal-sync/references/skill-authority-map.md` and
+  `decision-capture/assets/decision-frontmatter-example.md`.
 - Added `npm test`, which validates the structure of every skill and runs the validator's
   unit tests, and a CI workflow that runs it.
 
-### fractal-agents-fill (1.1 → 3.1)
+### fractal-agents-fill (1.1 → 3.2)
 
 - Reframed as contract extraction: target mode extracts one owning module contract, project mode discovers modules and processes each independently.
 - Records a write basis per module. Project mode asks one creation confirmation for every
   manifest it would create or restructure.
 - Reads the Level 2 schema and section authority from the `fractal-sync` protocol instead of
   carrying a second copy.
+- L3 header statements are not promoted into L2 `Constraints`.
 
-### fractal-sync (1.0 → 2.1)
+### fractal-sync (1.0 → 2.2)
 
 - Narrowed to confirmed code/document changes; extraction belongs to `fractal-agents-fill`.
 - Removed the obsolete root `AGENTS.md` template and tightened lifecycle guidance.
@@ -88,6 +91,9 @@ All notable changes to the fractal-skills collection are documented here.
   is removed when explicit evidence says it ended.
 - Level 1 sections are standard instead of required; a missing section is added only on
   request.
+- Naming and frontmatter conventions apply to new documents only. Report-only Mode checks a
+  document's lane, not its name or frontmatter.
+- An L3 header statement is not evidence for an L2 `Constraints` rule.
 
 ### decision-capture (1.1 → 2.2)
 

@@ -1,26 +1,22 @@
 # Naming and Placement
 
+These rules and the frontmatter in `templates/postmortem-template.md` are the standard for
+every new postmortem. Apply them even when older postmortems in the repository use another
+name pattern or frontmatter, and leave those older files unchanged.
+
 ## Default Naming
 Use a concise, searchable file name:
 
-`YYYYMMDD-bug-description-en.md`
+`YYYYMMDD-bug-description.md`
 
 Examples:
 - `20260510-login-redirect-loop.md`
 - `20260510-empty-cart-price-crash.md`
 
 ## Default Placement
-If no repository-specific rule exists, place postmortems under:
+Unless a project instruction names another directory, place postmortems under:
 
 `docs/postmortem/`
-
-## Repository Override
-If the repository uses `fractal-sync`, read `../fractal-sync/references/lifecycle.md` and
-`../fractal-sync/references/frontmatter.md` in the sibling `fractal-sync` skill and follow
-them for:
-- exact directory placement
-- frontmatter requirements
-- lifecycle transitions
 
 ## Retrieval Link
 
@@ -32,7 +28,9 @@ postmortem regardless of the index outcome.
    or restructure a manifest solely to link a postmortem.
 2. Skip a manifest in a path that a project instruction excludes from fractal writes.
 3. Add the `Docs` link, creating the `Docs` section when it is absent; leave an existing
-   correct link unchanged. Preserve unrelated manifest content and verify the link resolves.
+   correct link unchanged. Match the shape of the section's existing entries; in a new
+   section write ``- `<path from the project root>`: <when to read it>``. Preserve unrelated
+   manifest content and verify the link resolves.
 
 Complete when every affected module has an index outcome: changed, already linked, or
 skipped with its reason.

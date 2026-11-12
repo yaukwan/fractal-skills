@@ -39,14 +39,14 @@ _Avoid_: <synonym, ambiguous phrase>
 Every skill that writes an L2 manifest applies this policy.
 
 - `Scope`: intent. Preserve it; replace it only with confirmed intent.
-- `Constraints`: intent. Preserve existing rules; add a rule only with confirmed intent or evidence from a public contract, configuration, or tests; report a contradiction instead of deleting a rule.
+- `Constraints`: intent. Preserve existing rules; add a rule only with confirmed intent or evidence from a public contract, configuration, or tests; report a contradiction instead of deleting a rule. An L3 header statement stays at Level 3 and is not such evidence.
 - `Members`: fact-derived. Replace from the current module structure at responsibility-group granularity.
 - `Docs`: fact-derived. Merge relevant links and keep the shape of existing entries; remove a path proven missing or out of scope.
 - `Skills`: fact-derived. Replace from current project-local relevance.
-- `Language`: intent. Add only confirmed vocabulary.
+- `Language`: intent. Add only vocabulary with confirmed intent or the authority of an existing project document.
 - `Exceptions`: intent. Add a confirmed deviation; remove one only when explicit evidence says it ended.
 
-Confirmed intent is a user statement, a confirmed task outcome that states the ownership, rule, or term, a current decision skill, or another authoritative project document. Implementation details alone are not intent.
+Confirmed intent is a user statement, a confirmed task outcome that states the ownership, rule, or term, or a current decision skill. Implementation details alone are not intent.
 
 ## Hard Rules
 

@@ -4,7 +4,7 @@ description: "Load when extracting, creating, or refreshing module contracts in 
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "3.1"
+  version: "3.2"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -28,7 +28,7 @@ Do not ask the user to restate a path that can be resolved from the request or w
 
 ## Write eligibility
 
-An L2 manifest is a non-root `AGENTS.md` with a `Scope` section. Resolve file and `AGENTS.md` targets upward to the candidate module directory, then record one write basis for it:
+An L2 manifest is a non-root `AGENTS.md` with a `Scope` section. Resolve file and `AGENTS.md` targets upward to the candidate module directory, then record one write basis for it, the first row below that applies:
 
 | Basis | Applies when | Effect |
 | --- | --- | --- |

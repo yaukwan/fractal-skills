@@ -29,6 +29,8 @@ changelog:
 ## Rules
 
 - 只把最小必要字段当成协议核心
+- 本约定在新建文档时应用；不为对齐约定而改写已有文档的 frontmatter
+- Postmortem 的 frontmatter 以 `postmortem` skill 的模板为准，不套用上面的字段集
 - `status` 值由产出 skill 定义；公共协议只规定字段形状
 - 扩展字段可以按需追加，不要求全仓统一全量出现
 - 历史记录优先进入 `changelog`，不要塞进 `AGENTS.md` 或 file header

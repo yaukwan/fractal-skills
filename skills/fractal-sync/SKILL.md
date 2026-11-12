@@ -4,7 +4,7 @@ description: "Load after a confirmed code, architecture, or repository-document 
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "2.1"
+  version: "2.2"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -64,8 +64,8 @@ When the user asks for a drift report, audit, or health check instead of a sync,
 
 1. Set the scope to the paths the user names. When none are named, use every existing L2 manifest, L3 header, root `AGENTS.md` section, and `docs/` lane document.
 2. Read the Canonical References for each layer in scope, then read current truth as in Workflow step 2. No task outcome applies.
-3. Check every claim in each manifest, header, and root section against current code, including a module or path that the artifact should list and does not. Check the lane, name, and frontmatter of each `docs/` document; its content belongs to the skill that produced it.
-4. Report each mismatch as `drift`: its path, owning layer, the documented statement, the conflicting or missing fact, and the write a sync would make. Name the stale side when the evidence shows it; otherwise state the question that decides it. Report the number of artifacts checked without drift for each layer, counting each root section as one artifact.
+3. Check every claim in each manifest, header, and root section against current code, including a module, path, or responsibility that the artifact should list and does not. For each `docs/` document, check only that it sits in the lane that fits its kind. Its name and frontmatter are not drift, because those conventions apply only to new documents. Do not verify the claims in its content; they belong to the skill that produced it.
+4. Report each mismatch as `drift`: its path, owning layer or `docs/` lane, the documented statement, the conflicting or missing fact, and the write a sync would make. Name the stale side when the evidence shows it; otherwise state the question that decides it. Report the number of artifacts checked without drift for each layer and for `docs/`, counting each root section as one artifact.
 
 Complete when every artifact in scope was checked and no file changed.
 
@@ -75,7 +75,7 @@ Complete when every artifact in scope was checked and no file changed.
 - Read `references/protocol/level2.md` before writing, normalizing, or checking an L2 manifest; it holds the schema and the authority of each section.
 - Read `references/protocol/level1.md` before changing or checking root navigation or global context.
 - Read `references/lifecycle.md` when placing, naming, or checking a repository document, or when it may move between `engineering / research / postmortem / specs / archive`.
-- Read `references/frontmatter.md` when creating, normalizing, or checking repository-document metadata.
+- Read `references/frontmatter.md` when creating repository-document metadata.
 
 The protocol references are the single source of truth for schema meaning. Render L3 contracts with the target language's standard documentation-comment syntax.
 
@@ -94,4 +94,4 @@ The protocol references are the single source of truth for schema meaning. Rende
 - Target-module or project-wide extraction, creation, or systematic refresh of Level 2 module contracts belongs to `fractal-agents-fill`.
 - Decision freshness checks, creation, update, supersession, merge, and retirement belong to
   `decision-capture`, as does the reference rewrite that follows a decision-skill rename or removal.
-- Postmortem content quality and its retrieval link belong to `postmortem`; this skill owns the lane, naming, and frontmatter rules that `postmortem` follows, and later lifecycle transitions.
+- Postmortem content quality, naming, frontmatter, and retrieval link belong to `postmortem`; this skill owns later lifecycle transitions.
