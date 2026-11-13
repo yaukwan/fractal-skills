@@ -60,7 +60,7 @@ These execution states extend the `to-task-specs` template. Use them for specs f
 | --- | --- |
 | `draft` / `pending_review` | Not approved for execution. Record explicit approval before advancing to `approved`; use `pending_review` again when an approved contract needs revision and renewed review. |
 | `approved` | The selected spec content has approval; implementation has not started. Move to `in_progress` when authorized execution begins. |
-| `in_progress` | Work has started but the whole spec is not verified complete. Keep this for a pause or completed subset with remaining runnable work. |
+| `in_progress` | Work has started but the whole spec is not verified complete. Keep this for a pause or completed subset, including remaining tasks awaiting authorization and whole-spec checks not yet due. |
 | `blocked` | Required work or a final gate cannot proceed and no authorized independent work remains runnable. Preserve completed tasks and record the blocker. Return to `in_progress` once the blocker is resolved and execution resumes. |
 | `completed` | Every implementation task and required acceptance criterion, plus final integration and project gates, is verified with recorded evidence. A completed subset or all code being written is insufficient. |
 
@@ -68,7 +68,8 @@ A missing or unrecognized status is not approval. Reconcile it using explicit us
 
 ## 4. Close the Run
 
-- Review the resulting diff against the selected scope and check the spec's overall success criteria. Run required integration/regression checks on the final combined changes; isolated task passes do not establish whole-spec success. Reopen affected completion marks if these checks disprove them.
+- Review the resulting diff and acceptance against the selected scope and its affected contracts. Run project integration/regression gates required for these combined changes even for a task-scoped run. Reopen affected completion marks if these checks disprove them.
+- Evaluate whole-spec success criteria and run final completion checks once all implementation tasks and their acceptance are verified and the checks' prerequisites hold. Until then, record checks that depend on unfinished tasks as pending, not failed; do not expand implementation scope to satisfy them. Isolated task passes do not establish whole-spec success.
 - Reconcile affected code/document contracts with `fractal-sync` when applicable. Route defect root-cause records to `postmortem` when required by the project or spec. Respect orchestrator phase-confirmation gates: record a required later-stage handoff as pending and keep the spec `in_progress`; its owner must write back the outcome and reconcile status after that stage. An unavailable or failed required gate makes the spec `blocked`, not `completed`.
 - Derive document status from the whole spec, not just this run's selected tasks. Preserve the spec at its current path; completion does not authorize archiving, committing, pushing, deploying, or changing the approved contract.
 - Reread the saved spec and compare task marks, acceptance marks, evidence, status, and `updated` for consistency. Report the spec path (or inline artifact), completed task IDs, remaining or blocked IDs, actual verification results, and next action when unfinished.
