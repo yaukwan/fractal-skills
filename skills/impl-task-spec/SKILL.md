@@ -20,6 +20,7 @@ This skill owns the execution protocol, not a separate coding, TDD, debugging, r
 - Read the user-selected spec in full and its relevant repository instructions, current decisions, and referenced contracts. Use an unambiguous spec from the conversation when no path is supplied; ask when the target is missing or ambiguous.
 - Confirm implementation authorization and approval of the selected content. An explicit user instruction to implement that identified spec can serve as approval; merely generating, opening, or naming a draft cannot. Record that approval in `Execution Evidence`, without checking human-review boxes on the user's behalf. An approved document alone is not a request to run it.
 - Determine whether approval and the execution request cover the whole spec or named task IDs. Record and honor the narrower scope; if an unfinished prerequisite lies outside it, report the dependency instead of silently expanding the request. Task-scoped approval does not approve the remaining spec.
+- Identify any user- or project-authorized commit policy, including whether each task requires a commit checkpoint. Apply Authorized Task Commits below only under that authorization.
 - Inspect working-tree changes and validate the baseline, implementation anchors, verification prerequisites, task IDs, and dependency order against the current repository. Missing IDs, cycles, consequential ambiguity, or contract conflicts block affected work. Preserve unrelated changes.
 - Read existing checkmarks and evidence against the current implementation. Recheck prerequisite results whose evidence is missing or invalidated by later changes; do not blindly rerun completed work or trust checkmarks alone. Restore unsupported completion marks to `[ ]` with the reason before relying on them.
 
@@ -43,6 +44,14 @@ This skill owns the execution protocol, not a separate coding, TDD, debugging, r
 - Add or update a concise entry per task: task ID; run reference; outcome or remaining work; actual command and working directory or reproducible procedure; observed result; and relevant artifact paths. Identify the implementation verified by that result using its revision or source snapshot, with a reference to the relevant patch for changes not included there. HEAD alone does not identify a dirty working tree. On resume, compare relevant changes with this evidence and reverify affected results; unrelated changes alone do not invalidate them. Record approved deviations with their approval source. Preserve evidence needed to explain retries or reopened work; avoid raw log dumps.
 - Update frontmatter `updated` to the current `YYYY-MM-DD` whenever progress, evidence, or status changes. Preserve `type`, identity, references, and unrelated metadata.
 - For a file spec, update that file in place and reread the changed sections. If writeback is unavailable, report the persistence blocker before proceeding further; chat-only updates do not substitute for a writable file. For an explicitly inline spec, return the revised status, task/acceptance checkboxes, and evidence inline at each checkpoint; do not silently create a file.
+
+### Authorized Task Commits
+
+When per-task commits are authorized, finish this checkpoint before starting the next task:
+
+- After verification and progress writeback, review the task diff and existing index. Selectively stage and commit only the task's deliverables and corresponding file-spec progress; inline progress stays in conversation. Preserve unrelated staged and working-tree changes. If the task cannot be isolated without disturbing them, report the blocker instead of including or resetting them.
+- Verify the resulting commit contains the intended task changes and progress, and that unrelated index entries remain intact. If hooks or other edits changed the verified implementation, reverify affected acceptance before proceeding. Report the commit ID; use Git history to associate the commit with its progress entry rather than attempting to embed its own hash in that commit.
+- A failed commit is a delivery blocker, not a failed acceptance check. Preserve valid verification and checkmarks, record the commit failure separately, and resolve the required checkpoint before starting another task. Inspect repository and index state before retrying; do not bypass hooks or expand commit scope to force success.
 
 ## 3. Handle Blockers and Resumption
 
