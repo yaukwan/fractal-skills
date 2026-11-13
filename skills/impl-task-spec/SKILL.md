@@ -2,6 +2,7 @@
 name: "impl-task-spec"
 description: "Load when implementing or resuming an existing task spec, including task-scoped execution with progress and evidence written back to that spec. Do not load for spec generation or revision, report-only progress audits, or coding without a task spec."
 license: "Apache-2.0"
+disable-model-invocation: true
 metadata:
   author: "yaukwan"
   version: "1.0"

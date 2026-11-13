@@ -2,6 +2,7 @@
 name: "fractal-sync"
 description: "Load after a confirmed code, architecture, or repository-document change when existing Level 3 contracts, existing Level 2 manifests, Level 1 navigation, or repository lifecycle must be reconciled with current truth; when the user asks to add a Level 3 contract to named files; or when the user asks for a report-only drift check of those artifacts. Do not load for bootstrap, target-module or project-wide contract extraction, or decision lifecycle."
 license: "Apache-2.0"
+disable-model-invocation: true
 metadata:
   author: "yaukwan"
   version: "2.3"
