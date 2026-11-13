@@ -1,53 +1,56 @@
 # Skill Review Checklist
 
-Use this as a binary pass before shipping or merging a skill.
+Apply the rules in `SKILL.md` before shipping or merging a skill.
 
 ## Contract
 
-- [ ] The skill changes behavior the base model does not handle reliably enough
-- [ ] The target harness and any nonstandard invocation controls are known
-- [ ] The invocation mode is deliberate
-- [ ] Each distinct branch has one clear owner
+- [ ] The skill addresses a behavior, knowledge, or helper need.
+- [ ] The harness supports the invocation mode and nonstandard controls.
+- [ ] Each branch has one owner and an expected result.
 
 ## Description
 
-- [ ] It states what task class the skill owns
-- [ ] It states when each distinct branch should activate
-- [ ] Synonyms do not masquerade as separate branches
-- [ ] Boundaries cover only realistic neighboring cases
+- [ ] The description states the task class and one trigger per branch.
+- [ ] Boundaries distinguish realistic near-misses.
 
 ## Execution
 
-- [ ] Every ordered step has a checkable completion criterion
-- [ ] Exhaustive criteria cover omissions that would be costly
-- [ ] Decision rules and failure recovery are explicit where inference is unsafe
-- [ ] Instructions prefer the target behavior over prohibition-only steering
+- [ ] Each ordered step has a checkable completion criterion.
+- [ ] Completion criteria cover all items where omissions cause errors.
+- [ ] Consequential decisions and failure recovery are explicit.
+- [ ] Instructions use consistent terms and one action per sentence.
 
 ## Information hierarchy
 
-- [ ] Universal rules remain in `SKILL.md`
-- [ ] Conditional material is behind a precise context pointer
-- [ ] Each pointer says when to use the target and what it contributes
-- [ ] Supporting paths are relative to the skill root
-- [ ] Optional directories and files have real callers
+- [ ] Universal rules remain in `SKILL.md`.
+- [ ] Conditional resources have callers and relative paths.
+- [ ] Each pointer states its condition, contribution, and use.
 
 ## Pruning
 
-- [ ] Every remaining sentence changes behavior
-- [ ] Each meaning has one source of truth
-- [ ] Stale reviews, historical policy, and dead branches are removed or archived
-- [ ] The root file contains no branch-specific sprawl
+- [ ] Each instruction has a task-specific purpose and one authoritative definition.
+- [ ] Stale rules and duplicate instructions are removed.
+- [ ] Guardrails state the required alternative.
+
+## Token cost
+
+- [ ] Counts identify the tokenizer and loaded scope, or explicitly use proxy measurements.
+- [ ] Redundant wording has keep, merge, remove, or move decisions.
+- [ ] Model-knowledge claims have comparison evidence or explicit verification limits.
+- [ ] Required constraints survive pruning.
+- [ ] ASD-STE100 checks cover sentences, terminology, and dictionary requirements.
+- [ ] The report distinguishes checked rules from full compliance.
 
 ## Temporary validation
 
-- [ ] Every invocation branch has a representative prompt
-- [ ] Realistic near-misses have been checked
-- [ ] High-risk completion criteria have been exercised or walked through
-- [ ] Failures were converted into durable contract changes
-- [ ] Temporary validation artifacts were removed
+- [ ] Cases cover all branches, realistic near-misses, and consequential completion criteria.
+- [ ] Observed ambiguous requests have cases.
+- [ ] Results distinguish model runs from walkthroughs.
+- [ ] Failures have corrections in the instructions.
+- [ ] Temporary prompt artifacts are removed.
 
 ## Structure
 
-- [ ] `SKILL.md` frontmatter passes the portable structural validator
-- [ ] Relative links resolve
-- [ ] Scripts or generated assets have focused deterministic tests when warranted
+- [ ] The structural validator passes.
+- [ ] Relative references resolve.
+- [ ] Deterministic helper tests pass where applicable.

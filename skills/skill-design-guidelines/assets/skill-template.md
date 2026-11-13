@@ -21,13 +21,13 @@ description: <What task class this skill owns and when each distinct branch shou
 
 <Behavior-changing instructions.>
 
-Completion: <checkable stopping condition>.
+Completion criterion: <checkable result>.
 
 ### 2. <Action>
 
 <Behavior-changing instructions.>
 
-Completion: <checkable stopping condition>.
+Completion criterion: <checkable result>.
 
 ## Decision rules
 
@@ -47,4 +47,8 @@ Completion: <checkable stopping condition>.
 
 ## Temporary validation
 
-During creation or review, exercise each invocation branch, its nearest realistic miss, and the highest-risk completion criterion. Convert failures into the contract above; remove temporary artifacts before finishing.
+During creation or review, exercise each invocation branch.
+Check its nearest realistic miss.
+Check the completion criterion where failure has the greatest impact.
+Convert failures into contract changes.
+Remove temporary prompt artifacts.

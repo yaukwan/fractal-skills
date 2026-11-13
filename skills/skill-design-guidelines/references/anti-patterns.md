@@ -1,159 +1,75 @@
 # Skill Anti-Patterns
 
-Read this reference when a skill is difficult to route, inconsistent in execution, bloated, or expensive to maintain.
+Use these signals to diagnose failures against the rules in `SKILL.md`.
 
 ## 1. No-op instruction
 
-The skill repeats behavior the model already performs reliably.
+Signal: General advice such as `be clear` adds no task-specific decision.
 
-Signals:
-
-- generic advice such as `be clear` or `be thorough`
-- textbook explanations with no task-specific consequence
-- process narration that does not change a decision
-
-Correction:
-
-- delete the instruction
-- if behavior still varies, replace it with a checkable completion criterion or a stronger domain rule
+Correction: Compare behavior with and without the instruction.
+Remove it if behavior is unchanged.
+If failures remain, specify a completion criterion or domain rule that prevents them.
 
 ## 2. Duplication
 
-The same meaning has multiple authoritative homes.
+Signal: Changing one rule requires edits to several independent definitions.
 
-Signals:
+Correction: Keep one authoritative definition.
+Replace other definitions with references to it.
 
-- routing rules repeated in the description, body, checklist, and README
-- a triad restated with different wording across several sections
-- updates that require synchronized edits to multiple files
+## 3. Stale rules
 
-Correction:
+Signal: Reviews describe deleted files, or historical decisions appear as current instructions.
 
-- choose one source of truth
-- replace copies with a compact term or context pointer
-
-## 3. Sediment
-
-Old guidance remains after the skill's contract changes.
-
-Signals:
-
-- dated reviews describe files or behavior that no longer exist
-- historical decisions appear as current instructions
-- a section survives because nobody can explain whether it is still needed
-
-Correction:
-
-- delete stale current-state material
-- retain genuine history only in a changelog or archival source
+Correction: Remove obsolete instructions.
+Keep required history in a changelog or source archive.
 
 ## 4. Feature-summary description
 
-The description explains capabilities but does not let the agent choose the skill reliably.
+Signal: A description says `helps with project work` or lists implementation details without invocation conditions.
 
-Signals:
-
-- catalog copy such as `helps with project work`
-- implementation details without user intent
-- many synonyms for one branch but no distinct branch coverage
-
-Correction:
-
-- state the owned task class and when it applies
-- keep one trigger per branch
-- add a nearby boundary only where confusion is plausible
+Correction: Replace capabilities with the task class and distinct triggers.
+Add boundaries where realistic requests would select the wrong skill.
 
 ## 5. Weak context pointer
 
-A referenced file exists, but the agent cannot tell when or why to read it.
+Signal: `See reference.md for details` does not identify a condition or task use.
 
-Signals:
+Correction: State when to read the file and how its contents affect the task.
+If every branch needs the rule, keep it inline.
 
-- bare lists of filenames
-- `see reference.md for details`
-- required behavior hidden behind an optional-sounding pointer
+## 6. Misplaced content
 
-Correction:
+Signal: Conditional examples, schemas, or source articles interrupt the main process.
 
-- name the condition that activates the pointer
-- state what the file contributes to the current task
-- inline the rule if every branch needs it
-
-## 6. Root sprawl
-
-`SKILL.md` carries conditional detail needed by only a subset of runs.
-
-Signals:
-
-- long variant-specific examples interrupt the main process
-- schemas or source articles dominate the root file
-- agents must scan unrelated branches before acting
-
-Correction:
-
-- disclose branch-specific reference behind explicit pointers
-- keep universal steps and rules inline
-- split by sequence only when premature completion is observed
+Correction: Move them to conditional resources.
+Keep universal rules inline.
 
 ## 7. Vague completion
 
-An ordered step lacks a checkable stopping rule.
+Signal: `Review the code` permits completion before all affected files have been checked.
 
-Signals:
-
-- `review the code`, `understand the context`, or `validate the result`
-- later steps begin before all affected branches or files are accounted for
-- repeated partial completion across runs
-
-Correction:
-
-- define observable completion
-- make the bound exhaustive where omissions are costly
-- hide later steps only if a clear bound still fails to prevent rushing
+Correction: Name the required coverage and observable result.
+If early completion continues, apply the sequence rule in `SKILL.md`.
 
 ## 8. Prohibition-only steering
 
-The skill names an unwanted behavior without making the target behavior salient.
+Signal: Repeated prohibitions leave the correct action unspecified.
 
-Signals:
+Correction: State the required behavior.
+For necessary guardrails, add the required alternative.
 
-- long lists of `do not` rules
-- the correct replacement is left implicit
-- the prohibited pattern appears more often after the warning
+## 9. Unused directories
 
-Correction:
+Signal: Templates require empty support directories, or validators reject their absence.
 
-- lead with the desired behavior
-- retain a prohibition only as a hard guardrail
-- pair each retained guardrail with the required alternative
+Correction: Create support files only for real callers.
+Validate optional content when present.
 
-## 9. Optional-directory theater
+## 10. Missing behavioral validation
 
-The skill creates or requires support directories without content that earns them.
+Signal: A structural pass is the only evidence for correct invocation or execution.
 
-Signals:
-
-- empty `scripts/`, `references/`, or `assets/`
-- validators warn about absent optional directories
-- templates prescribe a full tree for every skill
-
-Correction:
-
-- create support files only for real callers
-- validate optional content when present, not directory presence itself
-
-## 10. Validation theater
-
-A structural pass is treated as evidence that the skill routes and executes correctly.
-
-Signals:
-
-- a linter result substitutes for representative prompts
-- routing quality is inferred from description syntax
-- ambiguous cases are recorded as `may trigger` rather than resolved
-
-Correction:
-
-- separate structural validation from behavioral judgment
-- exercise realistic intended and near-miss prompts temporarily
-- turn observed failures into durable contract changes
+Correction: Validate intended requests, realistic near-misses, and consequential completion criteria.
+Identify walkthroughs separately from model runs.
+Convert failures into corrected instructions.

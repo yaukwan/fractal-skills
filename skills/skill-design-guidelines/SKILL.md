@@ -1,6 +1,6 @@
 ---
 name: skill-design-guidelines
-description: Load when creating, reviewing, refining, or maintaining Agent Skills, especially for invocation design, SKILL.md structure, progressive disclosure, completion criteria, validation, or pruning. Do not load for unrelated documentation or coding tasks.
+description: Load when creating, editing, reviewing, or validating Agent Skills.
 license: Apache-2.0
 metadata:
   author: Alma
@@ -10,203 +10,162 @@ metadata:
 
 # Skill Design Guidelines
 
-Design skills to make an agent follow a **predictable process**. Predictability means stable decisions and execution paths, not identical outputs.
-
-For every instruction, ask:
-
-> Would the agent behave differently without this?
-
-Remove instructions that fail that test.
-
-## Authority
-
-Use the Agent Skills specification as the portable baseline:
-
-- a skill directory contains `SKILL.md`
-- `SKILL.md` has valid `name` and `description` frontmatter
-- the body contains instructions loaded when the skill activates
-- supporting files are optional and loaded or executed only when needed
-
-Invocation controls beyond this baseline are harness-specific. Verify the target harness before using fields such as `disable-model-invocation` or external policy files.
-
-## Design dimensions
-
-### Invocation
-
-Choose the invocation mode before writing the body:
-
-- **Model-invoked**: the agent must discover the skill from the request. The description needs precise routing branches.
-- **User-invoked**: the user deliberately selects the skill. Use this only when the target harness supports hiding it from model discovery.
-
-A model-facing description has two jobs:
-
-1. identify what class of work the skill owns
-2. state when each distinct branch should activate
-
-Use one trigger per real branch. Collapse synonyms that describe the same branch. Add a nearby boundary only where another skill or ordinary model behavior could plausibly win the request.
-
-`Load when...` is a useful project convention, not a portable syntax requirement.
-
-### Information hierarchy
-
-Arrange content by when the agent needs it:
-
-1. **Steps in `SKILL.md`**: ordered actions needed on every relevant run
-2. **Reference in `SKILL.md`**: rules and facts every branch needs
-3. **Referenced files**: conditional or branch-specific material
-
-Move material behind a context pointer when only some branches need it. Keep universally required rules inline even when they are long enough to be inconvenient.
-
-A context pointer must say:
-
-- when to read or run the target
-- what the target contains or produces
-- how it affects the current task
-
-Use paths relative to the skill root. Keep a concept's rules, caveats, and examples together.
-
-### Runtime files
-
-Only `SKILL.md` is required. Add other directories when they carry real content:
-
-```text
-skill-name/
-├── SKILL.md
-├── references/   # conditional documentation
-├── assets/       # templates or output resources
-└── scripts/      # deterministic or repeated operations
-```
-
-An absent optional directory is not a defect. Empty scaffolding adds maintenance without changing behavior.
-
-### Steps and completion
-
-Every ordered step needs a completion criterion. Prefer criteria that are:
-
-- **checkable**: the agent can distinguish done from not done
-- **exhaustive where needed**: all affected branches, files, or constraints are accounted for
-
-Completion criteria control legwork. A vague instruction such as `review the skill` permits early exit; `account for every invocation branch and adjacent near-miss` sets a useful bound.
-
-If an agent repeatedly rushes a step, sharpen its completion criterion first. Split the sequence only when the bound cannot be made clear and visible later steps are demonstrably pulling attention forward.
-
-### Pruning
-
-Keep each meaning in one authoritative place.
-
-During every revision, remove:
-
-- **No-ops**: instructions the model already follows reliably
-- **Duplication**: the same rule expressed in multiple places
-- **Sediment**: stale guidance preserved only because deletion feels risky
-- **Sprawl**: live content placed too high in the hierarchy
-- **Prohibition-only steering**: a banned behavior named without a positive replacement
-
-Reserve prohibitions for hard guardrails. Pair them with the behavior the agent should perform instead.
-
-## When a skill is warranted
-
-Create or retain a skill when at least one condition holds:
-
-- the task is repeatedly misrouted
-- execution varies in a harmful way
-- durable domain judgment is missing from the base model
-- team-specific conventions materially affect the result
-- deterministic helper logic avoids repeated reinvention
-
-Prefer ordinary project documentation, code, or the base model when none of these conditions holds.
+Design skills for stable decisions and execution paths. Outputs can vary with the task.
 
 ## Authoring process
 
 ### 1. Establish the contract
 
-Identify:
+Create or retain a skill when it addresses at least one need:
 
-- target harness and compatibility constraints
-- owned task class
-- invocation mode
-- distinct invocation branches
-- nearest non-goals or competing skills
-- expected output or state change
+- Repeated invocation errors or harmful execution differences.
+- Domain judgment or team conventions the model lacks.
+- Deterministic helpers that prevent repeated implementation.
 
-Complete this step when every branch has a clear owner and the remaining ambiguity would not change the skill's design.
+Otherwise, use project documentation, code, or the base model.
+
+Identify the target harness, task class, invocation branches, competing skills, and expected result.
+Choose the invocation mode:
+
+- **Model-invoked**: The description supports agent discovery.
+- **User-invoked**: Use only when the harness can exclude the skill from model discovery.
+
+Require `SKILL.md` with valid `name` and `description` frontmatter under the Agent Skills specification.
+Verify harness support before using nonstandard controls, such as `disable-model-invocation` or external policy files.
+
+Completion criterion: Each branch has a clear owner. No unresolved ambiguity changes the design.
 
 ### 2. Write the description
 
-Front-load the owned task class, then cover each branch once. Remove synonym lists and implementation details.
+State the task class first.
+Include one trigger per distinct branch.
+Add boundaries only for realistic competing tasks.
+Keep implementation details in the body.
+`Load when...` is a project convention, not a portable syntax requirement.
 
-Complete this step when a reader can distinguish every intended trigger from its nearest plausible miss without opening the body.
+Completion criterion: The description distinguishes intended requests from realistic near-misses without requiring the body.
 
 ### 3. Write the body
 
-Include only behavior-changing material:
+Specify consequential decisions, failure recovery, and team conventions.
+Give each ordered step a checkable completion criterion.
+Require complete coverage where omissions would cause errors.
 
-- ordered steps and completion criteria
-- decisions the model cannot safely infer
-- failure recovery
-- organization-specific judgment
-- conditional context pointers
+If an agent finishes steps early, clarify the completion criteria first.
+Split the sequence only if clarification fails and visible later steps cause the early exit.
+Hiding later steps requires a separate context.
+Moving text within one file does not hide it.
 
-Complete this step when every branch has enough instruction to finish and every ordered step has a stopping rule.
+Write one action per sentence.
+Use the same term for the same concept.
+Use literal terms instead of metaphors.
+
+Completion criterion: Every branch includes the decisions and completion criteria needed to reach its expected result.
 
 ### 4. Place supporting material
 
-Move branch-specific reference, templates, and deterministic helpers into optional support files. Keep paths relative and pointers explicit.
+Keep rules that every branch needs in `SKILL.md`.
+Move conditional documentation to `references/`.
+Move templates to `assets/`.
+Move deterministic helpers to `scripts/`.
+Create optional files and directories only for real callers.
 
-Complete this step when each support file has a real caller and no required rule is hidden behind an unreliable pointer.
+For each context pointer, state:
+
+- When to read or run the target.
+- What it supplies.
+- How the current task uses the result.
+
+Use paths relative to the skill root.
+Keep each concept's rules, caveats, and examples together.
+
+Completion criterion: Each support file has a caller. Every required rule is available on the path that needs it.
 
 ### 5. Validate with temporary prompts
 
-Construct representative prompts during creation or review. Keep them temporary and remove them when validation is complete.
+Use temporary prompts during creation or review to cover:
 
-Cover, in proportion to routing risk:
+- Each invocation branch.
+- Realistic near-misses that belong to the base model or another skill.
+- Ambiguous requests observed in use.
+- Completion criteria where failure has the greatest impact.
 
-- at least one intended invocation per branch
-- realistic near-misses that should remain with the base model or another skill
-- ambiguous wording observed in real use
-- behavior cases for the highest-risk completion criteria
+Use an isolated session when practical.
+Otherwise, walk through invocation and execution explicitly.
+Record which method you used.
+Convert failures into corrections to the relevant instructions.
 
-Use an isolated session when the harness makes that practical. Otherwise, perform an explicit routing and behavior walkthrough. Convert failures into sharper descriptions, completion criteria, context pointers, or gotchas.
-
-Complete this step when every branch and high-risk near-miss has been exercised or explicitly reasoned through.
+Completion criterion: Each case has an observed result or an explicit walkthrough.
 
 ### 6. Prune and finish
 
-Run the no-op, duplication, sediment, and portability checks. Remove test scaffolding and temporary artifacts.
+Apply the token cost review below.
+Remove stale rules.
 
-Complete this step when each remaining sentence changes behavior, each meaning has one source of truth, and the skill passes structural validation.
+State the required behavior.
+Retain prohibitions for hard guardrails, paired with the required alternative.
+Remove temporary prompt artifacts.
+Keep deterministic helper tests.
+Run the structural validator below.
+Check relative references separately.
+
+Completion criterion: Each instruction has a task-specific purpose. No validation failures or temporary prompt artifacts remain.
 
 ## Review order
 
-Review in this order so later polish does not hide an earlier contract failure:
+Apply the rules above in this order: invocation, execution, information hierarchy, pruning, behavioral validation, structure.
+Include the token cost review during pruning.
+Report findings with file locations, impact, and corrections.
+Distinguish walkthroughs from observed behavior.
 
-1. **Invocation**: ownership, branches, description, boundaries, harness compatibility
-2. **Execution**: ordered steps, decisions, failure recovery, completion criteria
-3. **Hierarchy**: inline rules, context pointers, optional support files, co-location
-4. **Pruning**: no-ops, duplication, sediment, sprawl, positive steering
-5. **Validation**: temporary positive, negative, near-miss, and high-risk behavior prompts
-6. **Structure**: portable frontmatter and file references
+### Token cost review
+
+Measure the description, loaded body, and conditional resources separately.
+Record the tokenizer, measured files, and counts.
+Compare revisions with the same tokenizer.
+If token counts are unavailable, label word or character counts as proxies.
+Count conditional resources only on paths that load them.
+
+1. **Redundant wording.** Find repeated rules, overlapping triggers, and explanations that add no task-specific decision.
+   Keep one authoritative definition per rule.
+   Record whether to keep, merge, remove, or move each candidate.
+2. **Model knowledge.** Identify the decision each explanation changes.
+   Treat general knowledge as a removal candidate, not proof that an instruction is unnecessary.
+   Compare uncertain candidates with and without the text, using the same model and representative prompts.
+   Record the model and comparison method.
+   If runs are unavailable, record a walkthrough.
+   Retain rules whose value remains uncertain.
+   Preserve required constraints, failure recovery, exceptions, and team conventions.
+3. **ASD-STE100.** Check one action per instruction, consistent terminology, and literal wording.
+   For English, limit procedural sentences to 20 words and descriptive sentences to 25 words.
+   Use the standard's word-count rules.
+   Check dictionary usage and technical terms against the [official standard](https://www.asd-ste100.org/assets/files/ASD-STE100_ISSUE9.pdf).
+   Report checked rules and verification limits.
+   Claim full compliance only after checking all applicable writing rules and dictionary requirements.
+   For other languages, apply the principles without claiming formal ASD-STE100 compliance.
+
+Completion criterion: All three checks have findings and evidence, or explicit verification limits.
+
+### Review resources
 
 Use these assets when their format is useful:
 
-- `assets/skill-template.md` for a new draft
-- `assets/review-checklist.md` for a binary review pass
-- `assets/review-rubric.md` for a scored review
+- `assets/skill-template.md` for a new draft.
+- `assets/review-checklist.md` for a binary review.
+- `assets/review-rubric.md` for a scored review.
 
-Read `references/anti-patterns.md` when a skill is bloated, unreliable, or difficult to route. Read `references/perplexity-original-article.md` only for source provenance or exact source nuance; it is not the current repository policy.
+Read `references/anti-patterns.md` to diagnose excessive length, invocation errors, or inconsistent execution.
+Read `references/perplexity-original-article.md` only to check source wording or provenance.
+The source article does not define current repository policy.
 
 ## Structural validator
 
-Run the bundled linter after writing or reviewing a skill:
+After writing or reviewing a skill, run:
 
 ```bash
 python3 <skill-design-guidelines-root>/scripts/validate_skill.py /path/to/skill
 ```
 
-JSON output:
-
-```bash
-python3 <skill-design-guidelines-root>/scripts/validate_skill.py --json /path/to/skill
-```
-
-The validator checks portable structural requirements. It does not prove routing quality, execution quality, or prompt coverage; those require the review and temporary validation steps above.
+Add `--json` for machine-readable output.
+The validator checks structure only.
+Invocation, execution, and prompt coverage require behavioral validation.
