@@ -1,8 +1,12 @@
 # Decision Skill Sync Rules
 
 Read this before a write action to `.agents/skills/decision-{slug}/` for generated routing,
-body format, retirement mechanics, and verification. Action selection and authorization
+body format and verification. Action selection and authorization
 are defined in `SKILL.md`; read-only outcomes do not require this file.
+
+Before renaming, retiring, or reviving an archived slug, also read
+`references/retirement-and-references.md` for preflight, tombstones, reference rewriting,
+and completion checks. Apply its preflight before any mutation.
 
 ## Description Auto-Generation
 
@@ -89,54 +93,14 @@ Do not shorten a decision skill by pushing its rules into `docs/engineering/`,
 rule. Shorten an index by moving per-domain prose into `references/`, which stays inside
 the skill.
 
-## Retirement Mechanics
-
-For each retirement authorized by the Action matrix, preserve the retired content at
-`docs/archive/decisions/{slug}.md` and remove `.agents/skills/decision-{slug}/` from discovery.
-Preserve the body and any authoritative domain references in the tombstone before deleting
-the skill directory. Its header is:
-
-```md
-> Archived on {date}. Active authority: {successor skill and section, or none}.
-```
-
-List absorbed slugs in the survivor's `metadata.supersedes` when merging.
-
-The description prefix `[SUPERSEDED]` / `[ORPHANED]` is not used: any description that
-reaches the routing list is a live authority claim. Removal is the only unambiguous
-retirement signal.
-
-`metadata.supersedes` is the only lifecycle metadata. A retired skill carries no metadata,
-because it no longer exists.
-
-## Reference Rewrite
-
-Before a rename or retirement, collect all affected references. Preflight the full rewrite
-set before mutating authority: if a required edit cannot be made, because a project
-instruction excludes its path from fractal writes or the file is not writable, leave the
-affected decision skills in place and report the blocker. Do not delete an authority first
-and defer its blocked reference cleanup.
-
-When a decision skill is renamed, merged, or removed, rewrite every reference to the old
-slug in the same operation: root and per-layer `AGENTS.md`, `docs/**`, and code comments.
-When a successor exists, `§N` citations keep their number and resolve through its index
-table; `ADR 000N` aliases resolve to that owner. Update local `AGENTS.md` alias definitions
-where ownership changed. Relative links inside skills resolve against the skill directory
-(`references/` is one level deeper than `SKILL.md`).
-
-Reference rewrite is part of the retirement or rename, not follow-up work. When there is
-no successor, remove active-authority pointers and direct any retained historical citations
-to the tombstone. A rename or removal that leaves dangling citations has not completed.
-
-A slug revived by a later CREATE updates the existing tombstone's `Active authority` line to
-point at the revived skill instead of leaving it at `none`.
-
 ## Idempotency
 
 - Use the current skill content as the source for authorized changes; preserve its explicit
   `skill_description` override rather than regenerating it.
 - If a proposed new slug already exists, reclassify with the Action matrix before writing:
   sufficient existing truth needs no mutation; changed truth requires authorized revision.
+- For CREATE, check `docs/archive/decisions/{slug}.md`; an existing tombstone activates
+  the revival rules in `references/retirement-and-references.md`.
 
 ## Sync proof
 
@@ -151,10 +115,7 @@ Every write action must satisfy the applicable checks before reporting completio
 - `§N` in each touched active skill is continuous, without duplicates or gaps, and existing
   citations retain their meaning. For an index, every domain reference is listed exactly
   once and every listed file exists. A single-topic skill needs no reference index.
-- Retired content is preserved in a tombstone, the retired directory is absent, and its
-  active-authority pointer resolves to the successor or explicitly states `none`.
-- No stale reference to a removed or renamed slug remains outside `metadata.supersedes`
-  and `docs/archive/**`; explicit historical links to its tombstone are allowed. Verify
-  with `rg --hidden --glob '!.git' --glob '!node_modules'`.
 - Every concrete `decision-*` citation resolves to an existing skill or archived tombstone,
   and links between skills resolve after any reference-depth change.
+- Renames, retirements, and revivals also pass the completion checks in
+  `references/retirement-and-references.md`.

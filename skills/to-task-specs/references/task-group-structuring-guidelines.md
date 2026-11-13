@@ -35,10 +35,6 @@
 
 ## 5. Completion Check
 
-Before handing off the task list, verify:
-
-- Every requirement and critical edge case has an owning task and a concrete check.
-- Every task identifies its prerequisites, existing/planned change anchors, deliverable, and acceptance.
-- Dependency order is executable and file conflicts are explicit.
-- Tests exercise the delivered behavior at the relevant entry point.
-- No task introduces unrelated refactoring, dependencies, or architecture under the guise of a quality gate.
+Before handoff, check every task's required fields and the Review Checklist in
+`assets/task-spec-template.md`; leave human approval to the reviewer. No task may introduce
+unrelated refactoring, dependencies, or architecture under the guise of a quality gate.

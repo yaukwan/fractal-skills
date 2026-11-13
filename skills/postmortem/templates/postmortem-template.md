@@ -5,6 +5,8 @@ date: "<YYYY-MM-DD>"
 tags: [bugfix, postmortem]
 ---
 
+> Authoring check: Explain the failure mechanism and connect the cause, applied fix, reproducible verification, and prevention. Support claims with concrete evidence; phrases such as "fixed an issue" or "improved stability" are insufficient. Remove this note from the output.
+
 # Postmortem: <short bug title>
 
 ## Summary

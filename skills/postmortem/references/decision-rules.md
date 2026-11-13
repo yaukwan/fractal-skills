@@ -1,27 +1,8 @@
 # Decision Rules
 
-Use these rules after the skill is selected to decide whether a postmortem is required for the current task.
+Apply the Core Rule in `SKILL.md` after resolving these boundary cases:
 
-A postmortem is required when the primary nature of the task is defect correction.
-
-## Trigger if any of these are true
-- restores expected behavior
-- fixes a regression
-- fixes broken logic
-- repairs failing behavior in production or staging
-- addresses reliability or correctness defects
-- resolves user-visible malfunction
-- resolves an incident or near-miss caused by incorrect system behavior
-
-## Usually does not trigger
-- net-new feature development
-- visual polish with no defect
-- code cleanup only
-- renaming, formatting, or restructuring without behavior change
-
-## Mixed Cases
-Ask:
-
-> What is the primary reason this task exists?
-
-If the main reason is defect correction, create a postmortem.
+- For mixed feature and fix work, use the primary reason the task exists.
+- A failing test qualifies when it exposes a real behavior defect; test maintenance alone does not.
+- Refactoring, polish, formatting, and renaming qualify only when the primary goal is restoring expected behavior.
+- An incident or near-miss qualifies when caused by incorrect system behavior; new reliability capabilities alone are feature work.

@@ -26,33 +26,6 @@ A topic is not a good candidate when any of these dominate:
 - it can be fully understood from code or nearby implementation notes
 - it is likely to expire quickly
 
-## Smell tests
-
-### Smell: "This feels important"
-
-Importance alone is not enough.
-Ask whether it is important as **system truth**, not merely important to the current task.
-
-### Smell: "We discussed multiple options"
-
-Option comparison alone does not justify a decision skill.
-Only the adopted, durable truth belongs here.
-
-### Smell: "This was a hard problem"
-
-Difficulty alone does not make it a decision.
-Hard implementation work often belongs in `docs/engineering/`, not as a decision skill.
-
-## Promotion rule
-
-Promote content into a decision skill only when it has crossed from:
-
-- situational reasoning
-
-into:
-
-- durable authority
-
 ## Merge and Separation Criteria
 
 Merge when one change would normally require loading both skills. Keep separate when:

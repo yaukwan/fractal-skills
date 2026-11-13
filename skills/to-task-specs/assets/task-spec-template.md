@@ -83,18 +83,7 @@ related:
     - **Run From / Command or Procedure**: {directory_command_or_reproducible_steps_and_environment_prerequisites}
     - **Expected Result**: {observable_success_and_relevant_failure_results_not_claimed_as_executed}
 
-- **[ ] 1.2: {sub_task_title}**
-  - **Depends on**: {task_ids_or_none_including_shared_file_sequencing}
-  - **Input**: {parameters, data, preconditions}
-  - **Change Anchors**: {existing_or_planned_implementation_and_verification_paths_and_symbols}
-  - **Instructions**:
-    1. {step_1}
-    2. {step_2}
-  - **Objective**: {desired deliverable state}
-  - **Acceptance Criteria**:
-    - [ ] {verifiable_criteria_1}
-    - [ ] {verifiable_criteria_2}
-  - **Verification**: {entry_point_criteria_covered_directory_command_or_procedure_and_expected_result}
+{repeat_the_task_block_for_remaining_tasks_with_distinct_ids}
 
 ### Task Group 2: {functional_module_name}
 {continue_with_same_structure}

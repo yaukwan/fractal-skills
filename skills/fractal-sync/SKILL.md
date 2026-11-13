@@ -5,7 +5,7 @@ license: "Apache-2.0"
 disable-model-invocation: true
 metadata:
   author: "yaukwan"
-  version: "2.3"
+  version: "2.4"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -38,7 +38,7 @@ An artifact that exists is maintained. A new artifact needs a request.
    - Repository docs when placement, naming, frontmatter, indexes, or lifecycle changed.
    - Decision skills when this change renames, merges, or removes one: rewrite every reference
      to the old slug in the same operation (root and per-layer `AGENTS.md`, `docs/**`, code
-     comments). See `decision-capture`, `references/skill-sync-rules.md`, Reference Rewrite.
+     comments). See `decision-capture`, `references/retirement-and-references.md`, Reference Rewrite.
 5. **Prove both directions.** Verify every changed documentation claim against code and represent every changed code contract at its owning documentation layer.
 6. **Report the sync.** List `changed`, `checked-no-change`, and `blocked` items for both code and documentation. List as `not-maintained`, without writing them:
    - each excluded path whose manifest or header is now stale

@@ -4,7 +4,7 @@ description: "Load when turning a clarified PRD, decision summary, or resolved c
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "2.0"
+  version: "2.1"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -31,7 +31,6 @@ Produce a repository-grounded spec that an executor can follow without the plann
 
 4. **Cold-read the handoff.**
    - Using only the spec and its references, confirm an executor can locate changes, preserve required behavior, validate each outcome, and recognize escalation conditions. Include necessary decisions from the conversation.
-   - Each check needs an entry point, working directory, command or reproducible procedure, and expected result. Mark new checks as planned; expectations are not actual passing results.
 
 5. **Deliver and stop.** Apply the output rules below, reread the artifact, and request human review. New specs remain `draft` or `pending_review`; generation neither approves the spec nor starts implementation.
 
@@ -41,12 +40,12 @@ The spec must require evidence-backed review for missing anchors, contract confl
 
 ## Output
 
-Before writing, choose the destination from the first row that applies:
+Before writing, resolve explicit output instructions by instruction priority; then choose the destination from the first row that applies:
 
 | Condition | Action |
 | --- | --- |
-| The request or a project instruction asks for a file | Write `docs/specs/{YYYY_MM_dd}_{task_name}.md`; create the directory if needed. |
-| The request or a project instruction asks for inline output | Output only in conversation; no file writes or directory creation. |
+| The resolved instruction asks for a file | Write `docs/specs/{YYYY_MM_dd}_{task_name}.md`; create the directory if needed. |
+| The resolved instruction asks for inline output | Output only in conversation; no file writes or directory creation. |
 | `docs/specs/` already contains a spec | Write the file path above. |
 | None of the above | Ask before writing, using the host's question tool or conversation. If confirmed, use the file path above. |
 

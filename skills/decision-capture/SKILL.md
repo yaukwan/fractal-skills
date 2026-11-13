@@ -4,7 +4,7 @@ description: "Load when checking or changing current design authority in fractal
 license: "Apache-2.0"
 metadata:
   author: "yaukwan"
-  version: "2.2"
+  version: "2.3"
   github: "https://github.com/yaukwan/fractal-skills"
 ---
 
@@ -34,8 +34,8 @@ keeps no decision skills and stop without proposing one.
    editing. Complete when the exact change is authorized or reported as blocked.
    Read-only outcomes need no write approval.
 4. **Apply the selected action.** Only for a write action, read
-   `references/skill-sync-rules.md` before editing for routing, body format, retirement,
-   and reference-rewrite rules. For a new or reshaped skill, also use
+   `references/skill-sync-rules.md` before editing for routing, body format, verification,
+   and conditional lifecycle rules. For a new or reshaped skill, also use
    `assets/decision-skill-template.md` and run `assets/decision-review-checklist.md`;
    resolve any failed item before writing. Complete when the authorized content and all
    required routing, tombstone, and reference changes are saved.
