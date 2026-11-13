@@ -13,7 +13,7 @@
 
 - [x] F1：区分本次执行范围与整份 spec 的完成检查。
 - [x] F2：明确待交接与阻塞的状态优先级。
-- [ ] O1：为跨会话证据增加最小版本关联。
+- [x] O1：为跨会话证据增加最小版本关联。
 - [ ] O2：承接已授权的逐任务原子提交。
 
 下文审计结论与行号保留为基线记录；当前实施结果见文末。
@@ -124,3 +124,10 @@
 - 人工走查：有责任方和下一步的待 review 确认保持 `in_progress`；review 到期但缺少环境、且无独立任务可推进时为 `blocked`；review 失败且无独立任务可推进时为 `blocked`，撤回被失败证据否定的完成标记；仍有独立授权任务时可继续，文档不标为完成。
 - 实际验证：`python3 -B skills/skill-design-guidelines/scripts/validate_skill.py skills/impl-task-spec` 通过，0 警告、0 错误；`git diff --check` 通过。
 - 验证范围：文本场景走查与结构校验；没有增加状态或修改上游模板。
+
+### O1
+
+- 修改：每次执行记录一次基线和相关初始工作区改动；每项结果关联该执行记录，并标识实际验证的 revision、源码快照或补丁。无 Git 时使用项目版本标识或源码快照。
+- 人工走查：HEAD 不变但相关实现改变时，旧证据不能直接复用；只修改无关文档不使原结果自动失效；干净 Git 树可引用 revision；无 Git 项目可引用源码快照；未提交改动必须由额外补丁或快照覆盖。
+- 实际验证：`python3 -B skills/skill-design-guidelines/scripts/validate_skill.py skills/impl-task-spec` 通过，0 警告、0 错误；`git diff --check` 通过。
+- 验证范围：文本场景走查与结构校验；未引入独立状态存储或运行时依赖。
